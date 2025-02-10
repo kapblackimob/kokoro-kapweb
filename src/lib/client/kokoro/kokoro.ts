@@ -1,10 +1,11 @@
 import * as ort from "onnxruntime-web/webgpu";
 import { getModel, getShapedVoiceFile } from "$lib/shared/resources";
-import type { LangId, VoiceId } from "$lib/shared/resources";
+import type { LangId, ModelId, VoiceId } from "$lib/shared/resources";
 import { tokenize } from "./tokenizer";
 import { apiClient } from "$lib/client/apiClient";
 import { detectWebGPU } from "$lib/client/utils";
 
+// This should match the version of onnxruntime-web in the package.json
 ort.env.wasm.wasmPaths =
   "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0-dev.20250206-d981b153d3/dist/";
 
@@ -18,8 +19,9 @@ const MODEL_CONTEXT_WINDOW = 512;
  */
 export async function generateVoice(params: {
   text: string;
-  lang: LangId;
-  voice: VoiceId;
+  lang: LangId | string;
+  voice: VoiceId | string;
+  model: ModelId | string;
   speed: number;
   webgpu: boolean;
 }): Promise<Float32Array> {
@@ -41,10 +43,16 @@ export async function generateVoice(params: {
     chunks.push(chunkTokens);
   }
 
-  const modelBuffer = await getModel("model_q8f16");
+  const modelBuffer = await getModel(params.model);
   const shapedVoice = await getShapedVoiceFile(params.voice);
 
-  const sessionOpts = params.webgpu ? { executionProviders: ["webgpu"] } : {};
+  let sessionOpts: ort.InferenceSession.SessionOptions = {};
+  if (params.webgpu) {
+    sessionOpts = {
+      executionProviders: ["webgpu"],
+    };
+  }
+
   const session = await ort.InferenceSession.create(modelBuffer, sessionOpts);
 
   const waveforms: Float32Array[] = [];
@@ -79,39 +87,4 @@ export async function generateVoice(params: {
   }
 
   return finalWaveform;
-}
-
-export async function generateChunk(params: {
-  text: string;
-  lang: "en-us" | "en-gb" | "es-la" | "es-es";
-  voice: VoiceId;
-  speed: number;
-}): Promise<Float32Array> {
-  const phonemes = await apiClient.phonemize(params.text, params.lang);
-  const tokens = tokenize(phonemes);
-
-  const modelBuffer = await getModel("model_q8f16");
-  const session = await ort.InferenceSession.create(modelBuffer);
-
-  const shapedVoice = await getShapedVoiceFile(params.voice);
-  const ref_s = shapedVoice[tokens.length - 1][0];
-
-  const paddedTokens = [0, ...tokens, 0];
-
-  const input_ids = new ort.Tensor("int64", paddedTokens, [
-    1,
-    paddedTokens.length,
-  ]);
-
-  const style = new ort.Tensor("float32", ref_s, [1, ref_s.length]);
-
-  const speed = new ort.Tensor("float32", [params.speed], [1]);
-  const result = await session.run({
-    input_ids,
-    style,
-    speed,
-  });
-
-  const waveform = await result["waveform"].getData();
-  return waveform as Float32Array;
 }

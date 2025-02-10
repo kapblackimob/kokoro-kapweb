@@ -11,14 +11,14 @@ const espeakLangs = {
 };
 
 const langs = {
-  "a": espeakLangs.us_english,
-  "en": espeakLangs.us_english,
+  a: espeakLangs.us_english,
+  en: espeakLangs.us_english,
   "en-us": espeakLangs.us_english,
-  "b": espeakLangs.eu_english,
+  b: espeakLangs.eu_english,
   "en-gb": espeakLangs.eu_english,
   "en-uk": espeakLangs.eu_english,
-  "e": espeakLangs.la_spanish,
-  "es": espeakLangs.la_spanish,
+  e: espeakLangs.la_spanish,
+  es: espeakLangs.la_spanish,
   "es-la": espeakLangs.la_spanish,
   "es-es": espeakLangs.eu_spanish,
 };

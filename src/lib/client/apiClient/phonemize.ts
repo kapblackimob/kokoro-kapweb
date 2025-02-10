@@ -5,13 +5,10 @@
  * @param lang The language of the text.
  */
 export async function phonemize(text: string, lang: string): Promise<string> {
-  const res = await fetch(
-    "/api/phonemizer",
-    {
-      method: "POST",
-      body: JSON.stringify({ text, lang }),
-    },
-  );
+  const res = await fetch("/api/phonemizer", {
+    method: "POST",
+    body: JSON.stringify({ text, lang }),
+  });
 
   if (!res.ok) throw new Error(`Error fetching phonemes: ${res.statusText}`);
 

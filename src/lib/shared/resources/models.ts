@@ -1,7 +1,7 @@
 export type Model = (typeof models)[number];
 export type ModelId = Model["modelId"];
 
-export const models = Object.freeze([
+export const models = [
   {
     modelId: "model",
     quantization: "fp32",
@@ -42,16 +42,14 @@ export const models = Object.freeze([
     quantization: "4-bit matmul & fp16 weights",
     size: "154 MB",
   },
-] as const);
+] as const;
 
-export const modelsMap: Record<ModelId, Model> = Object.freeze(
-  (() => {
-    const map: Record<ModelId, Model> = {} as Record<ModelId, Model>;
-    for (const model of models) {
-      map[model.modelId] = model;
-    }
-    return map;
-  })(),
-);
+export const modelsMap: Record<ModelId, Model> = (() => {
+  const map: Record<ModelId, Model> = {} as Record<ModelId, Model>;
+  for (const model of models) {
+    map[model.modelId] = model;
+  }
+  return map;
+})();
 
-export const modelsIds = Object.freeze(models.map((model) => model.modelId));
+export const modelsIds = models.map((model) => model.modelId);

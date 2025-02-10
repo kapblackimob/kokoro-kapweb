@@ -1,8 +1,10 @@
-import type { ModelId } from "./models.js";
-import type { VoiceId } from "./voices.js";
+import type { ModelId } from "./models";
+import type { VoiceId } from "./voices";
+import { getFileFromUrl } from "./helpers";
 
-export * from "./models.js";
-export * from "./voices.js";
+export * from "./models";
+export * from "./voices";
+export * from "./langs";
 
 const downloadUrl =
   "https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX/resolve/1939ad2a8e416c0acfeecc08a694d14ef25f2231";
@@ -48,42 +50,4 @@ export async function getShapedVoiceFile(id: VoiceId): Promise<number[][][]> {
   }
 
   return reshaped;
-}
-
-/**
- * Fetches a file from the given url, caching it if possible.
- *
- * @param url The url to be fetched
- */
-async function getFileFromUrl(url: string): Promise<ArrayBuffer> {
-  console.log("Downloading URL:", url);
-
-  let cache: Cache | null = null;
-  try {
-    cache = await caches.open("kokoro-web-resources");
-    const cached = await cache.match(url);
-    if (cached) {
-      console.log("Downloaded from cache");
-      return await cached.arrayBuffer();
-    }
-  } catch (err) {
-    console.warn("Can't open cache:", err);
-  }
-
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch model: ${res.status}`);
-  }
-
-  const buf = await res.arrayBuffer();
-  if (!cache) return buf;
-
-  try {
-    await cache.put(url, new Response(buf, { headers: res.headers }));
-  } catch (err) {
-    console.warn("Can't cache model:", err);
-  }
-
-  console.log("Downloaded from network");
-  return buf;
 }

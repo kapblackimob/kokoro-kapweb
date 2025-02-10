@@ -2,7 +2,7 @@ import { voices } from "./voices";
 
 export interface Lang {
   // This value is a language identifier from the model list.
-  id: LangId;
+  langId: LangId;
 
   // This value is the human-readable name of the language.
   name: string;
@@ -20,49 +20,49 @@ export const langs: Lang[] = [...langsIds].map((lang) => {
   switch (lang) {
     case "en-us":
       return {
-        id: "en-us",
+        langId: "en-us",
         name: "English (US)",
         espeakLang: "en-us",
       };
     case "en-gb":
       return {
-        id: "en-gb",
+        langId: "en-gb",
         name: "English (UK)",
         espeakLang: "en-gb",
       };
     case "ja":
       return {
-        id: "ja",
+        langId: "ja",
         name: "Japanese",
         espeakLang: "ja",
       };
     case "zh":
       return {
-        id: "zh",
+        langId: "zh",
         name: "Chinese",
         espeakLang: "cmn",
       };
     case "es":
       return {
-        id: "es",
+        langId: "es",
         name: "Spanish",
         espeakLang: "es-419",
       };
     case "hi":
       return {
-        id: "hi",
+        langId: "hi",
         name: "Hindi",
         espeakLang: "hi",
       };
     case "it":
       return {
-        id: "it",
+        langId: "it",
         name: "Italian",
         espeakLang: "it",
       };
     case "pt-br":
       return {
-        id: "pt-br",
+        langId: "pt-br",
         name: "Portuguese (Brazil)",
         espeakLang: "pt-br",
       };
@@ -76,7 +76,7 @@ export const langs: Lang[] = [...langsIds].map((lang) => {
 export const langsMap: Record<LangId, Lang> = (() => {
   const map: Record<LangId, Lang> = {} as Record<LangId, Lang>;
   for (const lang of langs) {
-    map[lang.id] = lang;
+    map[lang.langId] = lang;
   }
   return map;
 })();

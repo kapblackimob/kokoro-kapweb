@@ -1,7 +1,7 @@
 import * as ort from "onnxruntime-web";
 import { getModel, getShapedVoiceFile, type VoiceId } from "../resources";
 import { tokenize } from "./tokenizer";
-import { apiClient } from "$lib/client/api";
+import { apiClient } from "$lib/client/apiClient";
 
 ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
 

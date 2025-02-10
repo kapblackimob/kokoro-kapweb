@@ -1,383 +1,439 @@
-export const voices = Object.freeze({
-  af_heart: {
+export type Voice = (typeof voices)[number];
+export type VoiceId = Voice["voiceId"];
+
+export const voices = [
+  {
+    voiceId: "af_heart",
     name: "Heart",
     language: "en-us",
     gender: "Female",
     targetQuality: "A",
     overallGrade: "A",
   },
-  af_alloy: {
+  {
+    voiceId: "af_alloy",
     name: "Alloy",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  af_aoede: {
+  {
+    voiceId: "af_aoede",
     name: "Aoede",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  af_bella: {
+  {
+    voiceId: "af_bella",
     name: "Bella",
     language: "en-us",
     gender: "Female",
     targetQuality: "A",
     overallGrade: "A-",
   },
-  af_jessica: {
+  {
+    voiceId: "af_jessica",
     name: "Jessica",
     language: "en-us",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  af_kore: {
+  {
+    voiceId: "af_kore",
     name: "Kore",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  af_nicole: {
+  {
+    voiceId: "af_nicole",
     name: "Nicole",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "B-",
   },
-  af_nova: {
+  {
+    voiceId: "af_nova",
     name: "Nova",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  af_river: {
+  {
+    voiceId: "af_river",
     name: "River",
     language: "en-us",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  af_sarah: {
+  {
+    voiceId: "af_sarah",
     name: "Sarah",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  af_sky: {
+  {
+    voiceId: "af_sky",
     name: "Sky",
     language: "en-us",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C-",
   },
-  am_adam: {
+  {
+    voiceId: "am_adam",
     name: "Adam",
     language: "en-us",
     gender: "Male",
     targetQuality: "D",
     overallGrade: "F+",
   },
-  am_echo: {
+  {
+    voiceId: "am_echo",
     name: "Echo",
     language: "en-us",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  am_eric: {
+  {
+    voiceId: "am_eric",
     name: "Eric",
     language: "en-us",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  am_fenrir: {
+  {
+    voiceId: "am_fenrir",
     name: "Fenrir",
     language: "en-us",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  am_liam: {
+  {
+    voiceId: "am_liam",
     name: "Liam",
     language: "en-us",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  am_michael: {
+  {
+    voiceId: "am_michael",
     name: "Michael",
     language: "en-us",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  am_onyx: {
+  {
+    voiceId: "am_onyx",
     name: "Onyx",
     language: "en-us",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  am_puck: {
+  {
+    voiceId: "am_puck",
     name: "Puck",
     language: "en-us",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  am_santa: {
+  {
+    voiceId: "am_santa",
     name: "Santa",
     language: "en-us",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D-",
   },
-  bf_emma: {
+  {
+    voiceId: "bf_emma",
     name: "Emma",
     language: "en-gb",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "B-",
   },
-  bf_isabella: {
+  {
+    voiceId: "bf_isabella",
     name: "Isabella",
     language: "en-gb",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  bm_george: {
+  {
+    voiceId: "bm_george",
     name: "George",
     language: "en-gb",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C",
   },
-  bm_lewis: {
+  {
+    voiceId: "bm_lewis",
     name: "Lewis",
     language: "en-gb",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D+",
   },
-  bf_alice: {
+  {
+    voiceId: "bf_alice",
     name: "Alice",
     language: "en-gb",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  bf_lily: {
+  {
+    voiceId: "bf_lily",
     name: "Lily",
     language: "en-gb",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  bm_daniel: {
+  {
+    voiceId: "bm_daniel",
     name: "Daniel",
     language: "en-gb",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  bm_fable: {
+  {
+    voiceId: "bm_fable",
     name: "Fable",
     language: "en-gb",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C",
   },
-  jf_alpha: {
+  {
+    voiceId: "jf_alpha",
     name: "alpha",
     language: "ja",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C+",
   },
-  jf_gongitsune: {
+  {
+    voiceId: "jf_gongitsune",
     name: "gongitsune",
     language: "ja",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  jf_nezumi: {
+  {
+    voiceId: "jf_nezumi",
     name: "nezumi",
     language: "ja",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C-",
   },
-  jf_tebukuro: {
+  {
+    voiceId: "jf_tebukuro",
     name: "tebukuro",
     language: "ja",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  jm_kumo: {
+  {
+    voiceId: "jm_kumo",
     name: "kumo",
     language: "ja",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C-",
   },
-  zf_xiaobei: {
+  {
+    voiceId: "zf_xiaobei",
     name: "xiaobei",
     language: "zh",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zf_xiaoni: {
+  {
+    voiceId: "zf_xiaoni",
     name: "xiaoni",
     language: "zh",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zf_xiaoxiao: {
+  {
+    voiceId: "zf_xiaoxiao",
     name: "xiaoxiao",
     language: "zh",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zf_xiaoyi: {
+  {
+    voiceId: "zf_xiaoyi",
     name: "xiaoyi",
     language: "zh",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zm_yunjian: {
+  {
+    voiceId: "zm_yunjian",
     name: "yunjian",
     language: "zh",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zm_yunxi: {
+  {
+    voiceId: "zm_yunxi",
     name: "yunxi",
     language: "zh",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zm_yunxia: {
+  {
+    voiceId: "zm_yunxia",
     name: "yunxia",
     language: "zh",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  zm_yunyang: {
+  {
+    voiceId: "zm_yunyang",
     name: "yunyang",
     language: "zh",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  ef_dora: {
+  {
+    voiceId: "ef_dora",
     name: "dora",
     language: "es",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  em_alex: {
+  {
+    voiceId: "em_alex",
     name: "alex",
     language: "es",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  em_santa: {
+  {
+    voiceId: "em_santa",
     name: "santa",
     language: "es",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  ff_siwis: {
-    name: "siwis",
-    language: "es",
-    gender: "Female",
-    targetQuality: "B",
-    overallGrade: "B-",
-  },
-  hf_alpha: {
+  {
+    voiceId: "hf_alpha",
     name: "alpha",
     language: "hi",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  hf_beta: {
+  {
+    voiceId: "hf_beta",
     name: "beta",
     language: "hi",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  hm_omega: {
+  {
+    voiceId: "hm_omega",
     name: "omega",
     language: "hi",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C",
   },
-  hm_psi: {
+  {
+    voiceId: "hm_psi",
     name: "psi",
     language: "hi",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C",
   },
-  if_sara: {
+  {
+    voiceId: "if_sara",
     name: "sara",
     language: "it",
     gender: "Female",
     targetQuality: "B",
     overallGrade: "C",
   },
-  im_nicola: {
+  {
+    voiceId: "im_nicola",
     name: "nicola",
     language: "it",
     gender: "Male",
     targetQuality: "B",
     overallGrade: "C",
   },
-  pf_dora: {
+  {
+    voiceId: "pf_dora",
     name: "dora",
     language: "pt-br",
     gender: "Female",
     targetQuality: "C",
     overallGrade: "D",
   },
-  pm_alex: {
+  {
+    voiceId: "pm_alex",
     name: "alex",
     language: "pt-br",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-  pm_santa: {
+  {
+    voiceId: "pm_santa",
     name: "santa",
     language: "pt-br",
     gender: "Male",
     targetQuality: "C",
     overallGrade: "D",
   },
-});
+] as const;
 
-export type VoiceId = keyof typeof voices;
-export const voiceIds: VoiceId[] = Object.keys(voices) as VoiceId[];
+export const voicesMap = (() => {
+  const map = {} as Record<VoiceId, Voice>;
+  voices.forEach((voice) => {
+    map[voice.voiceId] = voice;
+  });
+  return map;
+})();
+
+export const voicesIds = voices.map((voice) => voice.voiceId);

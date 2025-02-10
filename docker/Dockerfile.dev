@@ -30,6 +30,9 @@ RUN apt update && \
 RUN npm install --global n@latest && \
     n v22
 
+# Install python packages
+RUN pip install phonemizer --break-system-packages
+
 # Go to the app dir, delete the temporary dir and create backups dir
 WORKDIR /app
 RUN rm -rf /app/temp

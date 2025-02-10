@@ -10,9 +10,9 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "denoland.vscode-deno",
         "svelte.svelte-vscode",
         "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
         "mhutchie.git-graph",
         "mutantdino.resourcemonitor",
         "Compile-TomaszKasperczyk.copy-to-llm"
@@ -20,34 +20,31 @@
       "settings": {
         "editor.formatOnSave": true,
         "editor.foldingStrategy": "indentation",
-        "editor.rulers": [
-          80
-        ],
         "files.eol": "\n",
         "svelte.enable-ts-plugin": true,
         "[svelte]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[json]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[jsonc]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[typescript]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[javascript]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[css]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[html]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
         },
         "[markdown]": {
-          "editor.defaultFormatter": "denoland.vscode-deno"
+          "editor.defaultFormatter": "vscode.markdown-language-features"
         }
       }
     }

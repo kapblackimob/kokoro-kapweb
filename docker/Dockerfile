@@ -1,6 +1,3 @@
-FROM denoland/deno:debian-2.1.9 AS deno
-
-# Set the base image
 FROM debian:12.7
 
 # Declare ARG to make it available in the RUN commands
@@ -15,9 +12,6 @@ RUN if [ "${TARGETPLATFORM}" != "linux/amd64" ] && [ "${TARGETPLATFORM}" != "lin
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN mkdir -p /app/temp
 WORKDIR /app/temp
-
-# Install deno from docker image
-COPY --from=deno /usr/bin/deno /usr/local/bin/deno
 
 # Install debian packages
 RUN apt update && \

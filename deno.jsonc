@@ -1,5 +1,0 @@
-// Deno is used only for formatting and linting
-
-{
-  "unstable": ["fmt-component"] // Support .svelte files
-}

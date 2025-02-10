@@ -1,11 +1,12 @@
 import * as ort from "onnxruntime-web/webgpu";
 import { getModel, getShapedVoiceFile } from "$lib/shared/resources";
-import type { VoiceId } from "$lib/shared/resources";
+import type { LangId, VoiceId } from "$lib/shared/resources";
 import { tokenize } from "./tokenizer";
 import { apiClient } from "$lib/client/apiClient";
 import { detectWebGPU } from "$lib/client/utils";
 
-ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
+ort.env.wasm.wasmPaths =
+  "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0-dev.20250206-d981b153d3/dist/";
 
 const MODEL_CONTEXT_WINDOW = 512;
 
@@ -17,7 +18,7 @@ const MODEL_CONTEXT_WINDOW = 512;
  */
 export async function generateVoice(params: {
   text: string;
-  lang: "en-us" | "en-gb" | "es-la" | "es-es";
+  lang: LangId;
   voice: VoiceId;
   speed: number;
   webgpu: boolean;
@@ -65,7 +66,7 @@ export async function generateVoice(params: {
       speed,
     });
 
-    const waveform = await result["waveform"].getData();
+    const waveform = await result.waveform.getData();
     waveforms.push(waveform as Float32Array);
     waveformsLen += waveform.length;
   }

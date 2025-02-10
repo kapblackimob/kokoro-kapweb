@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { type Lang, phonemize } from "$lib/server/phonemizer";
+import { phonemize } from "$lib/server/phonemizer";
 
 export const GET: RequestHandler = async ({ url }) => {
   const text = url.searchParams.get("text");
@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ url }) => {
   if (!text) error(400, "text query parameter is required");
   if (!lang) error(400, "lang query parameter is required");
 
-  const phonemes = await phonemize(text, lang as Lang);
+  const phonemes = await phonemize(text, lang);
   return json({ phonemes });
 };
 
@@ -17,6 +17,6 @@ export const POST: RequestHandler = async ({ request }) => {
   if (!text) error(400, "text query parameter is required");
   if (!lang) error(400, "lang query parameter is required");
 
-  const phonemes = await phonemize(text, lang as Lang);
+  const phonemes = await phonemize(text, lang);
   return json({ phonemes });
 };

@@ -228,7 +228,7 @@ export const voices = [
   },
   {
     voiceId: "ef_dora",
-    name: "dora",
+    name: "Dora",
     lang: "es",
     gender: "Female",
     targetQuality: "C",
@@ -236,7 +236,7 @@ export const voices = [
   },
   {
     voiceId: "em_alex",
-    name: "alex",
+    name: "Alex",
     lang: "es",
     gender: "Male",
     targetQuality: "C",
@@ -244,7 +244,7 @@ export const voices = [
   },
   {
     voiceId: "em_santa",
-    name: "santa",
+    name: "Santa",
     lang: "es",
     gender: "Male",
     targetQuality: "C",
@@ -252,7 +252,7 @@ export const voices = [
   },
   {
     voiceId: "jf_alpha",
-    name: "alpha",
+    name: "Alpha",
     lang: "ja",
     gender: "Female",
     targetQuality: "B",
@@ -260,7 +260,7 @@ export const voices = [
   },
   {
     voiceId: "jf_gongitsune",
-    name: "gongitsune",
+    name: "Gongitsune",
     lang: "ja",
     gender: "Female",
     targetQuality: "B",
@@ -268,7 +268,7 @@ export const voices = [
   },
   {
     voiceId: "jf_nezumi",
-    name: "nezumi",
+    name: "Nezumi",
     lang: "ja",
     gender: "Female",
     targetQuality: "B",
@@ -276,7 +276,7 @@ export const voices = [
   },
   {
     voiceId: "jf_tebukuro",
-    name: "tebukuro",
+    name: "Tebukuro",
     lang: "ja",
     gender: "Female",
     targetQuality: "B",
@@ -284,7 +284,7 @@ export const voices = [
   },
   {
     voiceId: "jm_kumo",
-    name: "kumo",
+    name: "Kumo",
     lang: "ja",
     gender: "Male",
     targetQuality: "B",
@@ -292,7 +292,7 @@ export const voices = [
   },
   {
     voiceId: "zf_xiaobei",
-    name: "xiaobei",
+    name: "Xiaobei",
     lang: "zh",
     gender: "Female",
     targetQuality: "C",
@@ -300,7 +300,7 @@ export const voices = [
   },
   {
     voiceId: "zf_xiaoni",
-    name: "xiaoni",
+    name: "Xiaoni",
     lang: "zh",
     gender: "Female",
     targetQuality: "C",
@@ -308,7 +308,7 @@ export const voices = [
   },
   {
     voiceId: "zf_xiaoxiao",
-    name: "xiaoxiao",
+    name: "Xiaoxiao",
     lang: "zh",
     gender: "Female",
     targetQuality: "C",
@@ -316,7 +316,7 @@ export const voices = [
   },
   {
     voiceId: "zf_xiaoyi",
-    name: "xiaoyi",
+    name: "Xiaoyi",
     lang: "zh",
     gender: "Female",
     targetQuality: "C",
@@ -324,7 +324,7 @@ export const voices = [
   },
   {
     voiceId: "zm_yunjian",
-    name: "yunjian",
+    name: "Yunjian",
     lang: "zh",
     gender: "Male",
     targetQuality: "C",
@@ -332,7 +332,7 @@ export const voices = [
   },
   {
     voiceId: "zm_yunxi",
-    name: "yunxi",
+    name: "Yunxi",
     lang: "zh",
     gender: "Male",
     targetQuality: "C",
@@ -340,7 +340,7 @@ export const voices = [
   },
   {
     voiceId: "zm_yunxia",
-    name: "yunxia",
+    name: "Yunxia",
     lang: "zh",
     gender: "Male",
     targetQuality: "C",
@@ -348,7 +348,7 @@ export const voices = [
   },
   {
     voiceId: "zm_yunyang",
-    name: "yunyang",
+    name: "Yunyang",
     lang: "zh",
     gender: "Male",
     targetQuality: "C",
@@ -356,7 +356,7 @@ export const voices = [
   },
   {
     voiceId: "hf_alpha",
-    name: "alpha",
+    name: "Alpha",
     lang: "hi",
     gender: "Female",
     targetQuality: "B",
@@ -364,7 +364,7 @@ export const voices = [
   },
   {
     voiceId: "hf_beta",
-    name: "beta",
+    name: "Beta",
     lang: "hi",
     gender: "Female",
     targetQuality: "B",
@@ -372,7 +372,7 @@ export const voices = [
   },
   {
     voiceId: "hm_omega",
-    name: "omega",
+    name: "Omega",
     lang: "hi",
     gender: "Male",
     targetQuality: "B",
@@ -380,7 +380,7 @@ export const voices = [
   },
   {
     voiceId: "hm_psi",
-    name: "psi",
+    name: "Psi",
     lang: "hi",
     gender: "Male",
     targetQuality: "B",
@@ -388,7 +388,7 @@ export const voices = [
   },
   {
     voiceId: "if_sara",
-    name: "sara",
+    name: "Sara",
     lang: "it",
     gender: "Female",
     targetQuality: "B",
@@ -396,7 +396,7 @@ export const voices = [
   },
   {
     voiceId: "im_nicola",
-    name: "nicola",
+    name: "Nicola",
     lang: "it",
     gender: "Male",
     targetQuality: "B",
@@ -404,7 +404,7 @@ export const voices = [
   },
   {
     voiceId: "pf_dora",
-    name: "dora",
+    name: "Dora",
     lang: "pt-br",
     gender: "Female",
     targetQuality: "C",
@@ -412,7 +412,7 @@ export const voices = [
   },
   {
     voiceId: "pm_alex",
-    name: "alex",
+    name: "Alex",
     lang: "pt-br",
     gender: "Male",
     targetQuality: "C",
@@ -420,7 +420,7 @@ export const voices = [
   },
   {
     voiceId: "pm_santa",
-    name: "santa",
+    name: "Santa",
     lang: "pt-br",
     gender: "Male",
     targetQuality: "C",

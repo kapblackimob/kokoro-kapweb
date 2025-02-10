@@ -1,29 +1,7 @@
 import util from "node:util";
 import child_process from "node:child_process";
+import { langsMap, type LangId } from "$lib/shared/resources";
 const exec = util.promisify(child_process.exec);
-
-// https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md
-const espeakLangs = {
-  us_english: "en-us",
-  eu_english: "en-gb",
-  la_spanish: "es-419",
-  eu_spanish: "es",
-};
-
-const langs = {
-  a: espeakLangs.us_english,
-  en: espeakLangs.us_english,
-  "en-us": espeakLangs.us_english,
-  b: espeakLangs.eu_english,
-  "en-gb": espeakLangs.eu_english,
-  "en-uk": espeakLangs.eu_english,
-  e: espeakLangs.la_spanish,
-  es: espeakLangs.la_spanish,
-  "es-la": espeakLangs.la_spanish,
-  "es-es": espeakLangs.eu_spanish,
-};
-
-export type Lang = keyof typeof langs;
 
 /**
  * phonemize converts text to phonemes and returns
@@ -38,8 +16,18 @@ export type Lang = keyof typeof langs;
  * @param lang
  * @returns
  */
-export async function phonemize(text: string, lang: Lang): Promise<string> {
-  const langCode = langs[lang] ?? espeakLangs.us_english;
+export async function phonemize(
+  text: string,
+  langId: LangId | string,
+): Promise<string> {
+  let lang = langsMap["en-us"];
+  for (const key of Object.keys(langsMap)) {
+    if (key === langId) {
+      lang = langsMap[langId as LangId];
+      break;
+    }
+  }
+
   text = normalizeText(text);
   text = text.replaceAll('"', '\\"');
 
@@ -50,7 +38,7 @@ export async function phonemize(text: string, lang: Lang): Promise<string> {
     --preserve-punctuation \
     --with-stress \
     --backend espeak \
-    --language ${langCode}
+    --language ${lang.espeakLang}
   `;
 
   const { stdout, stderr } = await exec(cmd);

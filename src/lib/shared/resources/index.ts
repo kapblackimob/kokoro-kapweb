@@ -1,5 +1,5 @@
-import type { ModelId } from "./models";
-import type { VoiceId } from "./voices";
+import { models, modelsMap, type ModelId } from "./models";
+import { voicesMap, type VoiceId } from "./voices";
 import { getFileFromUrl } from "./helpers";
 
 export * from "./models";
@@ -14,8 +14,16 @@ const downloadUrl =
  *
  * @param id The id of the model
  */
-export async function getModel(id: ModelId): Promise<ArrayBuffer> {
-  const url = `${downloadUrl}/onnx/${id}.onnx`;
+export async function getModel(id: ModelId | string): Promise<ArrayBuffer> {
+  let modelId = modelsMap["model"].modelId;
+  for (const key of Object.keys(modelsMap)) {
+    if (key === id) {
+      modelId = modelsMap[id as ModelId].modelId;
+      break;
+    }
+  }
+
+  const url = `${downloadUrl}/onnx/${modelId}.onnx`;
   return await getFileFromUrl(url);
 }
 
@@ -24,8 +32,16 @@ export async function getModel(id: ModelId): Promise<ArrayBuffer> {
  *
  * @param id The id of the voice file
  */
-export async function getVoiceFile(id: VoiceId): Promise<ArrayBuffer> {
-  const url = `${downloadUrl}/voices/${id}.bin`;
+export async function getVoiceFile(id: VoiceId | string): Promise<ArrayBuffer> {
+  let voiceId = voicesMap["af_alloy"].voiceId;
+  for (const key of Object.keys(voicesMap)) {
+    if (key === id) {
+      voiceId = voicesMap[id as VoiceId].voiceId;
+      break;
+    }
+  }
+
+  const url = `${downloadUrl}/voices/${voiceId}.bin`;
   return await getFileFromUrl(url);
 }
 
@@ -37,7 +53,9 @@ export async function getVoiceFile(id: VoiceId): Promise<ArrayBuffer> {
  *
  * @param id The id of the voice file
  */
-export async function getShapedVoiceFile(id: VoiceId): Promise<number[][][]> {
+export async function getShapedVoiceFile(
+  id: VoiceId | string,
+): Promise<number[][][]> {
   const voice = await getVoiceFile(id);
   const voiceArray = new Float32Array(voice);
   const voiceArrayLen = voiceArray.length;

@@ -14,7 +14,7 @@ export interface Lang {
 
 export type LangId = (typeof langsIds)[number];
 
-export const langsIds = [...new Set(voices.map((voice) => voice.language))];
+export const langsIds = [...new Set(voices.map((voice) => voice.lang))];
 
 export const langs: Lang[] = [...langsIds].map((lang) => {
   switch (lang) {

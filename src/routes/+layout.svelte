@@ -5,7 +5,7 @@
 </script>
 
 <div
-  class="bg-base-200 h-screen w-screen overflow-x-hidden overflow-y-auto md:px-4"
+  class="bg-base-200 h-screen w-screen overflow-x-hidden overflow-y-auto md:px-4 md:pb-4"
 >
   <header
     class="

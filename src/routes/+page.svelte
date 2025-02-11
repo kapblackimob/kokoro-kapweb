@@ -5,29 +5,19 @@
   import { generateVoice } from "$lib/client/kokoro";
   import { tokenize } from "$lib/client/kokoro/tokenizer";
   import { detectWebGPU } from "$lib/client/utils";
-  import {
-    langs,
-    langsMap,
-    models,
-    modelsMap,
-    voices,
-    voicesMap,
-  } from "$lib/shared/resources";
+  import { langs, langsMap, models, modelsMap } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/selectControl.svelte";
   import TextareaControl from "$lib/client/components/textareaControl.svelte";
   import RangeControl from "$lib/client/components/rangeControl.svelte";
+  import VoicePicker from "./voicePicker.svelte";
+  import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].langId);
-  let voice = $state(voicesMap.af_alloy.voiceId);
+  let voices = $state([] as VoiceWeight[]);
   let model = $state(modelsMap.model.modelId);
   let speed = $state(1);
   let webgpu = $state(false);
-
-  let langVoices = $derived(voices.filter((vo) => vo.lang === lang));
-  $effect(() => {
-    voice = langVoices[0].voiceId;
-  });
 
   let webgpuSupported = $state(false);
   let webgpuHelpText = $state("This will use the CPU to run the model.");
@@ -58,7 +48,7 @@
       const waveform = await generateVoice({
         text: text,
         lang: lang,
-        voice: voice,
+        voices: voices,
         model: model,
         speed: speed,
         webgpu: webgpu,
@@ -110,11 +100,7 @@
     {/each}
   </SelectControl>
 
-  <SelectControl bind:value={voice} title="Voice" selectClass="w-full">
-    {#each langVoices as vo}
-      <option value={vo.voiceId}>{vo.name}</option>
-    {/each}
-  </SelectControl>
+  <VoicePicker {lang} onchange={(vws) => (voices = vws)} />
 </div>
 
 <TextareaControl

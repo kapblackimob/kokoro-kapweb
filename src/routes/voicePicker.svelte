@@ -10,91 +10,120 @@
   import { voices, type Voice, type VoiceId } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
 
+  // Component mode: "simple" for a single selection, "advanced" for multiple with weights.
   let mode = $state("simple");
+  function toggleMode() {
+    mode = mode === "simple" ? "advanced" : "simple";
+  }
 
+  // Simple mode selection: a single voice (weight always 1)
   let simpleSelection = $state("");
   $effect(() => {
     if (mode === "simple") {
-      const sv = [
-        {
-          voiceId: simpleSelection,
-          weight: 1,
-        },
-      ];
-      onchange(sv);
+      onchange([{ voiceId: simpleSelection, weight: 1 }]);
     }
   });
 
-  let advancedSelections = $state({});
+  // Advanced mode selections: mapping voiceId to its weight.
+  let advancedSelections = $state<Record<string, number>>({});
 
+  // Filter voices by the selected language.
   let langVoices = $derived(voices.filter((vo) => vo.lang === lang));
+
+  // Reset selections when the language changes.
   $effect(() => {
-    // Every time the lang changes, we reset to the first voice
-    // and the simple mode
     advancedSelections = {};
-    simpleSelection = langVoices[0].voiceId;
+    simpleSelection = langVoices[0]?.voiceId ?? "";
     mode = "simple";
   });
+
+  // Update onchange callback when in advanced mode.
+  $effect(() => {
+    if (mode === "advanced") {
+      const selections: VoiceWeight[] = Object.entries(advancedSelections).map(
+        ([voiceId, weight]) => ({ voiceId, weight }),
+      );
+      onchange(selections);
+    }
+  });
+
+  // Toggle a voice in advanced mode.
+  function toggleVoice(voiceId: VoiceId | string) {
+    const checked = advancedSelections[voiceId] === undefined;
+
+    if (checked) {
+      // Add voice with a default weight of 0.5.
+      if (advancedSelections[voiceId] === undefined) {
+        advancedSelections = { ...advancedSelections, [voiceId]: 0.5 };
+      }
+    } else {
+      // Remove voice from selections.
+      const { [voiceId]: removed, ...rest } = advancedSelections;
+      advancedSelections = rest;
+    }
+  }
+
+  // Update the weight for a given voice.
+  function updateWeight(voiceId: VoiceId | string, newWeight: number) {
+    advancedSelections = {
+      ...advancedSelections,
+      [voiceId]: Math.min(newWeight, 1),
+    };
+  }
 </script>
 
-<div class="voice-picker">
-  <!-- Mode Selector -->
-  <div class="mode-switch">
-    <label>
-      <input type="radio" bind:group={mode} value="simple" /> Simple
-    </label>
-    <label>
-      <input type="radio" bind:group={mode} value="advanced" /> Advanced
+<div>
+  <div class="flex items-center justify-between">
+    <span>Voice</span>
+
+    <label class="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        class="toggle"
+        checked={mode == "advanced"}
+        onclick={toggleMode}
+      />
+      <span>Advanced Mode</span>
     </label>
   </div>
 
   {#if mode === "simple"}
-    <!-- Simple Mode: Single voice selector -->
-    <SelectControl
-      bind:value={simpleSelection}
-      title="Select Voice"
-      selectClass="w-full"
-    >
+    <SelectControl bind:value={simpleSelection} selectClass="w-full mt-[5px]">
       {#each langVoices as vo}
         <option value={vo.voiceId}>{vo.name}</option>
       {/each}
     </SelectControl>
   {:else}
-    <!-- Advanced Mode: Multiple voice selector with weight adjustments -->
-    <div class="advanced-mode">
+    <div
+      class="rounded-box border-base-300 mt-[10px] grid grid-cols-1 space-y-2 border p-4 md:grid-cols-2 md:gap-2"
+    >
       {#each langVoices as vo}
-        <div class="voice-item flex items-center space-x-2">
-          <input type="checkbox" id={vo.voiceId} />
-          <label for={vo.voiceId} class="flex-1">{vo.name}</label>
-          <!-- {#if vo.enabled}
-            <RangeControl
-              bind:value={advancedSelections[vo.voiceId]}
-              title="Weight"
-              min="0"
-              max="1"
-              step="0.01"
-              on:change={(e) => updateWeight(vo.voiceId, e.detail)}
+        <div>
+          <label class="flex items-center space-x-1">
+            <input
+              type="checkbox"
+              checked={advancedSelections[vo.voiceId] !== undefined}
+              class="checkbox"
+              onclick={() => toggleVoice(vo.voiceId)}
             />
-          {/if} -->
+            <span>
+              {vo.name}
+            </span>
+          </label>
+
+          <RangeControl
+            bind:value={advancedSelections[vo.voiceId]}
+            disabled={advancedSelections[vo.voiceId] === undefined}
+            title={advancedSelections[vo.voiceId]
+              ? `Weight ${advancedSelections[vo.voiceId] * 100}%`
+              : "Weight"}
+            hideValue={true}
+            min="0"
+            max="1"
+            step="0.1"
+          />
         </div>
       {/each}
     </div>
   {/if}
 </div>
-
-<style>
-  .voice-picker {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1rem;
-  }
-  .mode-switch {
-    margin-bottom: 1rem;
-  }
-  .mode-switch label {
-    margin-right: 1rem;
-  }
-  .advanced-mode .voice-item {
-    margin-bottom: 0.5rem;
-  }
-</style>

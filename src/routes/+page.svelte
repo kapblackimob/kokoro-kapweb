@@ -144,7 +144,7 @@
     <h2 class="text-xl font-bold">Output</h2>
 
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div class="bg-base-100 border-base-300 collapse border">
+      <div class="bg-base-100 border-base-content/20 collapse border">
         <input type="checkbox" />
         <div class="collapse-title font-semibold">+ Phonemes & tokens</div>
         <div class="collapse-content">

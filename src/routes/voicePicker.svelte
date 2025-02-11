@@ -87,7 +87,7 @@
     </SelectControl>
   {:else}
     <div
-      class="rounded-box border-base-300 mt-[10px] grid grid-cols-1 space-y-2 border p-4 md:grid-cols-2 md:gap-2"
+      class="rounded-box border-base-content/20 mt-[10px] grid grid-cols-1 space-y-2 border p-4 md:grid-cols-2 md:gap-2"
     >
       {#each langVoices as vo}
         <div>

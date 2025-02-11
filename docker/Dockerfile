@@ -34,3 +34,12 @@ RUN rm -rf /app/temp
 ##############
 # START HERE #
 ##############
+
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+CMD ["node", "./build/index.js "]

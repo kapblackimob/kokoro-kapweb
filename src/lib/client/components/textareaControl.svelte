@@ -1,13 +1,23 @@
-<script>
+<script lang="ts">
+  interface Props {
+    title?: string;
+    titleClass?: string;
+    helpText?: string;
+    helpTextClass?: string;
+    textareaClass?: string;
+    value?: number;
+    [key: string]: unknown;
+  }
+
   let {
     title = "",
-    helpText = "",
     titleClass = "",
-    textareaClass = "",
+    helpText = "",
     helpTextClass = "",
+    textareaClass = "",
     value = $bindable(),
     ...others
-  } = $props();
+  }: Props = $props();
 </script>
 
 <fieldset class="fieldset">

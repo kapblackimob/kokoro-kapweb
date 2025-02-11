@@ -1,13 +1,23 @@
-<script>
+<script lang="ts">
+  interface Props {
+    title?: string;
+    titleClass?: string;
+    inputClass?: string;
+    helpText?: string;
+    helpTextClass?: string;
+    value?: number;
+    [key: string]: unknown;
+  }
+
   let {
-    title = "",
-    titleClass = "",
-    inputClass = "",
-    helpText = "",
-    helpTextClass = "",
+    title,
+    titleClass,
+    inputClass,
+    helpText,
+    helpTextClass,
     value = $bindable(),
     ...others
-  } = $props();
+  }: Props = $props();
 
   let titleValue = $derived.by(() => {
     if (!title) return value;

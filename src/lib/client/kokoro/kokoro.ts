@@ -4,6 +4,7 @@ import type { LangId, ModelId, VoiceId } from "$lib/shared/resources";
 import { tokenize } from "./tokenizer";
 import { apiClient } from "$lib/client/apiClient";
 import { detectWebGPU } from "$lib/client/utils";
+import { combineVoices, type VoiceWeight } from "./combineVoices";
 
 // This should match the version of onnxruntime-web in the package.json
 ort.env.wasm.wasmPaths =
@@ -16,11 +17,13 @@ const MODEL_CONTEXT_WINDOW = 512;
  *
  * If the text is longer than the context window, it will be generated in chunks
  * and then concatenated.
+ *
+ * It receives an array of voices with their respective weights to be combined.
  */
 export async function generateVoice(params: {
   text: string;
   lang: LangId | string;
-  voice: VoiceId | string;
+  voices: VoiceWeight[];
   model: ModelId | string;
   speed: number;
   webgpu: boolean;
@@ -44,7 +47,7 @@ export async function generateVoice(params: {
   }
 
   const modelBuffer = await getModel(params.model);
-  const shapedVoice = await getShapedVoiceFile(params.voice);
+  const combinedVoice = await combineVoices(params.voices);
 
   let sessionOpts: ort.InferenceSession.SessionOptions = {};
   if (params.webgpu) {
@@ -58,7 +61,7 @@ export async function generateVoice(params: {
   const waveforms: Float32Array[] = [];
   let waveformsLen = 0;
   for await (const chunk of chunks) {
-    const ref_s = shapedVoice[chunk.length - 1][0];
+    const ref_s = combinedVoice[chunk.length - 1][0];
     const paddedTokens = [0, ...chunk, 0];
 
     const input_ids = new ort.Tensor("int64", paddedTokens, [

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as wavefile from "wavefile";
+  import { WandSparkles, Loader } from "lucide-svelte";
   import { apiClient } from "$lib/client/apiClient";
   import { generateVoice } from "$lib/client/kokoro";
   import { tokenize } from "$lib/client/kokoro/tokenizer";
@@ -71,71 +72,95 @@
   };
 </script>
 
-<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-  <SelectControl
-    bind:value={webgpu}
-    title="Acceleration"
-    helpText={webgpuHelpText}
-    selectClass="w-full"
-  >
-    <option value={false}>CPU</option>
-    {#if webgpuSupported}
-      <option value={true}>WebGPU</option>
-    {:else}
-      <option disabled>WebGPU (not supported by your browser)</option>
-    {/if}
-  </SelectControl>
+<div class="space-y-4">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <SelectControl
+      bind:value={webgpu}
+      title="Acceleration"
+      helpText={webgpuHelpText}
+      selectClass="w-full"
+    >
+      <option value={false}>CPU</option>
+      {#if webgpuSupported}
+        <option value={true}>WebGPU</option>
+      {:else}
+        <option disabled>WebGPU (not supported by your browser)</option>
+      {/if}
+    </SelectControl>
 
-  <SelectControl bind:value={model} title="Model" selectClass="w-full">
-    {#each models as mo}
-      <option value={mo.modelId}>
-        {mo.size} - {mo.modelId} ({mo.quantization})
-      </option>
-    {/each}
-  </SelectControl>
+    <SelectControl bind:value={model} title="Model" selectClass="w-full">
+      {#each models as mo}
+        <option value={mo.modelId}>
+          {mo.size} - {mo.modelId} ({mo.quantization})
+        </option>
+      {/each}
+    </SelectControl>
 
-  <SelectControl bind:value={lang} title="Language" selectClass="w-full">
-    {#each langs as lng}
-      <option value={lng.langId}>{lng.name}</option>
-    {/each}
-  </SelectControl>
+    <SelectControl bind:value={lang} title="Language" selectClass="w-full">
+      {#each langs as lng}
+        <option value={lng.langId}>{lng.name}</option>
+      {/each}
+    </SelectControl>
 
-  <VoicePicker {lang} onchange={(vws) => (voices = vws)} />
-</div>
+    <VoicePicker {lang} onchange={(vws) => (voices = vws)} />
+  </div>
 
-<TextareaControl
-  bind:value={text}
-  title="Text to process"
-  textareaClass="w-full"
-/>
+  <TextareaControl
+    bind:value={text}
+    title="Text to process"
+    textareaClass="w-full"
+  />
 
-<div class="flex flex-col items-end space-y-4">
-  <div class="w-full max-w-[300px]">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <RangeControl
       bind:value={speed}
       hideValue={true}
       title={`Speed ${speed}x`}
+      inputClass="w-full max-w-[400px]"
       min="0.1"
       max="2"
       step="0.1"
     />
+
+    <div class="flex items-end">
+      <button
+        class="btn btn-primary btn-lg w-full space-x-2 text-xl"
+        onclick={() => process()}
+        disabled={loading}
+      >
+        <span>Generate Voice</span>
+        {#if loading}
+          <Loader class="animate-spin" />
+        {:else}
+          <WandSparkles />
+        {/if}
+      </button>
+    </div>
   </div>
-  <button
-    class="btn btn-primary btn-lg"
-    onclick={() => process()}
-    disabled={loading}
-  >
-    Generate Voice
-  </button>
+
+  <div class="space-y-4 pt-2">
+    <h2 class="text-xl font-bold">Output</h2>
+
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="bg-base-100 border-base-300 collapse border">
+        <input type="checkbox" />
+        <div class="collapse-title font-semibold">+ Phonemes & tokens</div>
+        <div class="collapse-content">
+          <TextareaControl
+            bind:value={phonemes}
+            title="Phonemes"
+            textareaClass="w-full"
+            readonly
+          />
+          <TextareaControl
+            bind:value={tokens}
+            title="Tokens"
+            textareaClass="w-full"
+            readonly
+          />
+        </div>
+      </div>
+      <audio class="w-full" src={voiceUrl} controls></audio>
+    </div>
+  </div>
 </div>
-
-{#if phonemes}
-  <TextareaControl bind:value={phonemes} title="Phonemes" />
-{/if}
-{#if phonemes}
-  <TextareaControl bind:value={tokens} title="Tokens" />
-{/if}
-
-{#if voiceUrl && !loading}
-  <audio class="w-full" src={voiceUrl} controls></audio>
-{/if}

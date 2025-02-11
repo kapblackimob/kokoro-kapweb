@@ -5,6 +5,7 @@
     inputClass?: string;
     helpText?: string;
     helpTextClass?: string;
+    hideValue?: boolean;
     value?: any;
     [key: string]: unknown;
   }
@@ -15,12 +16,17 @@
     inputClass,
     helpText,
     helpTextClass,
+    hideValue,
     value = $bindable(),
     ...others
   }: Props = $props();
 
   let titleValue = $derived.by(() => {
-    if (!title) return value;
+    if (!title && !value) return "";
+    if (title && hideValue) return title;
+
+    if (!title && value) return value;
+    if (title && !value) return title;
     return `${title} - ${value}`;
   });
 </script>

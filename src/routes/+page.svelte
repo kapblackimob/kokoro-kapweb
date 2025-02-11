@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as wavefile from "wavefile";
-  import { WandSparkles, Loader } from "lucide-svelte";
   import { apiClient } from "$lib/client/apiClient";
   import { generateVoice } from "$lib/client/kokoro";
   import { tokenize } from "$lib/client/kokoro/tokenizer";
@@ -12,6 +11,7 @@
   import RangeControl from "$lib/client/components/rangeControl.svelte";
   import VoicePicker from "./voicePicker.svelte";
   import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
+  import GenerateButton from "./generateButton.svelte";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].langId);
@@ -124,20 +124,7 @@
       step="0.1"
     />
 
-    <div class="flex items-end">
-      <button
-        class="btn btn-primary btn-lg w-full space-x-2 text-xl"
-        onclick={() => process()}
-        disabled={loading}
-      >
-        <span>Generate Voice</span>
-        {#if loading}
-          <Loader class="animate-spin" />
-        {:else}
-          <WandSparkles />
-        {/if}
-      </button>
-    </div>
+    <GenerateButton {loading} onclick={() => process()} />
   </div>
 
   <div class="space-y-4 pt-2">

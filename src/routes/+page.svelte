@@ -113,7 +113,8 @@
   <div class="w-full max-w-[300px]">
     <RangeControl
       bind:value={speed}
-      title="Speed"
+      hideValue={true}
+      title={`Speed ${speed}x`}
       min="0.1"
       max="2"
       step="0.1"

@@ -62,14 +62,6 @@
       advancedSelections = rest;
     }
   }
-
-  // Update the weight for a given voice.
-  function updateWeight(voiceId: VoiceId | string, newWeight: number) {
-    advancedSelections = {
-      ...advancedSelections,
-      [voiceId]: Math.min(newWeight, 1),
-    };
-  }
 </script>
 
 <div>

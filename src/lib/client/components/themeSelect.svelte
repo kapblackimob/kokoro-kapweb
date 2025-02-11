@@ -6,6 +6,7 @@
   <select data-choose-theme>
     <option value="">System 🖥️</option>
     <option value="light">Light ☀️</option>
-    <option value="dracula">Dark 🌑</option>
+    <option value="dark">Dark 🌑</option>
+    <option value="dracula">Dracula 🧛</option>
   </select>
 </label>

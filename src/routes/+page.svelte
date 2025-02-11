@@ -13,6 +13,9 @@
     voices,
     voicesMap,
   } from "$lib/shared/resources";
+  import SelectControl from "$lib/client/components/selectControl.svelte";
+  import TextareaControl from "$lib/client/components/textareaControl.svelte";
+  import RangeControl from "$lib/client/components/rangeControl.svelte";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].langId);
@@ -27,8 +30,18 @@
   });
 
   let webgpuSupported = $state(false);
+  let webgpuHelpText = $state("This will use the CPU to run the model.");
   onMount(async () => {
     webgpuSupported = await detectWebGPU();
+    webgpu = webgpuSupported;
+  });
+  $effect(() => {
+    if (webgpu) {
+      webgpuHelpText =
+        "WebGPU is faster but may not work as expected, try different models, languages and voices.";
+      return;
+    }
+    webgpuHelpText = "This will use the CPU to run the model.";
   });
 
   let loading = $state(false);
@@ -68,45 +81,74 @@
   };
 </script>
 
-<select bind:value={webgpu}>
-  <option value={false}>CPU</option>
-  <option value={true}>WebGPU</option>
-</select>
-<br />
-<select bind:value={lang}>
-  {#each langs as lng}
-    <option value={lng.langId}>{lng.name}</option>
-  {/each}
-</select>
-<br />
-<select bind:value={voice}>
-  {#each langVoices as vo}
-    <option value={vo.voiceId}>{vo.name}</option>
-  {/each}
-</select>
-<br />
-<select bind:value={model}>
-  {#each models as mo}
-    <option value={mo.modelId}>
-      {mo.size} - {mo.modelId} ({mo.quantization})
-    </option>
-  {/each}
-</select>
-<br />
-<input type="range" min="0.1" max="2" step="0.1" bind:value={speed} />
-<br />
-<textarea bind:value={text}></textarea>
-<br />
-<button onclick={() => process()} disabled={loading}>Process</button>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+  <SelectControl
+    bind:value={webgpu}
+    title="Acceleration"
+    helpText={webgpuHelpText}
+    selectClass="w-full"
+  >
+    <option value={false}>CPU</option>
+    {#if webgpuSupported}
+      <option value={true}>WebGPU</option>
+    {:else}
+      <option disabled>WebGPU (not supported by your browser)</option>
+    {/if}
+  </SelectControl>
 
-<br />
-<br />
-<textarea>{phonemes}</textarea>
-<br />
+  <SelectControl bind:value={model} title="Model" selectClass="w-full">
+    {#each models as mo}
+      <option value={mo.modelId}>
+        {mo.size} - {mo.modelId} ({mo.quantization})
+      </option>
+    {/each}
+  </SelectControl>
 
-<textarea>{JSON.stringify(tokens)}</textarea>
+  <SelectControl bind:value={lang} title="Language" selectClass="w-full">
+    {#each langs as lng}
+      <option value={lng.langId}>{lng.name}</option>
+    {/each}
+  </SelectControl>
 
-<br />
-<br />
+  <SelectControl bind:value={voice} title="Voice" selectClass="w-full">
+    {#each langVoices as vo}
+      <option value={vo.voiceId}>{vo.name}</option>
+    {/each}
+  </SelectControl>
+</div>
 
-<audio src={voiceUrl} controls></audio>
+<TextareaControl
+  bind:value={text}
+  title="Text to process"
+  textareaClass="w-full"
+/>
+
+<div class="flex flex-col items-end space-y-4">
+  <div class="w-full max-w-[300px]">
+    <RangeControl
+      bind:value={speed}
+      title="Speed"
+      min="0.1"
+      max="2"
+      step="0.1"
+    />
+  </div>
+  <button
+    class="btn btn-primary btn-lg"
+    onclick={() => process()}
+    disabled={loading}
+  >
+    Generate Voice
+  </button>
+</div>
+
+{#if phonemes}
+  <TextareaControl bind:value={phonemes} title="Phonemes" />
+{/if}
+{#if phonemes}
+  <TextareaControl bind:value={tokens} title="Tokens" />
+{/if}
+
+{#if voiceUrl && !loading}
+  <audio class="w-full" src={voiceUrl} controls></audio>
+{/if}

@@ -74,7 +74,7 @@
 
 <div>
   <div class="flex items-center justify-between">
-    <span>Voice</span>
+    <span class="text-xs font-semibold">Voice</span>
 
     <label class="flex items-center space-x-2">
       <input

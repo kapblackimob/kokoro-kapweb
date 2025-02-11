@@ -5,7 +5,7 @@
     helpText?: string;
     helpTextClass?: string;
     textareaClass?: string;
-    value?: number;
+    value?: any;
     [key: string]: unknown;
   }
 

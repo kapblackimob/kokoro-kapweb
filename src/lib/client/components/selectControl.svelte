@@ -5,7 +5,7 @@
     helpText?: string;
     helpTextClass?: string;
     selectClass?: string;
-    value?: number;
+    value?: any;
     children?: any;
     [key: string]: unknown;
   }

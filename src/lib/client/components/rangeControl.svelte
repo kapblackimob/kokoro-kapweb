@@ -5,7 +5,7 @@
     inputClass?: string;
     helpText?: string;
     helpTextClass?: string;
-    value?: number;
+    value?: any;
     [key: string]: unknown;
   }
 

@@ -20,7 +20,7 @@
   <button
     class={{
       "bg-base-300/50 rounded-field m-1 flex flex-grow cursor-pointer backdrop-blur-md": true,
-      "items-center justify-center space-x-2 text-xl": true,
+      "items-center justify-center space-x-2 px-4 py-2 text-xl": true,
       "cursor-wait": loading,
     }}
     onclick={() => onclick()}

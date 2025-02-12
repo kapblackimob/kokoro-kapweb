@@ -42,6 +42,9 @@
   let voiceUrl = $state("");
 
   const process = async () => {
+    if (loading) return;
+    if (!text) return;
+
     loading = true;
     try {
       phonemes = await apiClient.phonemize(text, "en");

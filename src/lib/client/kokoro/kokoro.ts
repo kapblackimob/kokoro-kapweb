@@ -5,6 +5,7 @@ import { tokenize } from "./tokenizer";
 import { apiClient } from "$lib/client/apiClient";
 import { detectWebGPU } from "$lib/client/utils";
 import { combineVoices, type VoiceWeight } from "./combineVoices";
+import { chunkPhonemes } from "./phonemeChunker";
 
 // This should match the version of onnxruntime-web in the package.json
 ort.env.wasm.wasmPaths =
@@ -13,10 +14,9 @@ ort.env.wasm.wasmPaths =
 const MODEL_CONTEXT_WINDOW = 512;
 
 /**
- * generateVoice generates a voice from a given text.
+ * Generates a voice from a given text.
  *
- * If the text is longer than the context window, it will be generated in chunks
- * and then concatenated.
+ * If the text exceeds the context window, it is divided into chunks and then concatenated.
  *
  * It receives an array of voices with their respective weights to be combined.
  */
@@ -32,18 +32,20 @@ export async function generateVoice(params: {
     throw new Error("WebGPU is not supported in this browser");
   }
 
+  const tokensPerChunk = MODEL_CONTEXT_WINDOW - 2;
   const phonemes = await apiClient.phonemize(params.text, params.lang);
-  const totalTokens = tokenize(phonemes);
-  const totalTokensLen = totalTokens.length;
+  const phonemeChunks = chunkPhonemes(phonemes, tokensPerChunk);
+  const tokenChunks: number[][] = phonemeChunks.map((seg) => tokenize(seg));
 
-  const tokensPerChunk = MODEL_CONTEXT_WINDOW - 2; // -2 for the start and end gaps
-  const chunksLen = Math.ceil(totalTokensLen / tokensPerChunk);
-  const chunks: number[][] = [];
-  for (let i = 0; i < chunksLen; i++) {
-    const from = i * tokensPerChunk;
-    const to = Math.min((i + 1) * tokensPerChunk, totalTokensLen);
-    const chunkTokens = totalTokens.slice(from, to);
-    chunks.push(chunkTokens);
+  for (let i = 0; i < tokenChunks.length; i++) {
+    const phonemes = phonemeChunks[i];
+    const tokens = tokenChunks[i];
+    const tokensLen = tokens.length;
+    console.log({
+      phonemes,
+      tokens,
+      tokensLen,
+    });
   }
 
   const modelBuffer = await getModel(params.model);
@@ -60,7 +62,7 @@ export async function generateVoice(params: {
 
   const waveforms: Float32Array[] = [];
   let waveformsLen = 0;
-  for await (const chunk of chunks) {
+  for await (const chunk of tokenChunks) {
     const ref_s = combinedVoice[chunk.length - 1][0];
     const paddedTokens = [0, ...chunk, 0];
 

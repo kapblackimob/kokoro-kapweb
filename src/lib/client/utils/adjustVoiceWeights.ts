@@ -1,4 +1,5 @@
-const round = (num: number): number => Math.round(num * 100) / 100;
+// Use rounding to one decimal place (steps of 0.1)
+const round = (num: number): number => Math.round(num * 10) / 10;
 
 export function adjustVoiceWeights(
   selections: Record<string, number>,
@@ -6,24 +7,25 @@ export function adjustVoiceWeights(
   newWeight: number,
 ): Record<string, number> {
   const updated = { ...selections, [changedVoiceId]: round(newWeight) };
-  const total = Object.values(updated).reduce((sum, w) => sum + w, 0);
-  if (total <= 1) return updated;
+  let total = Object.values(updated).reduce((sum, w) => sum + w, 0);
 
-  const excess = total - 1;
-  const others = Object.keys(updated).filter(
-    (key) => key !== changedVoiceId && updated[key] > 0,
-  );
-  const othersTotal = others.reduce((sum, key) => sum + updated[key], 0);
-
-  // If no other active voices, force changed weight to 1
-  if (othersTotal === 0) {
-    updated[changedVoiceId] = 1;
-    return updated;
+  // If total exceeds 1, subtract 0.1 from a random eligible voice until total <= 1.
+  if (total > 1) {
+    while (total > 1) {
+      // Get the list of other voices with at least 0.1 weight to reduce.
+      const others = Object.keys(updated).filter(
+        (key) => key !== changedVoiceId && updated[key] >= 0.1,
+      );
+      if (others.length === 0) {
+        updated[changedVoiceId] = 1;
+        break;
+      }
+      const randomIndex = Math.floor(Math.random() * others.length);
+      const key = others[randomIndex];
+      updated[key] = round(Math.max(0, updated[key] - 0.1));
+      total = Object.values(updated).reduce((sum, w) => sum + w, 0);
+    }
   }
 
-  others.forEach((key) => {
-    const reduction = (updated[key] / othersTotal) * excess;
-    updated[key] = round(Math.max(0, updated[key] - reduction));
-  });
   return updated;
 }

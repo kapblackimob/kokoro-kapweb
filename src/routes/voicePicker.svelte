@@ -85,7 +85,7 @@
   </div>
 
   {#if mode === "simple"}
-    <SelectControl bind:value={simpleSelection} selectClass="w-full mt-[5px]">
+    <SelectControl bind:value={simpleSelection} selectClass="w-full mt-[6px]">
       {#each langVoices as vo}
         <option value={vo.voiceId}>{vo.name}</option>
       {/each}

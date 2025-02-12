@@ -12,6 +12,7 @@
   import VoicePicker from "./voicePicker.svelte";
   import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
   import GenerateButton from "./generateButton.svelte";
+  import { toaster } from "$lib/client/toaster";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].langId);
@@ -65,7 +66,9 @@
       voiceUrl = url;
     } catch (error) {
       console.error(error);
-      alert((error as any).message ?? "An error occurred, see console.");
+      toaster.error(
+        (error as any).message ?? "An error occurred, see console.",
+      );
     } finally {
       loading = false;
     }

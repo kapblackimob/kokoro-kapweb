@@ -64,11 +64,11 @@
       const wavBlob = new Blob([wavBuffer], { type: "audio/wav" });
       const url = URL.createObjectURL(wavBlob);
       voiceUrl = url;
+
+      toaster.success("Audio generated successfully");
     } catch (error) {
       console.error(error);
-      toaster.error(
-        (error as any).message ?? "An error occurred, see console.",
-      );
+      toaster.error((error as any).message ?? "An error occurred, see console");
     } finally {
       loading = false;
     }

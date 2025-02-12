@@ -17,7 +17,7 @@ export async function combineVoices(
   voices: VoiceWeight[],
 ): Promise<number[][][]> {
   if (voices.length === 0) {
-    throw new Error("No voices provided for combination");
+    throw new Error("You must select at least one voice");
   }
 
   // Total weight must be <= 1
@@ -25,8 +25,10 @@ export async function combineVoices(
   for (const { weight } of voices) {
     totalWeight += weight;
   }
-  if (totalWeight > 1) {
-    throw new Error("Total voice weight cannot be greater than 1");
+  if (totalWeight !== 1) {
+    throw new Error(
+      `The sum of all voice weights must be 100%, but it is ${totalWeight * 100}%`,
+    );
   }
 
   // Load all voices concurrently

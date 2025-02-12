@@ -7,6 +7,7 @@
     helpTextClass?: string;
     hideValue?: boolean;
     value?: any;
+    oninput?: (newVal: any) => void;
     [key: string]: unknown;
   }
 
@@ -18,6 +19,7 @@
     helpTextClass,
     hideValue,
     value = $bindable(),
+    oninput,
     ...others
   }: Props = $props();
 
@@ -33,7 +35,14 @@
 
 <fieldset class="fieldset">
   <legend class="fieldset-legend {titleClass}">{titleValue}</legend>
-  <input type="range" class="range {inputClass ?? ''}" bind:value {...others} />
+  <input
+    type="range"
+    class="range {inputClass ?? ''}"
+    bind:value
+    {...others}
+    oninput={(e) =>
+      oninput && oninput((e.currentTarget as HTMLInputElement).value)}
+  />
   {#if helpText}
     <span class="fieldset-label {helpTextClass}">{helpText}</span>
   {/if}

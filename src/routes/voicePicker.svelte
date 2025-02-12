@@ -5,6 +5,7 @@
   }
   let { lang, onchange }: Props = $props();
 
+  import { adjustVoiceWeights } from "$lib/client/utils/adjustVoiceWeights";
   import SelectControl from "$lib/client/components/selectControl.svelte";
   import RangeControl from "$lib/client/components/rangeControl.svelte";
   import { voices, type Voice, type VoiceId } from "$lib/shared/resources";
@@ -47,20 +48,24 @@
     }
   });
 
-  // Toggle a voice in advanced mode.
+  // Toggle a voice in advanced mode: add with weight 0 (disabled) or remove it.
   function toggleVoice(voiceId: VoiceId | string) {
-    const checked = advancedSelections[voiceId] === undefined;
-
-    if (checked) {
-      // Add voice with a default weight of 0.5.
-      if (advancedSelections[voiceId] === undefined) {
-        advancedSelections = { ...advancedSelections, [voiceId]: 0.5 };
-      }
+    const isActive = advancedSelections[voiceId] !== undefined;
+    if (!isActive) {
+      advancedSelections = { ...advancedSelections, [voiceId]: 0 };
     } else {
-      // Remove voice from selections.
       const { [voiceId]: removed, ...rest } = advancedSelections;
       advancedSelections = rest;
     }
+  }
+
+  // Update the weight of a voice and adjust others if necessary.
+  function updateVoiceWeight(voiceId: string, newWeight: number) {
+    advancedSelections = adjustVoiceWeights(
+      advancedSelections,
+      voiceId,
+      newWeight,
+    );
   }
 </script>
 
@@ -98,21 +103,21 @@
               class="checkbox"
               onclick={() => toggleVoice(vo.voiceId)}
             />
-            <span>
-              {vo.name}
-            </span>
+            <span>{vo.name}</span>
           </label>
 
           <RangeControl
-            bind:value={advancedSelections[vo.voiceId]}
+            value={advancedSelections[vo.voiceId] ?? 0}
             disabled={advancedSelections[vo.voiceId] === undefined}
             title={advancedSelections[vo.voiceId]
-              ? `Weight ${advancedSelections[vo.voiceId] * 100}%`
+              ? `Weight ${Math.round(advancedSelections[vo.voiceId] * 100)}%`
               : "Weight"}
             hideValue={true}
             min="0"
             max="1"
             step="0.1"
+            oninput={(newValue) =>
+              updateVoiceWeight(vo.voiceId, parseFloat(newValue))}
           />
         </div>
       {/each}

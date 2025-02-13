@@ -53,7 +53,7 @@ export async function generateVoice(params: {
 
   // Process each chunk based on its type.
   for (const chunk of chunks) {
-    // Keep this log for debugging purposes.
+    // Debug log.
     console.log(chunk);
 
     if (chunk.type === "silence") {

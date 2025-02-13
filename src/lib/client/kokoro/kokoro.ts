@@ -11,6 +11,17 @@ ort.env.wasm.wasmPaths =
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
+const TRIM_SECONDS = 0.35; // seconds to trim from the beginning and end of each waveform
+
+/**
+ * Trims a Float32Array waveform by removing some samples from the beginning and end.
+ */
+function trimWaveform(waveform: Float32Array): Float32Array {
+  const trimSamples = Math.floor(TRIM_SECONDS * SAMPLE_RATE);
+  // Ensure we don't trim more than available
+  if (waveform.length <= trimSamples * 2) return waveform;
+  return waveform.subarray(trimSamples, waveform.length - trimSamples);
+}
 
 /**
  * Generates a voice from a given text.
@@ -53,8 +64,7 @@ export async function generateVoice(params: {
 
   // Process each chunk based on its type.
   for (const chunk of chunks) {
-    // Debug log.
-    console.log(chunk);
+    console.log(chunk); // Debug log.
 
     if (chunk.type === "silence") {
       const silenceLength = Math.floor(chunk.durationSeconds * SAMPLE_RATE);
@@ -74,9 +84,12 @@ export async function generateVoice(params: {
       const style = new ort.Tensor("float32", ref_s, [1, ref_s.length]);
       const speed = new ort.Tensor("float32", [params.speed], [1]);
 
+      // Get the raw waveform and trim extra silence duration.
       const result = await session.run({ input_ids, style, speed });
-      const waveform = await result.waveform.getData();
-      waveforms.push(waveform as Float32Array);
+      let waveform = (await result.waveform.getData()) as Float32Array;
+      waveform = trimWaveform(waveform);
+
+      waveforms.push(waveform);
       waveformsLen += waveform.length;
     }
   }

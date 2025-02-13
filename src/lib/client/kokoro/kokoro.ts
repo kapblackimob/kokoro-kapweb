@@ -1,24 +1,26 @@
 import * as ort from "onnxruntime-web/webgpu";
-import { getModel, getShapedVoiceFile } from "$lib/shared/resources";
-import type { LangId, ModelId, VoiceId } from "$lib/shared/resources";
-import { tokenize } from "./tokenizer";
-import { apiClient } from "$lib/client/apiClient";
+import { getModel } from "$lib/shared/resources";
+import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
 import { combineVoices, type VoiceWeight } from "./combineVoices";
-import { chunkPhonemes } from "./phonemeChunker";
+import { preprocessText, type TextProcessorChunk } from "./textProcessor";
 
 // This should match the version of onnxruntime-web in the package.json
 ort.env.wasm.wasmPaths =
   "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0-dev.20250206-d981b153d3/dist/";
 
 const MODEL_CONTEXT_WINDOW = 512;
+const SAMPLE_RATE = 24000; // sample rate in Hz
 
 /**
  * Generates a voice from a given text.
  *
- * If the text exceeds the context window, it is divided into chunks and then concatenated.
+ * The raw text is preprocessed so that silence markers are detected before phonemization.
+ * For text segments the phonemizer is called, then punctuation splitting and token generation are applied.
+ * Silence chunks produce silent waveforms.
  *
- * It receives an array of voices with their respective weights to be combined.
+ * @param params - Generation parameters.
+ * @returns Concatenated waveform.
  */
 export async function generateVoice(params: {
   text: string;
@@ -33,55 +35,50 @@ export async function generateVoice(params: {
   }
 
   const tokensPerChunk = MODEL_CONTEXT_WINDOW - 2;
-  const phonemes = await apiClient.phonemize(params.text, params.lang);
-  const phonemeChunks = chunkPhonemes(phonemes, tokensPerChunk);
-  const tokenChunks: number[][] = phonemeChunks.map((seg) => tokenize(seg));
-
-  for (let i = 0; i < tokenChunks.length; i++) {
-    const phonemes = phonemeChunks[i];
-    const tokens = tokenChunks[i];
-    const tokensLen = tokens.length;
-    console.log({
-      phonemes,
-      tokens,
-      tokensLen,
-    });
-  }
+  const chunks: TextProcessorChunk[] = await preprocessText(
+    params.text,
+    params.lang,
+    tokensPerChunk,
+  );
 
   const modelBuffer = await getModel(params.model);
   const combinedVoice = await combineVoices(params.voices);
 
   let sessionOpts: ort.InferenceSession.SessionOptions = {};
-  if (params.webgpu) {
-    sessionOpts = {
-      executionProviders: ["webgpu"],
-    };
-  }
-
+  if (params.webgpu) sessionOpts = { executionProviders: ["webgpu"] };
   const session = await ort.InferenceSession.create(modelBuffer, sessionOpts);
 
   const waveforms: Float32Array[] = [];
   let waveformsLen = 0;
-  for await (const chunk of tokenChunks) {
-    const ref_s = combinedVoice[chunk.length - 1][0];
-    const paddedTokens = [0, ...chunk, 0];
 
-    const input_ids = new ort.Tensor("int64", paddedTokens, [
-      1,
-      paddedTokens.length,
-    ]);
-    const style = new ort.Tensor("float32", ref_s, [1, ref_s.length]);
-    const speed = new ort.Tensor("float32", [params.speed], [1]);
+  // Process each chunk based on its type.
+  for (const chunk of chunks) {
+    // Keep this log for debugging purposes.
+    console.log(chunk);
 
-    const result = await session.run({
-      input_ids,
-      style,
-      speed,
-    });
+    if (chunk.type === "silence") {
+      const silenceLength = Math.floor(chunk.durationSeconds * SAMPLE_RATE);
+      const silenceWave = new Float32Array(silenceLength);
+      waveforms.push(silenceWave);
+      waveformsLen += silenceLength;
+    }
 
-    const waveform = await result.waveform.getData();
-    waveforms.push(waveform as Float32Array);
-    waveformsLen += waveform.length;
+    if (chunk.type === "text") {
+      const tokens = chunk.tokens;
+      const ref_s = combinedVoice[tokens.length - 1][0];
+      const paddedTokens = [0, ...tokens, 0];
+      const input_ids = new ort.Tensor("int64", paddedTokens, [
+        1,
+        paddedTokens.length,
+      ]);
+      const style = new ort.Tensor("float32", ref_s, [1, ref_s.length]);
+      const speed = new ort.Tensor("float32", [params.speed], [1]);
+
+      const result = await session.run({ input_ids, style, speed });
+      const waveform = await result.waveform.getData();
+      waveforms.push(waveform as Float32Array);
+      waveformsLen += waveform.length;
+    }
   }
 
   const finalWaveform = new Float32Array(waveformsLen);

@@ -4,6 +4,7 @@ import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
 import { combineVoices, type VoiceWeight } from "./combineVoices";
 import { preprocessText, type TextProcessorChunk } from "./textProcessor";
+import { trimWaveform } from "./trimWaveform";
 
 // This should match the version of onnxruntime-web in the package.json
 ort.env.wasm.wasmPaths =
@@ -11,17 +12,6 @@ ort.env.wasm.wasmPaths =
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
-const TRIM_SECONDS = 0.35; // seconds to trim from the beginning and end of each waveform
-
-/**
- * Trims a Float32Array waveform by removing some samples from the beginning and end.
- */
-function trimWaveform(waveform: Float32Array): Float32Array {
-  const trimSamples = Math.floor(TRIM_SECONDS * SAMPLE_RATE);
-  // Ensure we don't trim more than available
-  if (waveform.length <= trimSamples * 2) return waveform;
-  return waveform.subarray(trimSamples, waveform.length - trimSamples);
-}
 
 /**
  * Generates a voice from a given text.

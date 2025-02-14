@@ -1,14 +1,14 @@
 import ESpeakNg from "espeak-ng";
 import { langsMap, type LangId } from "$lib/shared/resources";
 
+const ESPEAK_NG_WASM_URL =
+  "https://cdn.jsdelivr.net/npm/espeak-ng@1.0.2/dist/espeak-ng.wasm";
+
 /**
  * phonemize converts text to phonemes and returns
  * the phonemized text in the specified language.
  *
- * it uses python phonemizer and espeak-ng backend
- * to generate the phonemes.
- *
- * https://bootphon.github.io/phonemizer/cli.html
+ * it uses espeak-ng to generate the phonemes.
  *
  * @param text
  * @param lang
@@ -30,6 +30,7 @@ export async function phonemize(
   text = text.replaceAll('"', '\\"');
 
   const espeak = await ESpeakNg({
+    locateFile: (_: string) => ESPEAK_NG_WASM_URL,
     arguments: [
       "--phonout",
       "generated",

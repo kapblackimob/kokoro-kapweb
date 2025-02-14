@@ -72,7 +72,9 @@ export async function generateVoice(params: {
         paddedTokens.length,
       ]);
       const style = new ort.Tensor("float32", ref_s, [1, ref_s.length]);
-      const speed = new ort.Tensor("float32", [params.speed], [1]);
+      // Fixed speed because speed should be implemented as post-processing
+      // instead of being a model input to get better results.
+      const speed = new ort.Tensor("float32", [1], [1]);
 
       // Get the raw waveform and trim extra silence duration.
       const result = await session.run({ input_ids, style, speed });

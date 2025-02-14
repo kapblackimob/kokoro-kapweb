@@ -8,10 +8,8 @@ import {
 } from "./textProcessor";
 
 // Stub for apiClient.phonemize: returns UPPERCASE text to simulate processing.
-vi.mock("$lib/client/apiClient", () => ({
-  apiClient: {
-    phonemize: async (text: string, _: string) => text.toUpperCase(),
-  },
+vi.mock("$lib/shared/phonemizer", () => ({
+  phonemize: async (text: string, _: string) => text.toUpperCase(),
 }));
 
 // Test for sanitization stage

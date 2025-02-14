@@ -1,3 +1,4 @@
+//@ts-ignore
 import ESpeakNg from "espeak-ng";
 import { langsMap, type LangId } from "$lib/shared/resources";
 

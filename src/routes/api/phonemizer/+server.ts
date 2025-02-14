@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { phonemize } from "$lib/server/phonemizer";
+import { phonemize } from "$lib/shared/phonemizer";
 
 export const GET: RequestHandler = async ({ url }) => {
   const text = url.searchParams.get("text");

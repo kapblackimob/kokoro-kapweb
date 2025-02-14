@@ -1,7 +1,5 @@
-import util from "node:util";
-import child_process from "node:child_process";
+import ESpeakNg from "espeak-ng";
 import { langsMap, type LangId } from "$lib/shared/resources";
-const exec = util.promisify(child_process.exec);
 
 /**
  * phonemize converts text to phonemes and returns
@@ -31,20 +29,20 @@ export async function phonemize(
   text = normalizeText(text);
   text = text.replaceAll('"', '\\"');
 
-  const cmd = `
-    echo "${text}" | \
-    /usr/local/bin/phonemize \
-    --quiet \
-    --preserve-punctuation \
-    --with-stress \
-    --backend espeak \
-    --language ${lang.espeakLang}
-  `;
+  const espeak = await ESpeakNg({
+    arguments: [
+      "--phonout",
+      "generated",
+      "-q",
+      `--ipa`,
+      "-v",
+      lang.espeakLang,
+      text,
+    ],
+  });
 
-  const { stdout, stderr } = await exec(cmd);
-  if (stderr) throw new Error(stderr);
-
-  return stdout.split("\n").join(" ").trim();
+  const generated = espeak.FS.readFile("generated", { encoding: "utf8" });
+  return generated.split("\n").join(" ").trim();
 }
 
 /**

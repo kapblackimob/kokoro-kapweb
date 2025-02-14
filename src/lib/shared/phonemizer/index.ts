@@ -1,5 +1,6 @@
 //@ts-ignore
 import ESpeakNg from "espeak-ng";
+import { browser } from "$app/environment";
 import { langsMap, type LangId } from "$lib/shared/resources";
 
 const ESPEAK_NG_WASM_URL =
@@ -30,18 +31,28 @@ export async function phonemize(
   text = normalizeText(text);
   text = text.replaceAll('"', '\\"');
 
-  const espeak = await ESpeakNg({
-    locateFile: (_: string) => ESPEAK_NG_WASM_URL,
-    arguments: [
-      "--phonout",
-      "generated",
-      "-q",
-      `--ipa`,
-      "-v",
-      lang.espeakLang,
-      text,
-    ],
-  });
+  const espeakArgs = [
+    "--phonout",
+    "generated",
+    "-q",
+    `--ipa`,
+    "-v",
+    lang.espeakLang,
+    text,
+  ];
+
+  // Load espeak-ng WASM module from CDN only in client-side
+  let espeak: any;
+  if (browser) {
+    espeak = await ESpeakNg({
+      locateFile: (_: string) => ESPEAK_NG_WASM_URL,
+      arguments: espeakArgs,
+    });
+  } else {
+    espeak = await ESpeakNg({
+      arguments: espeakArgs,
+    });
+  }
 
   const generated = espeak.FS.readFile("generated", { encoding: "utf8" });
   return generated.split("\n").join(" ").trim();

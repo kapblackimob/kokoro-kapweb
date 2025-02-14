@@ -16,16 +16,12 @@ WORKDIR /app/temp
 # Install debian packages
 RUN apt update && \
     apt install -y \
-        wget zip unzip p7zip-full tzdata git python3 python3-pip \
-        npm ffmpeg espeak-ng && \
+        wget zip unzip p7zip-full tzdata git npm python3 python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Node.js
 RUN npm install --global n@latest && \
     n v22
-
-# Install python packages
-RUN pip install phonemizer --break-system-packages
 
 # Go to the app dir, delete the temporary dir and create backups dir
 WORKDIR /app

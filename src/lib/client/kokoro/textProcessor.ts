@@ -1,6 +1,6 @@
 import { tokenize } from "./tokenizer";
-import { apiClient } from "$lib/client/apiClient";
 import type { LangId } from "$lib/shared/resources";
+import { phonemize } from "$lib/shared/phonemizer";
 
 export interface TextChunk {
   type: "text";
@@ -99,7 +99,7 @@ export async function preprocessText(
       continue;
     }
 
-    const phonemized = await apiClient.phonemize(segment, lang);
+    const phonemized = await phonemize(segment, lang);
     const phonemizedChunks = createPhonemeSubChunks(phonemized, tokensPerChunk);
 
     for (const phonemeChunk of phonemizedChunks) {

@@ -1,9 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as wavefile from "wavefile";
-  import { apiClient } from "$lib/client/apiClient";
   import { generateVoice } from "$lib/client/kokoro";
-  import { tokenize } from "$lib/client/kokoro/tokenizer";
   import { detectWebGPU } from "$lib/client/utils";
   import { langs, langsMap, models, modelsMap } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/selectControl.svelte";
@@ -37,19 +35,13 @@
   });
 
   let loading = $state(false);
-  let phonemes = $state("");
-  let tokens = $state([] as number[]);
   let voiceUrl = $state("");
-
   const process = async () => {
     if (loading) return;
     if (!text) return;
 
     loading = true;
     try {
-      phonemes = await apiClient.phonemize(text, "en");
-      tokens = tokenize(text);
-
       const waveform = await generateVoice({
         text: text,
         lang: lang,
@@ -136,26 +128,6 @@
   <div class="space-y-4 pt-2">
     <h2 class="text-xl font-bold">Output</h2>
 
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div class="bg-base-100 border-base-content/20 collapse border">
-        <input type="checkbox" />
-        <div class="collapse-title font-semibold">+ Phonemes & tokens</div>
-        <div class="collapse-content">
-          <TextareaControl
-            bind:value={phonemes}
-            title="Phonemes"
-            textareaClass="w-full"
-            readonly
-          />
-          <TextareaControl
-            bind:value={tokens}
-            title="Tokens"
-            textareaClass="w-full"
-            readonly
-          />
-        </div>
-      </div>
-      <audio class="w-full" src={voiceUrl} controls></audio>
-    </div>
+    <audio class="w-full" src={voiceUrl} controls></audio>
   </div>
 </div>

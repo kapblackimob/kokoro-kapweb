@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import * as wavefile from "wavefile";
-  import { generateVoice } from "$lib/client/kokoro";
+  import { generateVoice } from "$lib/shared/kokoro";
+  import type { VoiceWeight } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
   import { langs, langsMap, models, modelsMap } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/selectControl.svelte";
   import TextareaControl from "$lib/client/components/textareaControl.svelte";
   import RangeControl from "$lib/client/components/rangeControl.svelte";
   import VoicePicker from "./voicePicker.svelte";
-  import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
   import GenerateButton from "./generateButton.svelte";
   import { toaster } from "$lib/client/toaster";
 

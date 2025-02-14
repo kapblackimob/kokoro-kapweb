@@ -1,14 +1,10 @@
-import * as ort from "onnxruntime-web/webgpu";
 import { getModel } from "$lib/shared/resources";
 import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
 import { combineVoices, type VoiceWeight } from "./combineVoices";
 import { preprocessText, type TextProcessorChunk } from "./textProcessor";
 import { trimWaveform } from "./trimWaveform";
-
-// This should match the version of onnxruntime-web in the package.json
-ort.env.wasm.wasmPaths =
-  "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0-dev.20250206-d981b153d3/dist/";
+import { getOnnxRuntime } from "./getOnnxRuntime";
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
@@ -31,8 +27,10 @@ export async function generateVoice(params: {
   speed: number;
   webgpu: boolean;
 }): Promise<Float32Array> {
+  const ort = await getOnnxRuntime();
+
   if (params.webgpu && !detectWebGPU()) {
-    throw new Error("WebGPU is not supported in this browser");
+    throw new Error("WebGPU is not supported in this environment");
   }
 
   const tokensPerChunk = MODEL_CONTEXT_WINDOW - 2;
@@ -45,7 +43,7 @@ export async function generateVoice(params: {
   const modelBuffer = await getModel(params.model);
   const combinedVoice = await combineVoices(params.voices);
 
-  let sessionOpts: ort.InferenceSession.SessionOptions = {};
+  let sessionOpts = {};
   if (params.webgpu) sessionOpts = { executionProviders: ["webgpu"] };
   const session = await ort.InferenceSession.create(modelBuffer, sessionOpts);
 

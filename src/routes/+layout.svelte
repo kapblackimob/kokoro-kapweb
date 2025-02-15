@@ -17,9 +17,10 @@
         <img
           src="/logo.png"
           alt="Kokoro Web Logo"
-          class="size-[50px] rounded-full shadow-sm"
+          class="size-[40px] rounded-full shadow-sm md:size-[50px]"
         />
-        <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
+        <h1 class="hidden text-3xl font-bold md:inline">Kokoro Web</h1>
+        <h1 class="inline text-3xl font-bold md:hidden">KW</h1>
       </div>
       <nav>
         <ThemeSelect />

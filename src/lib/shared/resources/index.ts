@@ -15,10 +15,10 @@ const downloadUrl =
  * @param id The id of the model
  */
 export async function getModel(id: ModelId | string): Promise<ArrayBuffer> {
-  let modelId = modelsMap["model"].modelId;
+  let modelId = modelsMap["model"].id;
   for (const key of Object.keys(modelsMap)) {
     if (key === id) {
-      modelId = modelsMap[id as ModelId].modelId;
+      modelId = modelsMap[id as ModelId].id;
       break;
     }
   }
@@ -33,10 +33,10 @@ export async function getModel(id: ModelId | string): Promise<ArrayBuffer> {
  * @param id The id of the voice file
  */
 export async function getVoiceFile(id: VoiceId | string): Promise<ArrayBuffer> {
-  let voiceId = voicesMap["af_alloy"].voiceId;
+  let voiceId = voicesMap["af_alloy"].id;
   for (const key of Object.keys(voicesMap)) {
     if (key === id) {
-      voiceId = voicesMap[id as VoiceId].voiceId;
+      voiceId = voicesMap[id as VoiceId].id;
       break;
     }
   }

@@ -49,15 +49,6 @@ import {
  *     responses:
  *       200:
  *         description: Audio file with the synthesized speech
- *         content:
- *           audio/wav:
- *             schema:
- *               type: string
- *               format: binary
- *           audio/mp3:
- *             schema:
- *               type: string
- *               format: binary
  *       400:
  *         description: Validation error
  *         content:

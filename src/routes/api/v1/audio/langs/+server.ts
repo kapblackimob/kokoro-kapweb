@@ -11,7 +11,7 @@ import { langs } from "$lib/shared/resources";
  * @apiSuccess {String} langs.id Language ID
  * @apiSuccess {String} langs.name Language name
  *
- * @apiSuccessExample {Object[]} Success-Response:
+ * @apiSuccessExample {json} Success-Response:
  *   [
  *     {
  *       "id": "en",

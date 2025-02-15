@@ -17,7 +17,7 @@ import { voices } from "$lib/shared/resources";
  * @apiSuccess {String} voices.lang.id Language ID
  * @apiSuccess {String} voices.lang.name Language name
  *
- * @apiSuccessExample {Object[]} Success-Response:
+ * @apiSuccessExample {json} Success-Response:
  *   [
  *     {
  *       "id": "af_heart",

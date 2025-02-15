@@ -12,7 +12,7 @@ import { models } from "$lib/shared/resources";
  * @apiSuccess {String} models.quantization Model quantization type
  * @apiSuccess {String} models.size Model size in MB
  *
- * @apiSuccessExample {Object[]} Success-Response:
+ * @apiSuccessExample {json} Success-Response:
  *   [
  *     {
  *       "id": "model",

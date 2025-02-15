@@ -91,6 +91,7 @@
     "/api/v1/audio/speech": {
       "post": {
         "summary": "Generate audio from the input text",
+        "description": "This endpoint is compatible with the OpenAI API.\n\nPython Example:\n\n    from pathlib import Path\n    from openai import OpenAI\n\n    client = OpenAI(\n        base_url=\"http://localhost:5173/api/v1\",\n        api_key=\"no-key\",\n    )\n\n    speech_file_path = Path(__file__).parent / \"speech.mp3\"\n    response = client.audio.speech.create(\n        model=\"model_q8f16\",\n        voice=\"af_heart\",\n        input=\"Today is a wonderful day to build something people love!\",\n    )\n\n    response.stream_to_file(speech_file_path)\n\nJavaScript Example:\n\n    import fs from \"fs\";\n    import path from \"path\";\n    import OpenAI from \"openai\";\n\n    const openai = new OpenAI({\n      baseURL: \"http://localhost:5173/api/v1\",\n      apiKey: \"no-key\",\n    });\n    const speechFile = path.resolve(\"./speech.mp3\");\n\n    const mp3 = await openai.audio.speech.create({\n      model: \"model_q8f16\",\n      voice: \"af_heart\",\n      input: \"Today is a wonderful day to build something people love!\",\n    });\n\n    const buffer = Buffer.from(await mp3.arrayBuffer());\n    await fs.promises.writeFile(speechFile, buffer);\n",
         "tags": [
           "Speech"
         ],

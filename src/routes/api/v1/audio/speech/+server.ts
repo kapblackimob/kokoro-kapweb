@@ -17,6 +17,50 @@ import {
  * /api/v1/audio/speech:
  *   post:
  *     summary: Generate audio from the input text
+ *     description: >
+ *       This endpoint is compatible with the OpenAI API.
+ *
+ *
+ *       Python Example:
+ *
+ *           from pathlib import Path
+ *           from openai import OpenAI
+ *
+ *           client = OpenAI(
+ *               base_url="http://localhost:5173/api/v1",
+ *               api_key="no-key",
+ *           )
+ *
+ *           speech_file_path = Path(__file__).parent / "speech.mp3"
+ *           response = client.audio.speech.create(
+ *               model="model_q8f16",
+ *               voice="af_heart",
+ *               input="Today is a wonderful day to build something people love!",
+ *           )
+ *
+ *           response.stream_to_file(speech_file_path)
+ *
+ *       JavaScript Example:
+ *
+ *           import fs from "fs";
+ *           import path from "path";
+ *           import OpenAI from "openai";
+ *
+ *           const openai = new OpenAI({
+ *             baseURL: "http://localhost:5173/api/v1",
+ *             apiKey: "no-key",
+ *           });
+ *           const speechFile = path.resolve("./speech.mp3");
+ *
+ *           const mp3 = await openai.audio.speech.create({
+ *             model: "model_q8f16",
+ *             voice: "af_heart",
+ *             input: "Today is a wonderful day to build something people love!",
+ *           });
+ *
+ *           const buffer = Buffer.from(await mp3.arrayBuffer());
+ *           await fs.promises.writeFile(speechFile, buffer);
+ *
  *     tags:
  *       - Speech
  *     requestBody:
@@ -77,6 +121,7 @@ const schema = zod.object({
 
 export const POST: RequestHandler = async ({ request }) => {
   const parsed = schema.safeParse(await request.json());
+
   if (!parsed.success) {
     return json(
       { message: fromError(parsed.error).toString() },
@@ -85,7 +130,6 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   const { model, input, voice } = parsed.data;
-
   const vw = voicesMap[voice as VoiceId] ?? voicesMap["af_alloy"];
   const lang = vw.lang;
 

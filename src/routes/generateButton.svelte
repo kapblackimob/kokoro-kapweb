@@ -9,22 +9,21 @@
   let { loading, onclick }: Props = $props();
 </script>
 
-<div
+<button
   class={{
-    "rounded-field flex": true,
-    "bg-base-300": loading,
-    "button-wrapper bg-gradient-to-r from-purple-400 via-green-400 to-blue-400":
-      !loading,
+    "rounded-field flex cursor-pointer": true,
+    "bg-base-300 cursor-wait": loading,
+    "button-wrapper bg-gradient-to-r": !loading,
+    "from-purple-400 via-green-400 to-blue-400": !loading,
   }}
+  onclick={() => onclick()}
+  disabled={loading}
 >
-  <button
+  <div
     class={{
-      "bg-base-300/50 rounded-field m-1 flex flex-grow cursor-pointer backdrop-blur-md": true,
+      "bg-base-300/80 rounded-field m-1 flex flex-grow backdrop-blur-md": true,
       "items-center justify-center space-x-2 px-4 py-2 text-xl": true,
-      "cursor-wait": loading,
     }}
-    onclick={() => onclick()}
-    disabled={loading}
   >
     <span>Generate Voice</span>
     {#if loading}
@@ -32,8 +31,8 @@
     {:else}
       <WandSparkles />
     {/if}
-  </button>
-</div>
+  </div>
+</button>
 
 <style>
   .button-wrapper {

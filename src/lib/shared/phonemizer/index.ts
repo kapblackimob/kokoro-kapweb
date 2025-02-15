@@ -6,6 +6,8 @@ import { langsMap, type LangId } from "$lib/shared/resources";
 const ESPEAK_NG_WASM_URL =
   "https://cdn.jsdelivr.net/npm/espeak-ng@1.0.2/dist/espeak-ng.wasm";
 
+// TODO: Handle punctuation signs in phonemize output
+
 /**
  * phonemize converts text to phonemes and returns
  * the phonemized text in the specified language.

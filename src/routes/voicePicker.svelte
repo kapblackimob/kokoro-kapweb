@@ -8,8 +8,8 @@
   import { adjustVoiceWeights } from "$lib/client/utils/adjustVoiceWeights";
   import SelectControl from "$lib/client/components/selectControl.svelte";
   import RangeControl from "$lib/client/components/rangeControl.svelte";
-  import { voices, type Voice, type VoiceId } from "$lib/shared/resources";
-  import type { VoiceWeight } from "$lib/client/kokoro/combineVoices";
+  import { voices, type VoiceId } from "$lib/shared/resources";
+  import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
 
   // Component mode: "simple" for a single selection, "advanced" for multiple with weights.
   let mode = $state("simple");
@@ -29,12 +29,12 @@
   let advancedSelections = $state<Record<string, number>>({});
 
   // Filter voices by the selected language.
-  let langVoices = $derived(voices.filter((vo) => vo.lang === lang));
+  let langVoices = $derived(voices.filter((vo) => vo.lang.id === lang));
 
   // Reset selections when the language changes.
   $effect(() => {
     advancedSelections = {};
-    simpleSelection = langVoices[0]?.voiceId ?? "";
+    simpleSelection = langVoices[0]?.id ?? "";
     mode = "simple";
   });
 
@@ -71,7 +71,7 @@
 
 <div>
   <div class="flex items-center justify-between">
-    <span class="text-xs font-semibold">Voice</span>
+    <span class="text-xs font-semibold">Voice (quality)</span>
 
     <label class="flex items-center space-x-2">
       <input
@@ -87,7 +87,7 @@
   {#if mode === "simple"}
     <SelectControl bind:value={simpleSelection} selectClass="w-full mt-[6px]">
       {#each langVoices as vo}
-        <option value={vo.voiceId}>{vo.name}</option>
+        <option value={vo.id}>{vo.name} ({vo.overallGrade})</option>
       {/each}
     </SelectControl>
   {:else}
@@ -99,25 +99,25 @@
           <label class="flex items-center space-x-1">
             <input
               type="checkbox"
-              checked={advancedSelections[vo.voiceId] !== undefined}
+              checked={advancedSelections[vo.id] !== undefined}
               class="checkbox"
-              onclick={() => toggleVoice(vo.voiceId)}
+              onclick={() => toggleVoice(vo.id)}
             />
-            <span>{vo.name}</span>
+            <span>{vo.name} ({vo.overallGrade})</span>
           </label>
 
           <RangeControl
-            value={advancedSelections[vo.voiceId] ?? 0}
-            disabled={advancedSelections[vo.voiceId] === undefined}
-            title={advancedSelections[vo.voiceId]
-              ? `Weight ${Math.round(advancedSelections[vo.voiceId] * 100)}%`
+            value={advancedSelections[vo.id] ?? 0}
+            disabled={advancedSelections[vo.id] === undefined}
+            title={advancedSelections[vo.id]
+              ? `Weight ${Math.round(advancedSelections[vo.id] * 100)}%`
               : "Weight"}
             hideValue={true}
             min="0"
             max="1"
             step="0.1"
             oninput={(newValue) =>
-              updateVoiceWeight(vo.voiceId, parseFloat(newValue))}
+              updateVoiceWeight(vo.id, parseFloat(newValue))}
           />
         </div>
       {/each}

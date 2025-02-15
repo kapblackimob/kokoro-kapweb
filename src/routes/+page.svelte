@@ -13,9 +13,9 @@
   import { toaster } from "$lib/client/toaster";
 
   let text = $state("Sometimes you win, sometimes you learn.");
-  let lang = $state(langsMap["en-us"].langId);
+  let lang = $state(langsMap["en-us"].id);
   let voices = $state([] as VoiceWeight[]);
-  let model = $state(modelsMap.model.modelId);
+  let model = $state(modelsMap.model.id);
   let speed = $state(1);
   let webgpu = $state(false);
 
@@ -90,15 +90,19 @@
 
     <SelectControl bind:value={model} title="Model" selectClass="w-full">
       {#each models as mo}
-        <option value={mo.modelId}>
-          {mo.size} - {mo.modelId} ({mo.quantization})
+        <option value={mo.id}>
+          {mo.size} - {mo.id} ({mo.quantization})
         </option>
       {/each}
     </SelectControl>
 
-    <SelectControl bind:value={lang} title="Language" selectClass="w-full">
+    <SelectControl
+      bind:value={lang}
+      title="Language (region)"
+      selectClass="w-full"
+    >
       {#each langs as lng}
-        <option value={lng.langId}>{lng.name}</option>
+        <option value={lng.id}>{lng.name}</option>
       {/each}
     </SelectControl>
 

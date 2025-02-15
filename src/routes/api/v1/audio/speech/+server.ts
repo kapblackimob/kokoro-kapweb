@@ -15,8 +15,8 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const waveform = await generateVoice({
     text: input,
-    lang,
-    voices: [{ voiceId: vw.voiceId, weight: 1 }],
+    lang: lang.id,
+    voices: [{ voiceId: vw.id, weight: 1 }],
     model,
     speed: 1,
     webgpu: false,

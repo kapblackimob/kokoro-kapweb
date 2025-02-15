@@ -7,21 +7,27 @@
 <div
   class="bg-base-200 h-screen w-screen overflow-x-hidden overflow-y-auto md:px-4 md:pb-4"
 >
-  <header
-    class="
-      bg-base-300 md:rounded-box sticky z-50 mx-auto flex w-full items-center
-      justify-between p-4 shadow-md md:top-4 md:max-w-7xl md:px-4 md:pt-4
-    "
+  <div
+    class="md:rounded-box mx-auto w-full overflow-hidden md:mt-4 md:max-w-7xl md:shadow-md"
   >
-    <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
-    <nav>
-      <ThemeSelect />
-    </nav>
-  </header>
+    <header
+      class="bg-base-100 border-base-content/20 flex w-full items-center justify-between border-b p-4 md:px-4 md:pt-4"
+    >
+      <div class="flex items-center space-x-2">
+        <img
+          src="/logo.png"
+          alt="Kokoro Web Logo"
+          class="size-[50px] rounded-full shadow-sm"
+        />
+        <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
+      </div>
+      <nav>
+        <ThemeSelect />
+      </nav>
+    </header>
 
-  <main
-    class=" bg-base-100 md:rounded-box mx-auto w-full p-4 shadow-lg md:mt-8 md:max-w-7xl"
-  >
-    {@render children()}
-  </main>
+    <main class="bg-base-100 mx-auto w-full overflow-y-auto p-4 md:max-w-7xl">
+      {@render children()}
+    </main>
+  </div>
 </div>

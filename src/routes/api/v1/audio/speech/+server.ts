@@ -1,6 +1,7 @@
 import { error } from "@sveltejs/kit";
 import wavefile from "wavefile";
 import zod from "zod";
+import { fromError } from "zod-validation-error";
 import type { RequestHandler } from "./$types";
 import { generateVoice } from "$lib/shared/kokoro";
 import {
@@ -10,7 +11,6 @@ import {
   type VoiceId,
   type ModelId,
 } from "$lib/shared/resources";
-import { fromError } from "zod-validation-error";
 
 const schema = zod.object({
   model: zod.string().refine((val) => modelsIds.includes(val as ModelId), {

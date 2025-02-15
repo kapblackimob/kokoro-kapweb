@@ -1,4 +1,4 @@
-import { error, json } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import wavefile from "wavefile";
 import zod from "zod";
 import { fromError } from "zod-validation-error";

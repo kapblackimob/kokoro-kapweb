@@ -13,28 +13,63 @@ import {
 } from "$lib/shared/resources";
 
 /**
- * @api {post} /v1/audio/speech Generate audio from the input text
- * @apiName CreateSpeech
- * @apiGroup Speech
- *
- * @apiBody {String} model Model to use for the synthesis
- * @apiBody {String} voice Voice to use for the synthesis
- * @apiBody {String} input Input text to synthesize
- * @apiBody {String} [response_format=mp3] Response format, either `mp3` or `wav`
- * @apiBody {Number} [speed=1] Speed of the synthesis, between 0.25 and 5
- *
- * @apiSuccess {File} audio Audio file with the synthesized speech
- *
- * @apiSuccessExample {File} Success-Response:
- *  HTTP/1.1 200 OK
- *  Content-Type: audio/wav | audio/mp3
- *
- * @apiError (400) {String} message Error message
- *
- * @apiErrorExample {json} Error-Response:
- *   {
- *     "message": "Validation error ..."
- *   }
+ * @openapi
+ * /api/v1/audio/speech:
+ *   post:
+ *     summary: Generate audio from the input text
+ *     tags:
+ *       - Speech
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               model:
+ *                 type: string
+ *                 description: Model to use for the synthesis
+ *               voice:
+ *                 type: string
+ *                 description: Voice to use for the synthesis
+ *               input:
+ *                 type: string
+ *                 description: Input text to synthesize
+ *               response_format:
+ *                 type: string
+ *                 enum: [mp3, wav]
+ *                 default: mp3
+ *                 description: Response format, either `mp3` or `wav`
+ *               speed:
+ *                 type: number
+ *                 minimum: 0.25
+ *                 maximum: 5
+ *                 default: 1
+ *                 description: Speed of the synthesis
+ *     responses:
+ *       200:
+ *         description: Audio file with the synthesized speech
+ *         content:
+ *           audio/wav:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *           audio/mp3:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ *             example:
+ *               message: "Validation error ..."
  */
 
 const schema = zod.object({

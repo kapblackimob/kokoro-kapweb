@@ -1,0 +1,319 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Kokoro Web API",
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/api/v1/audio/langs": {
+      "get": {
+        "summary": "List available languages",
+        "tags": [
+          "Speech"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available languages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Language ID"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Language name"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "en",
+                    "name": "English"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audio/models": {
+      "get": {
+        "summary": "List available models",
+        "tags": [
+          "Speech"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Model ID"
+                      },
+                      "quantization": {
+                        "type": "string",
+                        "description": "Model quantization type"
+                      },
+                      "size": {
+                        "type": "string",
+                        "description": "Model size in MB"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "model",
+                    "quantization": "fp32",
+                    "size": "326 MB"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audio/speech": {
+      "post": {
+        "summary": "Generate audio from the input text",
+        "tags": [
+          "Speech"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Model to use for the synthesis"
+                  },
+                  "voice": {
+                    "type": "string",
+                    "description": "Voice to use for the synthesis"
+                  },
+                  "input": {
+                    "type": "string",
+                    "description": "Input text to synthesize"
+                  },
+                  "response_format": {
+                    "type": "string",
+                    "enum": [
+                      "mp3",
+                      "wav"
+                    ],
+                    "default": "mp3",
+                    "description": "Response format, either `mp3` or `wav`"
+                  },
+                  "speed": {
+                    "type": "number",
+                    "minimum": 0.25,
+                    "maximum": 5,
+                    "default": 1,
+                    "description": "Speed of the synthesis"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Audio file with the synthesized speech",
+            "content": {
+              "audio/wav": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "audio/mp3": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Validation error ..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audio/voices": {
+      "get": {
+        "summary": "List available voices",
+        "tags": [
+          "Speech"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available voices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Voice ID"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Voice name"
+                      },
+                      "gender": {
+                        "type": "string",
+                        "description": "Voice gender"
+                      },
+                      "targetQuality": {
+                        "type": "string",
+                        "description": "Voice target quality"
+                      },
+                      "overallGrade": {
+                        "type": "string",
+                        "description": "Voice overall grade"
+                      },
+                      "lang": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Language ID"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Language name"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "af_heart",
+                    "name": "Heart",
+                    "gender": "Female",
+                    "targetQuality": "A",
+                    "overallGrade": "A",
+                    "lang": {
+                      "id": "en-us",
+                      "name": "English (US)"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/text/phonemize": {
+      "post": {
+        "summary": "Generate text phonemes",
+        "tags": [
+          "Text"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lang": {
+                    "type": "string",
+                    "description": "Language ID"
+                  },
+                  "input": {
+                    "type": "string",
+                    "description": "Input text to phonemize"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Phonemes of the input text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "phonemes": {
+                      "type": "string",
+                      "description": "Phonemes of the input text"
+                    }
+                  }
+                },
+                "example": {
+                  "phonemes": "..."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Validation error ..."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

@@ -6,26 +6,50 @@ import { phonemize } from "$lib/shared/phonemizer";
 import { langsIds, type LangId } from "$lib/shared/resources";
 
 /**
- * @api {post} /v1/text/phonemize Generate text phonemes
- * @apiName PhonemizeText
- * @apiGroup Text
- *
- * @apiBody {String} lang Language ID
- * @apiBody {String} input Input text to phonemize
- *
- * @apiSuccess {String} phonemes Phonemes of the input text
- *
- * @apiSuccessExample {json} Success-Response:
- *   {
- *      "phonemes": "..."
- *   }
- *
- * @apiError (400) {String} message Error message
- *
- * @apiErrorExample {json} Error-Response:
- *   {
- *      "message": "Validation error ..."
- *   }
+ * @openapi
+ * /api/v1/text/phonemize:
+ *   post:
+ *     summary: Generate text phonemes
+ *     tags:
+ *       - Text
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               lang:
+ *                 type: string
+ *                 description: Language ID
+ *               input:
+ *                 type: string
+ *                 description: Input text to phonemize
+ *     responses:
+ *       200:
+ *         description: Phonemes of the input text
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 phonemes:
+ *                   type: string
+ *                   description: Phonemes of the input text
+ *             example:
+ *               phonemes: "..."
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ *             example:
+ *               message: "Validation error ..."
  */
 
 const schema = zod.object({

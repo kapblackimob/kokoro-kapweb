@@ -3,23 +3,35 @@ import type { RequestHandler } from "./$types";
 import { models } from "$lib/shared/resources";
 
 /**
- * @api {get} /v1/audio/models List available models
- * @apiName ListModels
- * @apiGroup Speech
- *
- * @apiSuccess {Object[]} models List of available models
- * @apiSuccess {String} models.id Model ID
- * @apiSuccess {String} models.quantization Model quantization type
- * @apiSuccess {String} models.size Model size in MB
- *
- * @apiSuccessExample {json} Success-Response:
- *   [
- *     {
- *       "id": "model",
- *       "quantization": "fp32",
- *       "size": "326 MB",
- *     }
- *   ]
+ * @openapi
+ * /api/v1/audio/models:
+ *   get:
+ *     summary: List available models
+ *     tags:
+ *       - Speech
+ *     responses:
+ *       200:
+ *         description: List of available models
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: Model ID
+ *                   quantization:
+ *                     type: string
+ *                     description: Model quantization type
+ *                   size:
+ *                     type: string
+ *                     description: Model size in MB
+ *             example:
+ *               - id: "model"
+ *                 quantization: "fp32"
+ *                 size: "326 MB"
  */
 
 export const GET: RequestHandler = async () => {

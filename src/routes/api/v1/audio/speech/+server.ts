@@ -12,6 +12,32 @@ import {
   type ModelId,
 } from "$lib/shared/resources";
 
+/**
+ * @api {post} /v1/audio/speech Generate audio from the input text
+ * @apiName CreateSpeech
+ * @apiGroup Speech
+ *
+ * @apiBody {String} model Model to use for the synthesis
+ * @apiBody {String} voice Voice to use for the synthesis
+ * @apiBody {String} input Input text to synthesize
+ * @apiBody {String} [response_format=mp3] Response format, either `mp3` or `wav`
+ * @apiBody {Number} [speed=1] Speed of the synthesis, between 0.25 and 5
+ *
+ * @apiSuccess {File} audio Audio file with the synthesized speech
+ *
+ * @apiSuccessExample {File} Success-Response:
+ *  HTTP/1.1 200 OK
+ *  Content-Type: audio/wav
+ *
+ * @apiError (400) {String} message Error message
+ *
+ * @apiErrorExample {json} Error-Response:
+ *   HTTP/1.1 400 Bad Request
+ *   {
+ *     "message": "Validation error ..."
+ *   }
+ */
+
 const schema = zod.object({
   model: zod.string().refine((val) => modelsIds.includes(val as ModelId), {
     message: `Model not found, use one of: ${modelsIds.join(", ")}`,

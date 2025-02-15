@@ -27,7 +27,7 @@ import {
  *
  * @apiSuccessExample {File} Success-Response:
  *  HTTP/1.1 200 OK
- *  Content-Type: audio/wav
+ *  Content-Type: audio/wav | audio/mp3
  *
  * @apiError (400) {String} message Error message
  *

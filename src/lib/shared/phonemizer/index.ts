@@ -37,7 +37,7 @@ export async function phonemize(
     "-q",
     `--ipa`,
     "-v",
-    lang.espeakLang,
+    lang.id,
     text,
   ];
 

@@ -1,4 +1,4 @@
-import { error } from "@sveltejs/kit";
+import { error, json } from "@sveltejs/kit";
 import wavefile from "wavefile";
 import zod from "zod";
 import { fromError } from "zod-validation-error";
@@ -87,7 +87,10 @@ const schema = zod.object({
 export const POST: RequestHandler = async ({ request }) => {
   const parsed = schema.safeParse(await request.json());
   if (!parsed.success) {
-    return error(400, fromError(parsed.error).toString());
+    return json(
+      { message: fromError(parsed.error).toString() },
+      { status: 400 },
+    );
   }
 
   const { model, input, voice } = parsed.data;

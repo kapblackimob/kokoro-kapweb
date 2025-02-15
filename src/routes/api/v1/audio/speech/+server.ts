@@ -32,7 +32,6 @@ import {
  * @apiError (400) {String} message Error message
  *
  * @apiErrorExample {json} Error-Response:
- *   HTTP/1.1 400 Bad Request
  *   {
  *     "message": "Validation error ..."
  *   }

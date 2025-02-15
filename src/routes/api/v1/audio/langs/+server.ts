@@ -12,14 +12,12 @@ import { langs } from "$lib/shared/resources";
  * @apiSuccess {String} langs.name Language name
  *
  * @apiSuccessExample {Object[]} Success-Response:
- * HTTP/1.1 200 OK
- * Content-Type: application/json
- * [
- *  {
- *   "id": "en",
- *   "name": "English",
- *  }
- * ]
+ *   [
+ *     {
+ *       "id": "en",
+ *       "name": "English",
+ *     }
+ *   ]
  */
 
 export const GET: RequestHandler = async () => {

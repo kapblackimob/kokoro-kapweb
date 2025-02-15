@@ -13,15 +13,13 @@ import { models } from "$lib/shared/resources";
  * @apiSuccess {String} models.size Model size in MB
  *
  * @apiSuccessExample {Object[]} Success-Response:
- * HTTP/1.1 200 OK
- * Content-Type: application/json
- * [
- *  {
- *   "id": "model",
- *   "quantization": "fp32",
- *   "size": "326 MB",
- *  }
- * ]
+ *   [
+ *     {
+ *       "id": "model",
+ *       "quantization": "fp32",
+ *       "size": "326 MB",
+ *     }
+ *   ]
  */
 
 export const GET: RequestHandler = async () => {

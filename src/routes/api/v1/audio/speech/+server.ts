@@ -129,26 +129,23 @@ export const POST: RequestHandler = async ({ request }) => {
     );
   }
 
-  const { model, input, voice } = parsed.data;
+  const { model, input, voice, speed, response_format } = parsed.data;
   const vw = voicesMap[voice as VoiceId] ?? voicesMap["af_alloy"];
   const lang = vw.lang;
 
-  const waveform = await generateVoice({
+  const result = await generateVoice({
     text: input,
     lang: lang.id,
     voices: [{ voiceId: vw.id, weight: 1 }],
-    model,
-    speed: 1,
+    model: model,
+    speed: speed ?? 1,
+    format: response_format ?? "mp3",
     webgpu: false,
   });
 
-  let wav = new wavefile.WaveFile();
-  wav.fromScratch(1, 24000, "32f", waveform);
-  const wavBuffer = wav.toBuffer();
-
-  return new Response(wavBuffer, {
+  return new Response(result.buffer, {
     headers: {
-      "Content-Type": "audio/wav",
+      "Content-Type": result.mimeType,
     },
   });
 };

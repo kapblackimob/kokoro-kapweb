@@ -16,7 +16,7 @@ WORKDIR /app/temp
 # Install debian packages
 RUN apt update && \
     apt install -y \
-        wget zip unzip p7zip-full tzdata git npm python3 python3-pip && \
+        wget zip unzip p7zip-full tzdata git ffmpeg npm python3 python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Node.js

@@ -5,6 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [sveltekit(), tailwindcss()],
   optimizeDeps: {
-    exclude: ["onnxruntime-node"],
+    exclude: ["onnxruntime-node", "@ffmpeg/ffmpeg", "@ffmpeg/util"],
   },
 });

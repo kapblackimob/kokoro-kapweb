@@ -29,7 +29,7 @@ export async function generateVoice(params: {
   speed: number;
   format: "wav" | "mp3";
   webgpu: boolean;
-}): Promise<ArrayBuffer> {
+}): Promise<{ buffer: ArrayBuffer; mimeType: string }> {
   if (params.webgpu && !detectWebGPU()) {
     throw new Error("WebGPU is not supported in this environment");
   }
@@ -58,9 +58,9 @@ export async function generateVoice(params: {
 
   // Process each chunk based on its type.
   for (const chunk of chunks) {
-    console.log(chunk); // Debug log.
-
     if (chunk.type === "silence") {
+      console.log(chunk);
+
       const silenceLength = Math.floor(chunk.durationSeconds * SAMPLE_RATE);
       const silenceWave = new Float32Array(silenceLength);
       waveforms.push(silenceWave);
@@ -68,6 +68,8 @@ export async function generateVoice(params: {
     }
 
     if (chunk.type === "text") {
+      console.log({ type: chunk.type, content: chunk.content });
+
       const tokens = chunk.tokens;
       const ref_s = combinedVoice[tokens.length - 1][0];
       const paddedTokens = [0, ...tokens, 0];
@@ -105,6 +107,9 @@ export async function generateVoice(params: {
     wavBuffer = await modifyWavSpeed(wavBuffer, params.speed);
   }
 
-  if (params.format === "wav") return wavBuffer;
-  return await wavToMp3(wavBuffer);
+  if (params.format === "wav") {
+    return { buffer: wavBuffer, mimeType: "audio/wav" };
+  }
+
+  return { buffer: await wavToMp3(wavBuffer), mimeType: "audio/mpeg" };
 }

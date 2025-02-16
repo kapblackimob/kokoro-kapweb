@@ -6,6 +6,8 @@ export async function modifyWavVelocity(
   wavBuffer: ArrayBuffer,
   velocity: number,
 ): Promise<ArrayBuffer> {
+  if (velocity === 1) return wavBuffer;
+
   return browser
     ? modifyWavVelocityClient(wavBuffer, velocity)
     : modifyWavVelocityServer(wavBuffer, velocity);

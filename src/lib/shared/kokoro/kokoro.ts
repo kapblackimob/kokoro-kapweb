@@ -1,4 +1,3 @@
-import * as wavefile from "wavefile";
 import { getModel } from "$lib/shared/resources";
 import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
@@ -7,6 +6,7 @@ import { preprocessText, type TextProcessorChunk } from "./textProcessor";
 import { trimWaveform } from "./trimWaveform";
 import { getOnnxRuntime } from "./getOnnxRuntime";
 import { modifyWavSpeed, wavToMp3 } from "../ffmpeg";
+import { createWavBuffer } from "./createWavBuffer";
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
@@ -99,10 +99,7 @@ export async function generateVoice(params: {
     offset += waveform.length;
   }
 
-  let wav = new wavefile.WaveFile();
-  wav.fromScratch(1, 24000, "32f", finalWaveform);
-  let wavBuffer = wav.toBuffer().buffer as ArrayBuffer;
-
+  let wavBuffer = await createWavBuffer(finalWaveform, SAMPLE_RATE);
   if (params.speed !== 1) {
     wavBuffer = await modifyWavSpeed(wavBuffer, params.speed);
   }

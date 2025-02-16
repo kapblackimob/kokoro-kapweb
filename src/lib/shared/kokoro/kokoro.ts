@@ -1,3 +1,4 @@
+import * as wavefile from "wavefile";
 import { getModel } from "$lib/shared/resources";
 import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
@@ -5,6 +6,7 @@ import { combineVoices, type VoiceWeight } from "./combineVoices";
 import { preprocessText, type TextProcessorChunk } from "./textProcessor";
 import { trimWaveform } from "./trimWaveform";
 import { getOnnxRuntime } from "./getOnnxRuntime";
+import { modifyWavSpeed, wavToMp3 } from "../ffmpeg";
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
@@ -25,13 +27,17 @@ export async function generateVoice(params: {
   voices: VoiceWeight[];
   model: ModelId | string;
   speed: number;
+  format: "wav" | "mp3";
   webgpu: boolean;
-}): Promise<Float32Array> {
-  const ort = await getOnnxRuntime();
-
+}): Promise<ArrayBuffer> {
   if (params.webgpu && !detectWebGPU()) {
     throw new Error("WebGPU is not supported in this environment");
   }
+  if (params.speed < 0.1 || params.speed > 5) {
+    throw new Error("Speed must be between 0.1 and 5");
+  }
+
+  const ort = await getOnnxRuntime();
 
   const tokensPerChunk = MODEL_CONTEXT_WINDOW - 2;
   const chunks: TextProcessorChunk[] = await preprocessText(
@@ -91,5 +97,14 @@ export async function generateVoice(params: {
     offset += waveform.length;
   }
 
-  return finalWaveform;
+  let wav = new wavefile.WaveFile();
+  wav.fromScratch(1, 24000, "32f", finalWaveform);
+  let wavBuffer = wav.toBuffer().buffer as ArrayBuffer;
+
+  if (params.speed !== 1) {
+    wavBuffer = await modifyWavSpeed(wavBuffer, params.speed);
+  }
+
+  if (params.format === "wav") return wavBuffer;
+  return await wavToMp3(wavBuffer);
 }

@@ -31,8 +31,6 @@ export async function phonemize(
   }
 
   text = normalizeText(text);
-  text = text.replaceAll('"', '\\"');
-
   const espeakArgs = [
     "--phonout",
     "generated",

@@ -42,7 +42,7 @@
 
     loading = true;
     try {
-      const buffer = await generateVoice({
+      const result = await generateVoice({
         text: text,
         lang: lang,
         voices: voices,
@@ -52,8 +52,7 @@
         webgpu: webgpu,
       });
 
-      const type = format === "mp3" ? "audio/mpeg" : "audio/wav";
-      const wavBlob = new Blob([buffer], { type });
+      const wavBlob = new Blob([result.buffer], { type: result.mimeType });
       const url = URL.createObjectURL(wavBlob);
       voiceUrl = url;
 

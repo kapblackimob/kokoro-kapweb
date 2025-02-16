@@ -31,12 +31,16 @@
           target="_blank"
           class="btn btn-ghost"
         >
-          <span>Github</span>
           <Github class="size-[16px]" />
+          <span>Star on GitHub</span>
+          <img
+            alt="GitHub Repo stars"
+            src="https://img.shields.io/github/stars/eduardolat/kokoro-web?style=plastic&label=%20"
+          />
         </a>
         <a href="/api/v1/index.html" target="_blank" class="btn btn-ghost">
-          <span>API Docs</span>
           <ExternalLink class="size-[16px]" />
+          <span>API Docs</span>
         </a>
         <ThemeSelect />
       </nav>
@@ -68,18 +72,22 @@
         <a
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
-          class="btn btn-outline w-full"
+          class="btn btn-outline flex w-full items-center justify-start space-x-1"
         >
-          <span>Github</span>
           <Github class="size-[16px]" />
+          <span>Star on GitHub</span>
+          <img
+            alt="GitHub Repo stars"
+            src="https://img.shields.io/github/stars/eduardolat/kokoro-web?style=plastic&label=%20"
+          />
         </a>
         <a
           href="/api/v1/index.html"
           target="_blank"
-          class="btn btn-outline w-full"
+          class="btn btn-outline flex w-full items-center justify-start space-x-1"
         >
-          <span>API Docs</span>
           <ExternalLink class="size-[16px]" />
+          <span>API Docs</span>
         </a>
         <ThemeSelect class="w-full" />
       </nav>

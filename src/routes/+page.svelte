@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import * as wavefile from "wavefile";
   import { generateVoice } from "$lib/shared/kokoro";
   import type { VoiceWeight } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
@@ -17,6 +16,7 @@
   let voices = $state([] as VoiceWeight[]);
   let model = $state(modelsMap.model.id);
   let speed = $state(1);
+  let format = $state("mp3" as "wav" | "mp3");
   let webgpu = $state(false);
 
   let webgpuSupported = $state(false);
@@ -42,21 +42,18 @@
 
     loading = true;
     try {
-      const waveform = await generateVoice({
+      const buffer = await generateVoice({
         text: text,
         lang: lang,
         voices: voices,
         model: model,
         speed: speed,
+        format: format,
         webgpu: webgpu,
       });
 
-      console.log("Result waveform: ", waveform);
-
-      let wav = new wavefile.WaveFile();
-      wav.fromScratch(1, 24000, "32f", waveform);
-      const wavBuffer = wav.toBuffer();
-      const wavBlob = new Blob([wavBuffer], { type: "audio/wav" });
+      const type = format === "mp3" ? "audio/mpeg" : "audio/wav";
+      const wavBlob = new Blob([buffer], { type });
       const url = URL.createObjectURL(wavBlob);
       voiceUrl = url;
 

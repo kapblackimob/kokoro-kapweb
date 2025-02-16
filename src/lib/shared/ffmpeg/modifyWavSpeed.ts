@@ -2,18 +2,18 @@ import { browser } from "$app/environment";
 import { getClientFfmpeg } from "./getClientFfmpeg";
 import { buildAtempoChain } from "./utils";
 
-export async function modifyWavVelocity(
+export async function modifyWavSpeed(
   wavBuffer: ArrayBuffer,
   velocity: number,
 ): Promise<ArrayBuffer> {
   if (velocity === 1) return wavBuffer;
 
   return browser
-    ? modifyWavVelocityClient(wavBuffer, velocity)
-    : modifyWavVelocityServer(wavBuffer, velocity);
+    ? modifyWavSpeedClient(wavBuffer, velocity)
+    : modifyWavSpeedServer(wavBuffer, velocity);
 }
 
-async function modifyWavVelocityClient(
+async function modifyWavSpeedClient(
   wavBuffer: ArrayBuffer,
   velocity: number,
 ): Promise<ArrayBuffer> {
@@ -31,7 +31,7 @@ async function modifyWavVelocityClient(
   return data.buffer as ArrayBuffer;
 }
 
-async function modifyWavVelocityServer(
+async function modifyWavSpeedServer(
   wavBuffer: ArrayBuffer,
   velocity: number,
 ): Promise<ArrayBuffer> {

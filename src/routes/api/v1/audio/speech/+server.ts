@@ -1,5 +1,4 @@
 import { json } from "@sveltejs/kit";
-import wavefile from "wavefile";
 import zod from "zod";
 import { fromError } from "zod-validation-error";
 import type { RequestHandler } from "./$types";

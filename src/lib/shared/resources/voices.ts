@@ -1,4 +1,4 @@
-import { langsMap } from "./langs";
+import { langsMap, type LangId } from "./langs";
 
 export type Voice = (typeof voices)[number];
 export type VoiceId = Voice["id"];
@@ -451,3 +451,15 @@ export const voicesMap = (() => {
 })();
 
 export const voicesIds = voices.map((voice) => voice.id);
+
+export const voicesByLang: Record<LangId, Voice[]> = (() => {
+  const map = {} as Record<LangId, Voice[]>;
+
+  for (const voice of voices) {
+    const langId = voice.lang.id;
+    if (!map[langId]) map[langId] = [];
+    map[langId].push(voice);
+  }
+
+  return map;
+})();

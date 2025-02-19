@@ -78,7 +78,7 @@ export function parseVoiceFormula(formula: string): VoiceWeight[] {
   const totalWeight = voices.reduce((sum, voice) => sum + voice.weight, 0);
   if (roundToNearest(totalWeight) !== 1) {
     throw new Error(
-      `The sum of weights must be exactly 1 but is ${totalWeight}`,
+      `The sum of weights must be exactly 100% but is ${totalWeight * 100}%`,
     );
   }
 

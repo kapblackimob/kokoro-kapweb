@@ -114,4 +114,14 @@ describe("serializeVoiceFormula", () => {
     const formula = serializeVoiceFormula(voiceWeights);
     expect(formula).toBe("voice1*0.3 + voice2*0.7");
   });
+
+  it("should remove voices with weight 0 or less", () => {
+    const voiceWeights = [
+      { voiceId: "voice1", weight: 0 },
+      { voiceId: "voice2", weight: 0.5 },
+      { voiceId: "voice3", weight: -0.5 },
+    ];
+    const formula = serializeVoiceFormula(voiceWeights);
+    expect(formula).toBe("voice2*0.5");
+  });
 });

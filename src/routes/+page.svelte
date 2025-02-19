@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { generateVoice } from "$lib/shared/kokoro";
-  import type { VoiceWeight } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
   import { langs, langsMap, models, modelsMap } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/selectControl.svelte";
@@ -13,7 +12,7 @@
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].id);
-  let voices = $state([] as VoiceWeight[]);
+  let voiceFormula = $state("");
   let model = $state(modelsMap.model.id);
   let speed = $state(1);
   let format = $state("mp3" as "wav" | "mp3");
@@ -45,7 +44,7 @@
       const result = await generateVoice({
         text: text,
         lang: lang,
-        voices: voices,
+        voiceFormula: voiceFormula,
         model: model,
         speed: speed,
         format: format,
@@ -94,7 +93,7 @@
 
     <SelectControl
       bind:value={lang}
-      title="Language (region)"
+      title="Language accent (region)"
       selectClass="w-full"
     >
       {#each langs as lng}
@@ -102,7 +101,10 @@
       {/each}
     </SelectControl>
 
-    <VoicePicker {lang} onchange={(vws) => (voices = vws)} />
+    <VoicePicker
+      {lang}
+      onchange={(newVoiceFormula) => (voiceFormula = newVoiceFormula)}
+    />
   </div>
 
   <TextareaControl

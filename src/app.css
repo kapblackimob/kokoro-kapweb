@@ -5,3 +5,7 @@
     dark --prefersdark,
     dracula;
 }
+
+* {
+  scrollbar-width: thin;
+}

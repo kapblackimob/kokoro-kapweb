@@ -2,7 +2,7 @@ import { json } from "@sveltejs/kit";
 import zod from "zod";
 import { fromError } from "zod-validation-error";
 import type { RequestHandler } from "./$types";
-import { generateVoice } from "$lib/shared/kokoro";
+import { generateVoice, parseVoiceFormula } from "$lib/shared/kokoro";
 import {
   voicesIds,
   modelsIds,
@@ -60,6 +60,15 @@ import {
  *           const buffer = Buffer.from(await mp3.arrayBuffer());
  *           await fs.promises.writeFile(speechFile, buffer);
  *
+ *       Note about the **voice** (*voice formula*) field:
+ *
+ *           • This field is used to specify a synthesis formula.
+ *           • It must follow the pattern: voice1*weight1 + voice2*weight2 + ... + voiceN*weightN.
+ *           • Voice IDs must be one of those returned by the voices endpoint.
+ *           • Each weight must be a number between 0 and 1, rounded to the nearest 0.1.
+ *           • If a single voice is provided without an asterisk, it is assumed to have weight 1.
+ *           • The language of the first voice in the formula is used for the phonemizer.
+ *
  *     tags:
  *       - Speech
  *     requestBody:
@@ -74,7 +83,7 @@ import {
  *                 description: Model to use for the synthesis
  *               voice:
  *                 type: string
- *                 description: Voice to use for the synthesis
+ *                 description: Voice formula to use for the synthesis
  *               input:
  *                 type: string
  *                 description: Input text to synthesize
@@ -129,13 +138,17 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   const { model, input, voice, speed, response_format } = parsed.data;
-  const vw = voicesMap[voice as VoiceId] ?? voicesMap["af_alloy"];
-  const lang = vw.lang;
+
+  // Find the language of the first voice of the formula
+  const voices = parseVoiceFormula(voice);
+  const firstVoiceId = voices[0].voiceId as VoiceId;
+  const voiceFound = voicesMap[firstVoiceId] ?? voicesMap["af_alloy"];
+  const lang = voiceFound.lang;
 
   const result = await generateVoice({
     text: input,
     lang: lang.id,
-    voices: [{ voiceId: vw.id, weight: 1 }],
+    voiceFormula: voice,
     model: model,
     speed: speed ?? 1,
     format: response_format ?? "mp3",

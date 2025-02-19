@@ -1,12 +1,13 @@
 import { getModel } from "$lib/shared/resources";
 import type { LangId, ModelId } from "$lib/shared/resources";
 import { detectWebGPU } from "$lib/client/utils";
-import { combineVoices, type VoiceWeight } from "./combineVoices";
+import { combineVoices } from "./combineVoices";
 import { preprocessText, type TextProcessorChunk } from "./textProcessor";
 import { trimWaveform } from "./trimWaveform";
 import { getOnnxRuntime } from "./getOnnxRuntime";
 import { modifyWavSpeed, wavToMp3 } from "../ffmpeg";
 import { createWavBuffer } from "./createWavBuffer";
+import { parseVoiceFormula } from "./voiceFormula";
 
 const MODEL_CONTEXT_WINDOW = 512;
 const SAMPLE_RATE = 24000; // sample rate in Hz
@@ -18,13 +19,22 @@ const SAMPLE_RATE = 24000; // sample rate in Hz
  * For text segments the phonemizer is called, then punctuation splitting and token generation are applied.
  * Silence chunks produce silent waveforms.
  *
+ * The voice formula is parsed into an array of voice weights.
+ *
  * @param params - Generation parameters.
+ * @param params.text - The input text.
+ * @param params.lang - The language ID (for phonemization).
+ * @param params.voiceFormula - The voice formula.
+ * @param params.model - The model ID.
+ * @param params.speed - The speed factor.
+ * @param params.format - The output format.
+ * @param params.webgpu - Whether to use WebGPU for inference (browser only).
  * @returns Concatenated waveform.
  */
 export async function generateVoice(params: {
   text: string;
   lang: LangId | string;
-  voices: VoiceWeight[];
+  voiceFormula: string;
   model: ModelId | string;
   speed: number;
   format: "wav" | "mp3";
@@ -47,7 +57,8 @@ export async function generateVoice(params: {
   );
 
   const modelBuffer = await getModel(params.model);
-  const combinedVoice = await combineVoices(params.voices);
+  const voices = parseVoiceFormula(params.voiceFormula);
+  const combinedVoice = await combineVoices(voices);
 
   let sessionOpts = {};
   if (params.webgpu) sessionOpts = { executionProviders: ["webgpu"] };

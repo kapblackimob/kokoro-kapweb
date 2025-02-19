@@ -119,9 +119,21 @@ const schema = zod.object({
   model: zod.string().refine((val) => modelsIds.includes(val as ModelId), {
     message: `Model not found, use one of: ${modelsIds.join(", ")}`,
   }),
-  voice: zod.string().refine((val) => voicesIds.includes(val as VoiceId), {
-    message: `Voice not found, use one of: ${voicesIds.join(", ")}`,
-  }),
+  voice: zod.string().refine(
+    (val) => {
+      try {
+        const parsedVoices = parseVoiceFormula(val);
+        return parsedVoices.every(({ voiceId }) =>
+          voicesIds.includes(voiceId as VoiceId),
+        );
+      } catch (e) {
+        return false;
+      }
+    },
+    {
+      message: `Invalid voice formula. Voice IDs must be one of: ${voicesIds.join(", ")} and follow the pattern voice*weight.`,
+    },
+  ),
   input: zod.string(),
   response_format: zod.enum(["mp3", "wav"]).default("mp3").optional(),
   speed: zod.number().min(0.25).max(5).default(1).optional(),

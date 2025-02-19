@@ -20,7 +20,7 @@ export function parseVoiceFormula(formula: string): VoiceWeight[] {
   // Remove all whitespace characters.
   formula = formula.replace(/\s+/g, "");
   if (formula === "") {
-    throw new Error("Formula cannot be empty");
+    throw new Error("Voice or voice formula cannot be empty");
   }
 
   // Allowed characters:

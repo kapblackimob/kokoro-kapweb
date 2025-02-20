@@ -22,7 +22,7 @@
   }: Props = $props();
 </script>
 
-<fieldset class="fieldset">
+<fieldset class="fieldset w-full">
   {#if title}
     <legend class="fieldset-legend {titleClass}">{title}</legend>
   {/if}

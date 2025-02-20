@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import { toaster } from "$lib/client/toaster";
 
 /**
  * Fetches a file from the given url, caching it if possible.
@@ -11,7 +12,9 @@ export async function getFileFromUrl(url: string): Promise<ArrayBuffer> {
 }
 
 async function getFileFromUrlClient(url: string): Promise<ArrayBuffer> {
+  const fileName = url.split("/").pop()?.split("?")[0] || "file";
   let cache: Cache | null = null;
+
   try {
     cache = await caches.open("kokoro-web-resources");
     const cached = await cache.match(url);
@@ -23,9 +26,13 @@ async function getFileFromUrlClient(url: string): Promise<ArrayBuffer> {
     console.warn("Can't open cache:", err);
   }
 
+  toaster.success(
+    `Downloading ${fileName} (Will be downloaded once and saved for future use)`,
+  );
+
   const res = await fetch(url);
   if (!res.ok) {
-    throw new Error(`Failed to fetch model: ${res.status}`);
+    throw new Error(`Failed to fetch: ${res.status}`);
   }
 
   const buf = await res.arrayBuffer();
@@ -34,7 +41,7 @@ async function getFileFromUrlClient(url: string): Promise<ArrayBuffer> {
   try {
     await cache.put(url, new Response(buf, { headers: res.headers }));
   } catch (err) {
-    console.warn("Can't cache model:", err);
+    console.warn("Can't cache:", err);
   }
 
   console.log("Downloaded from network");
@@ -63,7 +70,7 @@ async function getFileFromUrlServer(url: string): Promise<ArrayBuffer> {
 
   const res = await fetch(url);
   if (!res.ok) {
-    throw new Error(`Failed to fetch model: ${res.status}`);
+    throw new Error(`Failed to fetch: ${res.status}`);
   }
 
   const buf = await res.arrayBuffer();

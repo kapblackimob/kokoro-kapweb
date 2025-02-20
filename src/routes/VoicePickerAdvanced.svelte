@@ -10,7 +10,7 @@
   import { type Voice } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
   import { serializeVoiceFormula } from "$lib/shared/kokoro";
-  import { SlidersHorizontal } from "lucide-svelte";
+  import { SlidersHorizontal, X } from "lucide-svelte";
 
   // Advanced mode selections: mapping voiceId to its weight.
   let advancedSelections = $state<Record<string, number>>({});
@@ -57,7 +57,7 @@
   <div class="modal-box flex h-screen max-h-[90dvh] flex-col overflow-hidden">
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">
-        ✕
+        <X />
       </button>
     </form>
 

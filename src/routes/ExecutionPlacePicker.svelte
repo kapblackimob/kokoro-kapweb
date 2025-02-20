@@ -4,28 +4,37 @@
 
   interface Props {
     onExecutionPlaceChange: (value: "browser" | "api") => void;
+    onBaseUrlChange: (value: string) => void;
     onApiKeyChange: (value: string) => void;
   }
-  let { onExecutionPlaceChange, onApiKeyChange }: Props = $props();
+  let { onExecutionPlaceChange, onBaseUrlChange, onApiKeyChange }: Props =
+    $props();
 
   let value = $state("browser" as "browser" | "api");
   let isApi = $derived(value === "api");
   let apiKey = $state("");
+  let baseUrl = $state("/api/v1/audio/speech");
   let showApiKey = $state(false);
   let hasMounted = $state(false);
 
   $effect(() => onExecutionPlaceChange(value));
+  $effect(() => onBaseUrlChange(baseUrl));
   $effect(() => onApiKeyChange(apiKey));
 
   onMount(() => {
+    const storedBaseUrl = localStorage.getItem("kokoro-web-base-url");
+    if (storedBaseUrl) baseUrl = storedBaseUrl;
+
     const storedKey = localStorage.getItem("kokoro-web-api-key");
     if (storedKey) apiKey = storedKey;
+
     hasMounted = true;
   });
 
   $effect(() => {
     if (!hasMounted) return;
     localStorage.setItem("kokoro-web-api-key", apiKey);
+    localStorage.setItem("kokoro-web-base-url", baseUrl);
   });
 
   function toggleShowApiKey() {
@@ -72,14 +81,28 @@
     </form>
 
     <h3 class="text-lg font-bold">API Settigs</h3>
+
     <p class="pt-2">
       When you use the API to generate the voice you can optionally include an
-      authentication token.
+      OpenAI compatible Base URL and an authentication token. The default Base
+      URL uses this Kokoro Web instance and is only available for self-hosted
+      instances.
     </p>
+
     <p class="py-2 pb-4 font-semibold">
       This setting is saved in your browser's localStorage and is used for all
       profiles.
     </p>
+
+    <label class="flex-grow">
+      <span class="text-xs font-semibold">Base URL</span>
+      <input
+        type="text"
+        class="input w-full"
+        bind:value={baseUrl}
+        placeholder="Enter an OpenAI compatible API Base URL"
+      />
+    </label>
 
     <label class="flex-grow">
       <span class="text-xs font-semibold">API Key</span>

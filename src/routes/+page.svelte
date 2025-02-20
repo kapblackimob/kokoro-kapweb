@@ -27,6 +27,8 @@
   let format = $state("mp3" as "wav" | "mp3");
   let acceleration = $state("cpu" as "cpu" | "webgpu");
   let executionPlace = $state("browser" as "browser" | "api");
+
+  let baseUrl = $state("");
   let apiKey = $state("");
 
   let webgpuSupported = $state(false);
@@ -94,6 +96,7 @@
 
     <ExecutionPlacePicker
       onExecutionPlaceChange={(newValue) => (executionPlace = newValue)}
+      onBaseUrlChange={(newValue) => (baseUrl = newValue)}
       onApiKeyChange={(newValue) => (apiKey = newValue)}
     />
 

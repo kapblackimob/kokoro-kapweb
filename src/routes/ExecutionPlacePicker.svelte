@@ -1,10 +1,32 @@
 <script lang="ts">
   import { Eye, EyeClosed, Settings, X } from "lucide-svelte";
+  import { onMount } from "svelte";
 
-  let value = $state("browser");
+  interface Props {
+    onExecutionPlaceChange: (value: "browser" | "api") => void;
+    onApiKeyChange: (value: string) => void;
+  }
+  let { onExecutionPlaceChange, onApiKeyChange }: Props = $props();
+
+  let value = $state("browser" as "browser" | "api");
   let isApi = $derived(value === "api");
   let apiKey = $state("");
   let showApiKey = $state(false);
+  let hasMounted = $state(false);
+
+  $effect(() => onExecutionPlaceChange(value));
+  $effect(() => onApiKeyChange(apiKey));
+
+  onMount(() => {
+    const storedKey = localStorage.getItem("kokoro-web-api-key");
+    if (storedKey) apiKey = storedKey;
+    hasMounted = true;
+  });
+
+  $effect(() => {
+    if (!hasMounted) return;
+    localStorage.setItem("kokoro-web-api-key", apiKey);
+  });
 
   function toggleShowApiKey() {
     showApiKey = !showApiKey;

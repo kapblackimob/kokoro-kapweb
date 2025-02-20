@@ -92,7 +92,10 @@
       onChange={handleProfileChange}
     />
 
-    <ExecutionPlacePicker />
+    <ExecutionPlacePicker
+      onExecutionPlaceChange={(newValue) => (executionPlace = newValue)}
+      onApiKeyChange={(newValue) => (apiKey = newValue)}
+    />
 
     <SelectControl
       bind:value={acceleration}

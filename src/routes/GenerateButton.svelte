@@ -27,9 +27,9 @@
   >
     <span>Generate Voice</span>
     {#if loading}
-      <Loader class="animate-spin" />
+      <Loader class="size-5 animate-spin" />
     {:else}
-      <WandSparkles />
+      <WandSparkles class="size-5" />
     {/if}
   </div>
 </button>

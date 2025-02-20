@@ -75,7 +75,7 @@
   <select
     bind:value={selectedProfileIndex}
     onchange={updateSelection}
-    class="select select-bordered select-sm flex-grow"
+    class="select select-bordered flex-grow"
   >
     <option value={-1}>&lt;no profile&gt;</option>
     {#each profiles as profile, index}
@@ -86,7 +86,7 @@
     class="tooltip tooltip-left inline-block"
     data-tip={isNoProfile ? "Create a new profile" : "Save changes"}
   >
-    <button onclick={saveProfile} class="btn btn-square btn-sm">
+    <button onclick={saveProfile} class="btn btn-square">
       {#if isNoProfile}
         <FilePlus class="size-5" />
       {:else}
@@ -99,7 +99,7 @@
       class="tooltip tooltip-left inline-block"
       data-tip="Delete this profile"
     >
-      <button onclick={deleteProfile} class="btn btn-square btn-sm">
+      <button onclick={deleteProfile} class="btn btn-square">
         <Trash class="size-5" />
       </button>
     </div>

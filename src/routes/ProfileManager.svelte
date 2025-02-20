@@ -72,41 +72,48 @@
   }
 </script>
 
-<div class="flex w-full items-center space-x-2">
-  <SelectControl
-    bind:value={selectedProfileIndex}
-    onchange={updateSelection}
-    selectClass="w-full"
-    title="Profile"
-    helpText="Profiles are saved settings that can be loaded later, they are stored in your browser."
-  >
-    <option value={-1}>&lt;no profile&gt;</option>
-    {#each profiles as profile, index}
-      <option value={index}>{profile.name}</option>
-    {/each}
-  </SelectControl>
+<fieldset class="fieldset w-full">
+  <legend class="fieldset-legend">Profile</legend>
 
-  <div
-    class="tooltip tooltip-left mt-[6px] inline-block"
-    data-tip={isNoProfile ? "Create a new profile" : "Save profile changes"}
-  >
-    <button onclick={saveProfile} class="btn btn-square">
-      {#if isNoProfile}
-        <FilePlus class="size-5" />
-      {:else}
-        <Save class="size-5" />
-      {/if}
-    </button>
-  </div>
-
-  {#if !isNoProfile}
-    <div
-      class="tooltip tooltip-left mt-[6px] inline-block"
-      data-tip="Delete this profile"
+  <div class="flex items-center space-x-2">
+    <select
+      class="select w-full"
+      bind:value={selectedProfileIndex}
+      onchange={updateSelection}
     >
-      <button onclick={deleteProfile} class="btn btn-square">
-        <Trash class="size-5" />
+      <option value={-1}>&lt;no profile&gt;</option>
+      {#each profiles as profile, index}
+        <option value={index}>{profile.name}</option>
+      {/each}
+    </select>
+
+    <div
+      class="tooltip tooltip-left inline-block"
+      data-tip={isNoProfile ? "Create a new profile" : "Save profile changes"}
+    >
+      <button onclick={saveProfile} class="btn btn-square">
+        {#if isNoProfile}
+          <FilePlus class="size-5" />
+        {:else}
+          <Save class="size-5" />
+        {/if}
       </button>
     </div>
-  {/if}
-</div>
+
+    {#if !isNoProfile}
+      <div
+        class="tooltip tooltip-left inline-block"
+        data-tip="Delete this profile"
+      >
+        <button onclick={deleteProfile} class="btn btn-square">
+          <Trash class="size-5" />
+        </button>
+      </div>
+    {/if}
+  </div>
+
+  <span class="fieldset-help">
+    Profiles are saved settings that can be loaded later, they are stored in
+    your browser.
+  </span>
+</fieldset>

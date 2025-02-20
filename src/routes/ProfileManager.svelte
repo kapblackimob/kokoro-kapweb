@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SelectControl from "$lib/client/components/SelectControl.svelte";
   import type { LangId, ModelId } from "$lib/shared/resources";
   import { FilePlus, Save, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
@@ -71,20 +72,23 @@
   }
 </script>
 
-<div class="flex items-center space-x-2">
-  <select
+<div class="flex w-full items-center space-x-2">
+  <SelectControl
     bind:value={selectedProfileIndex}
     onchange={updateSelection}
-    class="select select-bordered flex-grow"
+    selectClass="w-full"
+    title="Profile"
+    helpText="Profiles are saved settings that can be loaded later, they are stored in your browser."
   >
     <option value={-1}>&lt;no profile&gt;</option>
     {#each profiles as profile, index}
       <option value={index}>{profile.name}</option>
     {/each}
-  </select>
+  </SelectControl>
+
   <div
-    class="tooltip tooltip-left inline-block"
-    data-tip={isNoProfile ? "Create a new profile" : "Save changes"}
+    class="tooltip tooltip-left mt-[6px] inline-block"
+    data-tip={isNoProfile ? "Create a new profile" : "Save profile changes"}
   >
     <button onclick={saveProfile} class="btn btn-square">
       {#if isNoProfile}
@@ -94,9 +98,10 @@
       {/if}
     </button>
   </div>
+
   {#if !isNoProfile}
     <div
-      class="tooltip tooltip-left inline-block"
+      class="tooltip tooltip-left mt-[6px] inline-block"
       data-tip="Delete this profile"
     >
       <button onclick={deleteProfile} class="btn btn-square">

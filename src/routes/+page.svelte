@@ -81,22 +81,14 @@
 </script>
 
 <div class="space-y-4">
-  <div>
-    <h2 class="text-xl font-bold">Profile</h2>
-    <p>
-      Profiles are saved settings that can be loaded later, they are stored in
-      your browser.
-    </p>
-  </div>
-
-  <ProfileManager
-    currentSettings={{ text, lang, voiceFormula, model, speed, format }}
-    onChange={handleProfileChange}
-  />
-
   <h2 class="text-xl font-bold">Input</h2>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <ProfileManager
+      currentSettings={{ text, lang, voiceFormula, model, speed, format }}
+      onChange={handleProfileChange}
+    />
+
     <SelectControl
       bind:value={acceleration}
       title="Acceleration"

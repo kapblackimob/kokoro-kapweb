@@ -101,6 +101,7 @@
       bind:value={acceleration}
       title="Acceleration"
       selectClass="w-full"
+      disabled={executionPlace === "api"}
     >
       <option value="cpu">CPU</option>
       {#if webgpuSupported}

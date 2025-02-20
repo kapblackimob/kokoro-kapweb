@@ -10,10 +10,13 @@
   let { onExecutionPlaceChange, onBaseUrlChange, onApiKeyChange }: Props =
     $props();
 
+  const defaultBaseUrl = "/api/v1/audio/speech";
+
   let value = $state("browser" as "browser" | "api");
   let isApi = $derived(value === "api");
   let apiKey = $state("");
-  let baseUrl = $state("/api/v1/audio/speech");
+  let baseUrl = $state(defaultBaseUrl);
+  let isDefaultBaseUrl = $derived(baseUrl === defaultBaseUrl);
   let showApiKey = $state(false);
   let hasMounted = $state(false);
 
@@ -39,6 +42,12 @@
 
   function toggleShowApiKey() {
     showApiKey = !showApiKey;
+  }
+
+  function reset() {
+    if (!confirm("Are you sure you want to reset the API settings?")) return;
+    baseUrl = defaultBaseUrl;
+    apiKey = "";
   }
 </script>
 
@@ -82,19 +91,14 @@
 
     <h3 class="text-lg font-bold">API Settigs</h3>
 
-    <p class="pt-2">
-      When you use the API to generate the voice you can optionally include an
-      OpenAI compatible Base URL and an authentication token. The default Base
-      URL uses this Kokoro Web instance and is only available for self-hosted
-      instances.
-    </p>
+    <p class="pt-2">Include an OpenAI compatible Base URL and API Key.</p>
 
-    <p class="py-2 pb-4 font-semibold">
+    <p class="pt-2 font-semibold">
       This setting is saved in your browser's localStorage and is used for all
       profiles.
     </p>
 
-    <label class="flex-grow">
+    <label class="mt-4 block flex-grow">
       <span class="text-xs font-semibold">Base URL</span>
       <input
         type="text"
@@ -102,9 +106,23 @@
         bind:value={baseUrl}
         placeholder="Enter an OpenAI compatible API Base URL"
       />
+      {#if isDefaultBaseUrl}
+        <span class="block pt-1 text-xs font-semibold">
+          <span class="block">
+            The default Base URL is only available for self-hosted instances.
+          </span>
+          <a
+            href="https://github.com/eduardolat/kokoro-web"
+            target="_blank"
+            class="link"
+          >
+            How to self-host?
+          </a>
+        </span>
+      {/if}
     </label>
 
-    <label class="flex-grow">
+    <label class="mt-2 block flex-grow">
       <span class="text-xs font-semibold">API Key</span>
       <div class="mt-1 flex items-center space-x-2">
         <input
@@ -129,9 +147,12 @@
       </div>
     </label>
 
-    <form method="dialog" class="mt-4 flex w-full justify-end">
-      <button class="btn btn-primary">OK</button>
-    </form>
+    <div class="mt-6 flex w-full justify-between space-x-2">
+      <button class="btn btn-ghost" onclick={reset}>Reset</button>
+      <form method="dialog">
+        <button class="btn btn-primary">OK</button>
+      </form>
+    </div>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

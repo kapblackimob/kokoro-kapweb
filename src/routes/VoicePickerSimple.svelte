@@ -5,8 +5,8 @@
   }
   let { lang, onchange }: Props = $props();
 
-  import SelectControl from "$lib/client/components/selectControl.svelte";
   import { voicesByLang, type LangId } from "$lib/shared/resources";
+  import SelectControl from "$lib/client/components/SelectControl.svelte";
 
   // Order voices by language, with the selected language first.
   let orderedVoices = $derived.by(() => {

@@ -10,12 +10,12 @@
     type LangId,
     type ModelId,
   } from "$lib/shared/resources";
-  import SelectControl from "$lib/client/components/selectControl.svelte";
-  import TextareaControl from "$lib/client/components/textareaControl.svelte";
-  import RangeControl from "$lib/client/components/rangeControl.svelte";
-  import VoicePicker from "./voicePicker.svelte";
-  import GenerateButton from "./generateButton.svelte";
+  import SelectControl from "$lib/client/components/SelectControl.svelte";
+  import TextareaControl from "$lib/client/components/TextareaControl.svelte";
+  import RangeControl from "$lib/client/components/RangeControl.svelte";
   import { toaster } from "$lib/client/toaster";
+  import VoicePicker from "./VoicePicker.svelte";
+  import GenerateButton from "./GenerateButton.svelte";
   import ProfileManager from "./ProfileManager.svelte";
 
   let text = $state("Sometimes you win, sometimes you learn.");

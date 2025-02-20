@@ -6,7 +6,7 @@
   let { orderedVoices, onchange }: Props = $props();
 
   import { adjustVoiceWeights } from "$lib/client/utils/adjustVoiceWeights";
-  import RangeControl from "$lib/client/components/rangeControl.svelte";
+  import RangeControl from "$lib/client/components/RangeControl.svelte";
   import { type Voice } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
   import { serializeVoiceFormula } from "$lib/shared/kokoro";

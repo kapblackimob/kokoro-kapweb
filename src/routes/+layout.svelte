@@ -2,7 +2,7 @@
   let { children } = $props();
   import "../app.css";
   import { fade } from "svelte/transition";
-  import ThemeSelect from "$lib/client/components/themeSelect.svelte";
+  import ThemeSelect from "$lib/client/components/ThemeSelect.svelte";
   import { ExternalLink, Menu, X, Github } from "lucide-svelte";
 
   let isOpen = $state(false);

@@ -5,8 +5,8 @@
   }
   let { lang, onchange }: Props = $props();
 
-  import VoicePickerSimple from "./voicePickerSimple.svelte";
-  import VoicePickerAdvanced from "./voicePickerAdvanced.svelte";
+  import VoicePickerSimple from "./VoicePickerSimple.svelte";
+  import VoicePickerAdvanced from "./VoicePickerAdvanced.svelte";
   import { voicesByLang, type LangId } from "$lib/shared/resources";
 
   // Component mode: "simple" for a single selection, "advanced" for multiple with weights.

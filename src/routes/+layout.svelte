@@ -25,7 +25,15 @@
         />
         <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
       </div>
-      <nav class="hidden md:flex md:items-center md:justify-end md:space-x-2">
+      <nav class="hidden md:flex md:items-center md:justify-end">
+        <a
+          href="https://huggingface.co/hexgrad/Kokoro-82M"
+          target="_blank"
+          class="btn btn-ghost"
+        >
+          <ExternalLink class="size-[16px]" />
+          <span>Model 🤗</span>
+        </a>
         <a
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
@@ -42,7 +50,9 @@
           <ExternalLink class="size-[16px]" />
           <span>API Docs</span>
         </a>
-        <ThemeSelect />
+        <div class="ml-2">
+          <ThemeSelect />
+        </div>
       </nav>
       <button
         class="btn btn-ghost btn-square md:hidden"
@@ -69,6 +79,14 @@
           </button>
         </div>
 
+        <a
+          href="https://huggingface.co/hexgrad/Kokoro-82M"
+          target="_blank"
+          class="btn btn-outline flex w-full items-center justify-start space-x-1"
+        >
+          <ExternalLink class="size-[16px]" />
+          <span>Model 🤗</span>
+        </a>
         <a
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"

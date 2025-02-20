@@ -28,7 +28,7 @@ const SAMPLE_RATE = 24000; // sample rate in Hz
  * @param params.model - The model ID.
  * @param params.speed - The speed factor.
  * @param params.format - The output format.
- * @param params.webgpu - Whether to use WebGPU for inference (browser only).
+ * @param params.acceleration - "cpu" or "webgpu" to select acceleration.
  * @returns Concatenated waveform.
  */
 export async function generateVoice(params: {
@@ -38,9 +38,9 @@ export async function generateVoice(params: {
   model: ModelId | string;
   speed: number;
   format: "wav" | "mp3";
-  webgpu: boolean;
+  acceleration: "cpu" | "webgpu";
 }): Promise<{ buffer: ArrayBuffer; mimeType: string }> {
-  if (params.webgpu && !detectWebGPU()) {
+  if (params.acceleration === "webgpu" && !detectWebGPU()) {
     throw new Error("WebGPU is not supported in this environment");
   }
   if (params.speed < 0.1 || params.speed > 5) {
@@ -60,9 +60,9 @@ export async function generateVoice(params: {
   const voices = parseVoiceFormula(params.voiceFormula);
   const combinedVoice = await combineVoices(voices);
 
-  let sessionOpts = {};
-  if (params.webgpu) sessionOpts = { executionProviders: ["webgpu"] };
-  const session = await ort.InferenceSession.create(modelBuffer, sessionOpts);
+  const session = await ort.InferenceSession.create(modelBuffer, {
+    executionProviders: [params.acceleration],
+  });
 
   const waveforms: Float32Array[] = [];
   let waveformsLen = 0;

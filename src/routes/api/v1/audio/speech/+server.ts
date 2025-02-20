@@ -164,7 +164,7 @@ export const POST: RequestHandler = async ({ request }) => {
     model: model,
     speed: speed ?? 1,
     format: response_format ?? "mp3",
-    webgpu: false,
+    acceleration: "cpu",
   });
 
   return new Response(result.buffer, {

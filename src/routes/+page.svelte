@@ -24,21 +24,12 @@
   let model = $state(modelsMap.model.id);
   let speed = $state(1);
   let format = $state("mp3" as "wav" | "mp3");
-  let webgpu = $state(false);
+  let acceleration = $state("cpu" as "cpu" | "webgpu");
 
   let webgpuSupported = $state(false);
-  let webgpuHelpText = $state("This will use the CPU to run the model.");
   onMount(async () => {
     webgpuSupported = await detectWebGPU();
-    webgpu = webgpuSupported;
-  });
-  $effect(() => {
-    if (webgpu) {
-      webgpuHelpText =
-        "WebGPU is faster but may not work as expected, try different models, languages and voices.";
-      return;
-    }
-    webgpuHelpText = "This will use the CPU to run the model.";
+    if (webgpuSupported) acceleration = "webgpu";
   });
 
   let loading = $state(false);
@@ -56,7 +47,7 @@
         model: model,
         speed: speed,
         format: format,
-        webgpu: webgpu,
+        acceleration: acceleration,
       });
 
       const wavBlob = new Blob([result.buffer], { type: result.mimeType });
@@ -107,14 +98,13 @@
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <SelectControl
-      bind:value={webgpu}
+      bind:value={acceleration}
       title="Acceleration"
-      helpText={webgpuHelpText}
       selectClass="w-full"
     >
-      <option value={false}>CPU</option>
+      <option value="cpu">CPU</option>
       {#if webgpuSupported}
-        <option value={true}>WebGPU</option>
+        <option value="webgpu">WebGPU (Faster)</option>
       {:else}
         <option disabled>WebGPU (not supported by your browser)</option>
       {/if}

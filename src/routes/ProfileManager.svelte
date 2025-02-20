@@ -91,7 +91,7 @@
       class="tooltip tooltip-left inline-block"
       data-tip={isNoProfile ? "Create a new profile" : "Save profile changes"}
     >
-      <button onclick={saveProfile} class="btn btn-square">
+      <button onclick={saveProfile} class="btn btn-soft btn-square">
         {#if isNoProfile}
           <FilePlus class="size-5" />
         {:else}
@@ -105,7 +105,7 @@
         class="tooltip tooltip-left inline-block"
         data-tip="Delete this profile"
       >
-        <button onclick={deleteProfile} class="btn btn-square">
+        <button onclick={deleteProfile} class="btn btn-soft btn-square">
           <Trash class="size-5" />
         </button>
       </div>

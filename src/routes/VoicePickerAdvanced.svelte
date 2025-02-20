@@ -107,7 +107,7 @@
         />
       </label>
       <form method="dialog">
-        <button class="btn btn-primary">Ok</button>
+        <button class="btn btn-primary">OK</button>
       </form>
     </div>
   </div>

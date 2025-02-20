@@ -17,6 +17,7 @@
   import VoicePicker from "./VoicePicker.svelte";
   import GenerateButton from "./GenerateButton.svelte";
   import ProfileManager from "./ProfileManager.svelte";
+  import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].id);
@@ -25,6 +26,8 @@
   let speed = $state(1);
   let format = $state("mp3" as "wav" | "mp3");
   let acceleration = $state("cpu" as "cpu" | "webgpu");
+  let executionPlace = $state("browser" as "browser" | "api");
+  let apiKey = $state("");
 
   let webgpuSupported = $state(false);
   onMount(async () => {
@@ -88,6 +91,8 @@
       currentSettings={{ text, lang, voiceFormula, model, speed, format }}
       onChange={handleProfileChange}
     />
+
+    <ExecutionPlacePicker />
 
     <SelectControl
       bind:value={acceleration}

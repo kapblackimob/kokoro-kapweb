@@ -10,7 +10,7 @@
   import { type Voice } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
   import { serializeVoiceFormula } from "$lib/shared/kokoro";
-  import { SlidersHorizontal, X } from "lucide-svelte";
+  import { Settings2, X } from "lucide-svelte";
 
   // Advanced mode selections: mapping voiceId to its weight.
   let advancedSelections = $state<Record<string, number>>({});
@@ -47,8 +47,8 @@
     placeholder="E.g. af_heart*0.4 + am_santa*0.6"
   />
   <div class="tooltip tooltip-left inline-block" data-tip="Formula editor">
-    <div class="btn btn-square btn-ghost">
-      <SlidersHorizontal />
+    <div class="btn btn-square btn-soft">
+      <Settings2 class="size-5" />
     </div>
   </div>
 </button>

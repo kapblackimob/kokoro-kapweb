@@ -91,7 +91,17 @@
 
     <h3 class="text-lg font-bold">API Settigs</h3>
 
-    <p class="pt-2">Include an OpenAI compatible Base URL and API Key.</p>
+    <p class="pt-2">
+      Include an
+      <a
+        href="https://platform.openai.com/docs/guides/text-to-speech?lang=curl"
+        target="_blank"
+        class="link"
+      >
+        OpenAI compatible
+      </a>
+      Base URL and API Key.
+    </p>
 
     <p class="pt-2 font-semibold">
       This setting is saved in your browser's localStorage and is used for all

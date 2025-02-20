@@ -110,7 +110,11 @@
       {/if}
     </SelectControl>
 
-    <SelectControl bind:value={model} title="Model" selectClass="w-full">
+    <SelectControl
+      bind:value={model}
+      title="Model quantization"
+      selectClass="w-full"
+    >
       {#each models as mo}
         <option value={mo.id}>
           {mo.size} - {mo.id} ({mo.quantization})

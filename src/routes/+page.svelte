@@ -75,6 +75,8 @@
     model: ModelId;
     speed: number;
     format: "mp3" | "wav";
+    acceleration: "cpu" | "webgpu";
+    executionPlace: "browser" | "api";
   }) {
     text = settings.text;
     lang = settings.lang;
@@ -82,6 +84,8 @@
     model = settings.model;
     speed = settings.speed;
     format = settings.format;
+    acceleration = settings.acceleration;
+    executionPlace = settings.executionPlace;
   }
 </script>
 
@@ -90,7 +94,16 @@
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <ProfileManager
-      currentSettings={{ text, lang, voiceFormula, model, speed, format }}
+      currentSettings={{
+        text,
+        lang,
+        voiceFormula,
+        model,
+        speed,
+        format,
+        acceleration,
+        executionPlace,
+      }}
       onChange={handleProfileChange}
     />
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import SelectControl from "$lib/client/components/SelectControl.svelte";
   import type { LangId, ModelId } from "$lib/shared/resources";
   import { FilePlus, Save, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
@@ -11,6 +10,8 @@
     model: ModelId;
     speed: number;
     format: "mp3" | "wav";
+    acceleration: "cpu" | "webgpu";
+    executionPlace: "browser" | "api";
   }
 
   interface Profile {

@@ -62,7 +62,7 @@
     </form>
 
     <h3 class="text-lg font-bold">Formula editor</h3>
-    <p class="py-4">
+    <p class="py-2">
       A voice formula blends multiple voices, each with a weight from 0% to 100%
       <i>(0.0 to 1.0)</i>. Higher weights mean more influence, and all weights
       must add up to 1.
@@ -107,7 +107,7 @@
         />
       </label>
       <form method="dialog">
-        <button class="btn btn-primary"> Okay </button>
+        <button class="btn btn-primary">Ok</button>
       </form>
     </div>
   </div>

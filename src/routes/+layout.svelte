@@ -34,6 +34,10 @@
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
         </a>
+        <a href="/api/v1/index.html" target="_blank" class="btn btn-ghost">
+          <ExternalLink class="size-[16px]" />
+          <span>API Docs</span>
+        </a>
         <a
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
@@ -45,10 +49,6 @@
             alt="GitHub Repo stars"
             src="https://img.shields.io/github/stars/eduardolat/kokoro-web?style=plastic&label=%20"
           />
-        </a>
-        <a href="/api/v1/index.html" target="_blank" class="btn btn-ghost">
-          <ExternalLink class="size-[16px]" />
-          <span>API Docs</span>
         </a>
         <div class="ml-2">
           <ThemeSelect />
@@ -82,15 +82,23 @@
         <a
           href="https://huggingface.co/hexgrad/Kokoro-82M"
           target="_blank"
-          class="btn btn-outline flex w-full items-center justify-start space-x-1"
+          class="btn btn-soft flex w-full items-center justify-start space-x-1"
         >
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
         </a>
         <a
+          href="/api/v1/index.html"
+          target="_blank"
+          class="btn btn-soft flex w-full items-center justify-start space-x-1"
+        >
+          <ExternalLink class="size-[16px]" />
+          <span>API Docs</span>
+        </a>
+        <a
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
-          class="btn btn-outline flex w-full items-center justify-start space-x-1"
+          class="btn btn-soft flex w-full items-center justify-start space-x-1"
         >
           <Github class="size-[16px]" />
           <span>Star on GitHub</span>
@@ -98,14 +106,6 @@
             alt="GitHub Repo stars"
             src="https://img.shields.io/github/stars/eduardolat/kokoro-web?style=plastic&label=%20"
           />
-        </a>
-        <a
-          href="/api/v1/index.html"
-          target="_blank"
-          class="btn btn-outline flex w-full items-center justify-start space-x-1"
-        >
-          <ExternalLink class="size-[16px]" />
-          <span>API Docs</span>
         </a>
         <ThemeSelect class="w-full" />
       </nav>

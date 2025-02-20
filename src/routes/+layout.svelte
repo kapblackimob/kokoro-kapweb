@@ -8,14 +8,10 @@
   let isOpen = $state(false);
 </script>
 
-<div
-  class="bg-base-200 h-screen w-screen overflow-x-hidden overflow-y-auto md:px-4 md:pb-4"
->
-  <div
-    class="md:rounded-box mx-auto w-full overflow-hidden md:mt-4 md:max-w-7xl md:shadow-md"
-  >
+<div class="bg-base-100 h-screen w-screen overflow-x-hidden overflow-y-auto">
+  <div class="mx-auto w-full overflow-hidden md:max-w-7xl">
     <header
-      class="bg-base-100 border-base-content/20 flex w-full items-center justify-between border-b p-4 md:px-4 md:pt-4"
+      class="border-base-content/10 flex w-full items-center justify-between border-b p-4"
     >
       <div class="flex items-center space-x-2">
         <img
@@ -111,7 +107,7 @@
       </nav>
     {/if}
 
-    <main class="bg-base-100 mx-auto w-full overflow-y-auto p-4 md:max-w-7xl">
+    <main class="w-full p-4">
       {@render children()}
     </main>
   </div>

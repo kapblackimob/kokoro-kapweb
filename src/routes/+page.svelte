@@ -2,13 +2,21 @@
   import { onMount } from "svelte";
   import { generateVoice } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
-  import { langs, langsMap, models, modelsMap } from "$lib/shared/resources";
+  import {
+    langs,
+    langsMap,
+    models,
+    modelsMap,
+    type LangId,
+    type ModelId,
+  } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/selectControl.svelte";
   import TextareaControl from "$lib/client/components/textareaControl.svelte";
   import RangeControl from "$lib/client/components/rangeControl.svelte";
   import VoicePicker from "./voicePicker.svelte";
   import GenerateButton from "./generateButton.svelte";
   import { toaster } from "$lib/client/toaster";
+  import ProfileManager from "./ProfileManager.svelte";
 
   let text = $state("Sometimes you win, sometimes you learn.");
   let lang = $state(langsMap["en-us"].id);
@@ -63,9 +71,38 @@
       loading = false;
     }
   };
+
+  function handleProfileChange(settings: {
+    text: string;
+    lang: LangId;
+    voiceFormula: string;
+    model: ModelId;
+    speed: number;
+    format: "mp3" | "wav";
+  }) {
+    text = settings.text;
+    lang = settings.lang;
+    voiceFormula = settings.voiceFormula;
+    model = settings.model;
+    speed = settings.speed;
+    format = settings.format;
+  }
 </script>
 
 <div class="space-y-4">
+  <div>
+    <h2 class="text-xl font-bold">Profile</h2>
+    <p>
+      Profiles are saved settings that can be loaded later, they are stored in
+      your browser.
+    </p>
+  </div>
+
+  <ProfileManager
+    currentSettings={{ text, lang, voiceFormula, model, speed, format }}
+    onChange={handleProfileChange}
+  />
+
   <h2 class="text-xl font-bold">Input</h2>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">

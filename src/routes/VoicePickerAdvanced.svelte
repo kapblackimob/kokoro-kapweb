@@ -35,7 +35,7 @@
 
 <button
   class="mt-[10px] flex w-full space-x-2"
-  onclick={(window as any).formula_editor.showModal()}
+  onclick={() => (window as any).formula_editor.showModal()}
 >
   <input
     type="text"

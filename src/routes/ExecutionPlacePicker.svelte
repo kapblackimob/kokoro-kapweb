@@ -35,7 +35,7 @@
       >
         <button
           class="btn btn-soft btn-square"
-          onclick={(window as any).api_settings.showModal()}
+          onclick={() => (window as any).api_settings.showModal()}
         >
           <Settings class="size-5" />
         </button>

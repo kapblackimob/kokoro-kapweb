@@ -42,6 +42,11 @@
       const newName = window.prompt("Enter a new profile name:");
       if (!newName) return;
 
+      if (profiles.some((prof) => prof.name === newName)) {
+        toaster.error("Profile name already exists");
+        return;
+      }
+
       profiles.push({ name: newName, data: { ...profile } });
       selectedProfileIndex = profiles.length - 1;
 

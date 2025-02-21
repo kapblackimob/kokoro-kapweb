@@ -40,7 +40,11 @@
   function saveProfile() {
     if (isNoProfile) {
       const newName = window.prompt("Enter a new profile name:");
-      if (!newName) return;
+
+      if (!newName) {
+        toaster.error("Profile name is required");
+        return;
+      }
 
       if (profiles.some((prof) => prof.name === newName)) {
         toaster.error("Profile name already exists");

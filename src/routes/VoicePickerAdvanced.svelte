@@ -15,14 +15,6 @@
   // Advanced mode selections: mapping voiceId to its weight.
   let advancedSelections = $state<Record<string, number>>({});
 
-  // Update onchange callback when changing the advanced selections.
-  $effect(() => {
-    const selections: VoiceWeight[] = Object.entries(advancedSelections).map(
-      ([voiceId, weight]) => ({ voiceId, weight }),
-    );
-    profile.voiceFormula = serializeVoiceFormula(selections);
-  });
-
   // Update the weight of a voice and adjust others if necessary.
   function updateVoiceWeight(voiceId: string, newWeight: number) {
     advancedSelections = adjustVoiceWeights(
@@ -30,6 +22,11 @@
       voiceId,
       newWeight,
     );
+
+    const selections: VoiceWeight[] = Object.entries(advancedSelections).map(
+      ([voiceId, weight]) => ({ voiceId, weight }),
+    );
+    profile.voiceFormula = serializeVoiceFormula(selections);
   }
 </script>
 

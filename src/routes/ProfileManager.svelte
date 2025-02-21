@@ -9,13 +9,8 @@
   } from "./store.svelte";
   import { toaster } from "$lib/client/toaster";
 
-  interface Profile {
-    name: string;
-    data: ProfileData;
-  }
-
   const localStorageKey = "kokoro-web-profiles";
-  let profiles = $state([] as Profile[]);
+  let profiles = $state<ProfileData[]>([]);
   let selectedProfileIndex = $state(-1);
   let isNoProfile = $derived(selectedProfileIndex === -1);
 
@@ -31,7 +26,7 @@
 
   function updateSelection() {
     if (selectedProfileIndex >= 0 && selectedProfileIndex < profiles.length) {
-      loadProfile(profiles[selectedProfileIndex].data);
+      loadProfile(profiles[selectedProfileIndex]);
     } else {
       loadProfile(defaultProfile);
     }
@@ -41,23 +36,19 @@
     if (isNoProfile) {
       const newName = window.prompt("Enter a new profile name:");
 
-      if (!newName) {
-        toaster.error("Profile name is required");
-        return;
-      }
-
+      if (!newName) return;
       if (profiles.some((prof) => prof.name === newName)) {
         toaster.error("Profile name already exists");
         return;
       }
 
-      profiles.push({ name: newName, data: { ...profile } });
+      profiles.push({ ...profile, name: newName });
       selectedProfileIndex = profiles.length - 1;
 
       saveProfiles();
       updateSelection();
     } else {
-      profiles[selectedProfileIndex].data = { ...profile };
+      profiles[selectedProfileIndex] = { ...profile };
       saveProfiles();
     }
 

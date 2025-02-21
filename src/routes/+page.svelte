@@ -2,14 +2,7 @@
   import { onMount } from "svelte";
   import { generateVoice } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
-  import {
-    langs,
-    langsMap,
-    models,
-    modelsMap,
-    type LangId,
-    type ModelId,
-  } from "$lib/shared/resources";
+  import { langs, models } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/SelectControl.svelte";
   import TextareaControl from "$lib/client/components/TextareaControl.svelte";
   import RangeControl from "$lib/client/components/RangeControl.svelte";
@@ -19,16 +12,6 @@
   import ProfileManager from "./ProfileManager.svelte";
   import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
   import { profile } from "./store.svelte";
-  import { browser } from "$app/environment";
-
-  // let text = $state("Sometimes you win, sometimes you learn.");
-  // let lang = $state(langsMap["en-us"].id);
-  // let voiceFormula = $state("");
-  // let model = $state(modelsMap.model.id);
-  // let speed = $state(1);
-  // let format = $state("mp3" as "wav" | "mp3");
-  // let acceleration = $state("cpu" as "cpu" | "webgpu");
-  // let executionPlace = $state("browser" as "browser" | "api");
 
   let webgpuSupported = $state(false);
   onMount(async () => {

@@ -67,11 +67,13 @@
   function deleteProfile() {
     if (isNoProfile) return;
 
-    if (window.confirm("Are you sure you want to delete this profile?")) {
-      profiles.splice(selectedProfileIndex, 1);
-      selectedProfileIndex = -1;
-      saveProfiles();
+    if (!window.confirm("Are you sure you want to delete this profile?")) {
+      return;
     }
+
+    profiles.splice(selectedProfileIndex, 1);
+    selectedProfileIndex = -1;
+    saveProfiles();
 
     toaster.success("Profile deleted");
   }

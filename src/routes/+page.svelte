@@ -19,6 +19,7 @@
   import ProfileManager from "./ProfileManager.svelte";
   import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
   import { profile } from "./store.svelte";
+  import { browser } from "$app/environment";
 
   // let text = $state("Sometimes you win, sometimes you learn.");
   // let lang = $state(langsMap["en-us"].id);
@@ -76,7 +77,9 @@
     <SelectControl
       bind:value={profile.acceleration}
       disabled={profile.executionPlace === "api"}
-      title="Acceleration"
+      title={profile.executionPlace === "browser"
+        ? "Acceleration"
+        : "Acceleration (Browser only)"}
       selectClass="w-full"
     >
       <option value="cpu">CPU</option>

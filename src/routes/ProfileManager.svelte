@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FilePlus, Save, Trash } from "lucide-svelte";
+  import { Copy, FilePlus, Save, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
   import {
     defaultProfile,
@@ -55,6 +55,31 @@
     toaster.success("Profile saved");
   }
 
+  function duplicateProfile() {
+    if (isNoProfile) return;
+
+    const currentProfile = profiles[selectedProfileIndex];
+    const suggestedName = currentProfile.name + " copy";
+    const newName = window.prompt(
+      "Enter a name for the new profile:",
+      suggestedName,
+    );
+
+    if (!newName) return;
+    if (profiles.some((prof) => prof.name === newName)) {
+      toaster.error("Profile name already exists");
+      return;
+    }
+
+    const duplicatedProfile = { ...currentProfile, name: newName };
+    profiles.push(duplicatedProfile);
+    selectedProfileIndex = profiles.length - 1;
+    saveProfiles();
+    updateSelection();
+
+    toaster.success("Profile duplicated");
+  }
+
   function deleteProfile() {
     if (isNoProfile) return;
 
@@ -101,6 +126,15 @@
     </div>
 
     {#if !isNoProfile}
+      <div
+        class="tooltip tooltip-left inline-block"
+        data-tip="Duplicate this profile"
+      >
+        <button onclick={duplicateProfile} class="btn btn-soft btn-square">
+          <Copy class="size-5" />
+        </button>
+      </div>
+
       <div
         class="tooltip tooltip-left inline-block"
         data-tip="Delete this profile"

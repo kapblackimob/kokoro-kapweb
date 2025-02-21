@@ -1,6 +1,5 @@
 import { detectWebGPU } from "$lib/client/utils";
 import {
-  langsMap,
   modelsMap,
   voicesMap,
   type LangId,
@@ -8,6 +7,7 @@ import {
 } from "$lib/shared/resources";
 
 export interface ProfileData {
+  name: string;
   text: string;
   lang: LangId;
   voiceMode: "simple" | "advanced";
@@ -22,6 +22,7 @@ export interface ProfileData {
 }
 
 export const defaultProfile: ProfileData = {
+  name: "default",
   text: "Sometimes you win, sometimes you learn.",
   lang: voicesMap["af_alloy"].lang.id,
   voiceMode: "simple",
@@ -35,7 +36,9 @@ export const defaultProfile: ProfileData = {
   apiKey: "",
 };
 
-export const profile: ProfileData = $state({ ...defaultProfile });
+export const profile: ProfileData = $state({
+  ...defaultProfile,
+});
 
 export const loadProfile = (newProfile: ProfileData) => {
   const keys = Object.keys(newProfile);

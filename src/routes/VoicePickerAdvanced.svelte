@@ -3,7 +3,7 @@
   import RangeControl from "$lib/client/components/RangeControl.svelte";
   import { type Voice } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
-  import { serializeVoiceFormula } from "$lib/shared/kokoro";
+  import { parseVoiceFormula, serializeVoiceFormula } from "$lib/shared/kokoro";
   import { Settings2, X } from "lucide-svelte";
   import { profile } from "./store.svelte";
 
@@ -14,6 +14,21 @@
 
   // Advanced mode selections: mapping voiceId to its weight.
   let advancedSelections = $state<Record<string, number>>({});
+
+  // Set weights from the profile's when it changes.
+  let lastLoadedName = $state("");
+  $effect(() => {
+    if (profile.name === lastLoadedName) return;
+
+    const parsed = parseVoiceFormula(profile.voiceFormula);
+
+    advancedSelections = {};
+    for (const { voiceId, weight } of parsed) {
+      advancedSelections[voiceId] = weight;
+    }
+
+    lastLoadedName = profile.name;
+  });
 
   // Update the weight of a voice and adjust others if necessary.
   function updateVoiceWeight(voiceId: string, newWeight: number) {

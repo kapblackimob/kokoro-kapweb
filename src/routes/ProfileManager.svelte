@@ -7,6 +7,7 @@
     profile,
     type ProfileData,
   } from "./store.svelte";
+  import { toaster } from "$lib/client/toaster";
 
   interface Profile {
     name: string;
@@ -50,15 +51,20 @@
       profiles[selectedProfileIndex].data = { ...profile };
       saveProfiles();
     }
+
+    toaster.success("Profile saved");
   }
 
   function deleteProfile() {
     if (isNoProfile) return;
+
     if (window.confirm("Are you sure you want to delete this profile?")) {
       profiles.splice(selectedProfileIndex, 1);
       selectedProfileIndex = -1;
       saveProfiles();
     }
+
+    toaster.success("Profile deleted");
   }
 </script>
 

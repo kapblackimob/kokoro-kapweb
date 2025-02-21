@@ -1,26 +1,22 @@
 <script lang="ts">
-  interface Props {
-    lang: string;
-    onchange: (voiceFormula: string) => void;
-  }
-  let { lang, onchange }: Props = $props();
-
   import VoicePickerSimple from "./VoicePickerSimple.svelte";
   import VoicePickerAdvanced from "./VoicePickerAdvanced.svelte";
   import { voicesByLang, type LangId } from "$lib/shared/resources";
+  import { profile } from "./store.svelte";
 
-  // Component mode: "simple" for a single selection, "advanced" for multiple with weights.
-  let mode = $state("simple");
+  let isSimpleMode = $derived(profile.voiceMode === "simple");
+
   function toggleMode() {
-    mode = mode === "simple" ? "advanced" : "simple";
+    profile.voiceMode = profile.voiceMode === "simple" ? "advanced" : "simple";
   }
 
+  // Order voices by language, with the selected language first.
   let orderedVoices = $derived.by(() => {
-    let langVoices = voicesByLang[lang as LangId];
+    let langVoices = voicesByLang[profile.lang];
     let combinedVoices = [langVoices];
 
     let otherVoices = { ...voicesByLang };
-    delete otherVoices[lang as LangId];
+    delete otherVoices[profile.lang];
 
     for (let voices of Object.values(otherVoices)) {
       combinedVoices.push(voices);
@@ -33,23 +29,23 @@
 <div>
   <div class="flex items-end justify-between">
     <span class="text-xs font-semibold">
-      {mode === "simple" ? "Voice (quality)" : "Voice formula"}
+      {isSimpleMode ? "Voice (quality)" : "Voice formula"}
     </span>
 
     <label class="flex items-center space-x-2">
       <input
         type="checkbox"
         class="toggle toggle-sm"
-        checked={mode == "advanced"}
+        checked={profile.voiceMode == "advanced"}
         onclick={toggleMode}
       />
       <span>Advanced Mode</span>
     </label>
   </div>
 
-  {#if mode === "simple"}
-    <VoicePickerSimple {lang} {onchange} />
+  {#if isSimpleMode}
+    <VoicePickerSimple {orderedVoices} />
   {:else}
-    <VoicePickerAdvanced {orderedVoices} {onchange} />
+    <VoicePickerAdvanced {orderedVoices} />
   {/if}
 </div>

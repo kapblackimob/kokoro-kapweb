@@ -1,51 +1,38 @@
 <script lang="ts">
-  import type { LangId, ModelId } from "$lib/shared/resources";
   import { FilePlus, Save, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
-
-  interface Settings {
-    text: string;
-    lang: LangId;
-    voiceFormula: string;
-    model: ModelId;
-    speed: number;
-    format: "mp3" | "wav";
-    acceleration: "cpu" | "webgpu";
-    executionPlace: "browser" | "api";
-  }
+  import {
+    defaultProfile,
+    loadProfile,
+    profile,
+    type ProfileData,
+  } from "./store.svelte";
 
   interface Profile {
     name: string;
-    settings: Settings;
+    data: ProfileData;
   }
 
-  interface Props {
-    currentSettings: Settings;
-    onChange: (settings: Settings) => void;
-  }
-
-  let { currentSettings, onChange }: Props = $props();
-
+  const localStorageKey = "kokoro-web-profiles";
   let profiles = $state([] as Profile[]);
   let selectedProfileIndex = $state(-1);
   let isNoProfile = $derived(selectedProfileIndex === -1);
 
-  onMount(() => {
-    loadProfiles();
-  });
-
+  onMount(() => loadProfiles());
   function loadProfiles() {
-    const stored = localStorage.getItem("kokoro-web-profiles");
+    const stored = localStorage.getItem(localStorageKey);
     profiles = stored ? JSON.parse(stored) : [];
   }
 
   function saveProfiles() {
-    localStorage.setItem("kokoro-web-profiles", JSON.stringify(profiles));
+    localStorage.setItem(localStorageKey, JSON.stringify(profiles));
   }
 
   function updateSelection() {
     if (selectedProfileIndex >= 0 && selectedProfileIndex < profiles.length) {
-      onChange(profiles[selectedProfileIndex].settings);
+      loadProfile(profiles[selectedProfileIndex].data);
+    } else {
+      loadProfile(defaultProfile);
     }
   }
 
@@ -53,12 +40,14 @@
     if (isNoProfile) {
       const newName = window.prompt("Enter a new profile name:");
       if (!newName) return;
-      profiles.push({ name: newName, settings: { ...currentSettings } });
+
+      profiles.push({ name: newName, data: { ...profile } });
       selectedProfileIndex = profiles.length - 1;
+
       saveProfiles();
       updateSelection();
     } else {
-      profiles[selectedProfileIndex].settings = { ...currentSettings };
+      profiles[selectedProfileIndex].data = { ...profile };
       saveProfiles();
     }
   }
@@ -83,8 +72,8 @@
       onchange={updateSelection}
     >
       <option value={-1}>&lt;no profile&gt;</option>
-      {#each profiles as profile, index}
-        <option value={index}>{profile.name}</option>
+      {#each profiles as prof, index}
+        <option value={index}>{prof.name}</option>
       {/each}
     </select>
 

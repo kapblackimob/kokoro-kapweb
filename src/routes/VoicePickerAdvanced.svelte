@@ -1,28 +1,26 @@
 <script lang="ts">
-  interface Props {
-    orderedVoices: Voice[][];
-    onchange: (voiceFormula: string) => void;
-  }
-  let { orderedVoices, onchange }: Props = $props();
-
   import { adjustVoiceWeights } from "$lib/client/utils/adjustVoiceWeights";
   import RangeControl from "$lib/client/components/RangeControl.svelte";
   import { type Voice } from "$lib/shared/resources";
   import type { VoiceWeight } from "$lib/shared/kokoro/combineVoices";
   import { serializeVoiceFormula } from "$lib/shared/kokoro";
   import { Settings2, X } from "lucide-svelte";
+  import { profile } from "./store.svelte";
+
+  interface Props {
+    orderedVoices: Voice[][];
+  }
+  let { orderedVoices }: Props = $props();
 
   // Advanced mode selections: mapping voiceId to its weight.
   let advancedSelections = $state<Record<string, number>>({});
-  let voiceFormula = $state("");
 
   // Update onchange callback when changing the advanced selections.
   $effect(() => {
     const selections: VoiceWeight[] = Object.entries(advancedSelections).map(
       ([voiceId, weight]) => ({ voiceId, weight }),
     );
-    voiceFormula = serializeVoiceFormula(selections);
-    onchange(voiceFormula);
+    profile.voiceFormula = serializeVoiceFormula(selections);
   });
 
   // Update the weight of a voice and adjust others if necessary.
@@ -41,7 +39,7 @@
 >
   <input
     type="text"
-    bind:value={voiceFormula}
+    bind:value={profile.voiceFormula}
     readonly
     class="input flex-grow"
     placeholder="E.g. af_heart*0.4 + am_santa*0.6"
@@ -101,7 +99,7 @@
         <input
           type="text"
           class="input mt-1 w-full"
-          bind:value={voiceFormula}
+          bind:value={profile.voiceFormula}
           readonly
           placeholder="Make changes above"
         />

@@ -1,39 +1,21 @@
 <script lang="ts">
   interface Props {
-    lang: string;
-    onchange: (voiceFormula: string) => void;
+    orderedVoices: Voice[][];
   }
-  let { lang, onchange }: Props = $props();
+  let { orderedVoices }: Props = $props();
 
-  import { voicesByLang, type LangId } from "$lib/shared/resources";
+  import { type Voice } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/SelectControl.svelte";
-
-  // Order voices by language, with the selected language first.
-  let orderedVoices = $derived.by(() => {
-    let langVoices = voicesByLang[lang as LangId];
-    let combinedVoices = [langVoices];
-
-    let otherVoices = { ...voicesByLang };
-    delete otherVoices[lang as LangId];
-
-    for (let voices of Object.values(otherVoices)) {
-      combinedVoices.push(voices);
-    }
-
-    return combinedVoices;
-  });
-
-  let value = $state("");
-  $effect(() => onchange(value));
+  import { profile } from "./store.svelte";
 
   // Every time the selected language changes, select the first voice.
   $effect(() => {
     let firstVoice = orderedVoices[0][0];
-    value = firstVoice.id;
+    profile.voiceFormula = firstVoice.id;
   });
 </script>
 
-<SelectControl bind:value selectClass="w-full mt-[6px]">
+<SelectControl bind:value={profile.voiceFormula} selectClass="w-full mt-[6px]">
   {#each orderedVoices as voicesArr}
     <optgroup label={voicesArr[0].lang.name}>
       {#each voicesArr as vo}

@@ -18,41 +18,38 @@
   import GenerateButton from "./GenerateButton.svelte";
   import ProfileManager from "./ProfileManager.svelte";
   import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
+  import { profile } from "./store.svelte";
 
-  let text = $state("Sometimes you win, sometimes you learn.");
-  let lang = $state(langsMap["en-us"].id);
-  let voiceFormula = $state("");
-  let model = $state(modelsMap.model.id);
-  let speed = $state(1);
-  let format = $state("mp3" as "wav" | "mp3");
-  let acceleration = $state("cpu" as "cpu" | "webgpu");
-  let executionPlace = $state("browser" as "browser" | "api");
-
-  let baseUrl = $state("");
-  let apiKey = $state("");
+  // let text = $state("Sometimes you win, sometimes you learn.");
+  // let lang = $state(langsMap["en-us"].id);
+  // let voiceFormula = $state("");
+  // let model = $state(modelsMap.model.id);
+  // let speed = $state(1);
+  // let format = $state("mp3" as "wav" | "mp3");
+  // let acceleration = $state("cpu" as "cpu" | "webgpu");
+  // let executionPlace = $state("browser" as "browser" | "api");
 
   let webgpuSupported = $state(false);
   onMount(async () => {
     webgpuSupported = await detectWebGPU();
-    if (webgpuSupported) acceleration = "webgpu";
   });
 
   let loading = $state(false);
   let voiceUrl = $state("");
   const process = async () => {
     if (loading) return;
-    if (!text) return;
+    if (!profile.text) return;
 
     loading = true;
     try {
       const result = await generateVoice({
-        text: text,
-        lang: lang,
-        voiceFormula: voiceFormula,
-        model: model,
-        speed: speed,
-        format: format,
-        acceleration: acceleration,
+        text: profile.text,
+        lang: profile.lang,
+        voiceFormula: profile.voiceFormula,
+        model: profile.model,
+        speed: profile.speed,
+        format: profile.format,
+        acceleration: profile.acceleration,
       });
 
       const wavBlob = new Blob([result.buffer], { type: result.mimeType });
@@ -67,57 +64,20 @@
       loading = false;
     }
   };
-
-  function handleProfileChange(settings: {
-    text: string;
-    lang: LangId;
-    voiceFormula: string;
-    model: ModelId;
-    speed: number;
-    format: "mp3" | "wav";
-    acceleration: "cpu" | "webgpu";
-    executionPlace: "browser" | "api";
-  }) {
-    text = settings.text;
-    lang = settings.lang;
-    voiceFormula = settings.voiceFormula;
-    model = settings.model;
-    speed = settings.speed;
-    format = settings.format;
-    acceleration = settings.acceleration;
-    executionPlace = settings.executionPlace;
-  }
 </script>
 
 <div class="space-y-4">
   <h2 class="text-xl font-bold">Input</h2>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-    <ProfileManager
-      currentSettings={{
-        text,
-        lang,
-        voiceFormula,
-        model,
-        speed,
-        format,
-        acceleration,
-        executionPlace,
-      }}
-      onChange={handleProfileChange}
-    />
-
-    <ExecutionPlacePicker
-      onExecutionPlaceChange={(newValue) => (executionPlace = newValue)}
-      onBaseUrlChange={(newValue) => (baseUrl = newValue)}
-      onApiKeyChange={(newValue) => (apiKey = newValue)}
-    />
+    <ProfileManager />
+    <ExecutionPlacePicker />
 
     <SelectControl
-      bind:value={acceleration}
+      bind:value={profile.acceleration}
+      disabled={profile.executionPlace === "api"}
       title="Acceleration"
       selectClass="w-full"
-      disabled={executionPlace === "api"}
     >
       <option value="cpu">CPU</option>
       {#if webgpuSupported}
@@ -128,7 +88,7 @@
     </SelectControl>
 
     <SelectControl
-      bind:value={model}
+      bind:value={profile.model}
       title="Model quantization"
       selectClass="w-full"
     >
@@ -140,7 +100,7 @@
     </SelectControl>
 
     <SelectControl
-      bind:value={lang}
+      bind:value={profile.lang}
       title="Language accent (region)"
       selectClass="w-full"
     >
@@ -149,23 +109,20 @@
       {/each}
     </SelectControl>
 
-    <VoicePicker
-      {lang}
-      onchange={(newVoiceFormula) => (voiceFormula = newVoiceFormula)}
-    />
+    <VoicePicker />
   </div>
 
   <TextareaControl
-    bind:value={text}
+    bind:value={profile.text}
     title="Text to process"
     textareaClass="w-full"
   />
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <RangeControl
-      bind:value={speed}
+      bind:value={profile.speed}
       hideValue={true}
-      title={`Speed ${speed}x`}
+      title={`Speed ${profile.speed}x`}
       inputClass="w-full max-w-[400px]"
       min="0.1"
       max="2"

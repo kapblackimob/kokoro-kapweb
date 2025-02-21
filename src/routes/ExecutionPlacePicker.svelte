@@ -1,53 +1,21 @@
 <script lang="ts">
   import { Eye, EyeClosed, Settings, X } from "lucide-svelte";
-  import { onMount } from "svelte";
+  import { profile, defaultProfile } from "./store.svelte";
 
-  interface Props {
-    onExecutionPlaceChange: (value: "browser" | "api") => void;
-    onBaseUrlChange: (value: string) => void;
-    onApiKeyChange: (value: string) => void;
-  }
-  let { onExecutionPlaceChange, onBaseUrlChange, onApiKeyChange }: Props =
-    $props();
+  const defaultBaseUrl = defaultProfile.apiBaseUrl;
 
-  const defaultBaseUrl = "/api/v1/audio/speech";
-
-  let value = $state("browser" as "browser" | "api");
-  let isApi = $derived(value === "api");
-  let apiKey = $state("");
-  let baseUrl = $state(defaultBaseUrl);
-  let isDefaultBaseUrl = $derived(baseUrl === defaultBaseUrl);
   let showApiKey = $state(false);
-  let hasMounted = $state(false);
-
-  $effect(() => onExecutionPlaceChange(value));
-  $effect(() => onBaseUrlChange(baseUrl));
-  $effect(() => onApiKeyChange(apiKey));
-
-  onMount(() => {
-    const storedBaseUrl = localStorage.getItem("kokoro-web-base-url");
-    if (storedBaseUrl) baseUrl = storedBaseUrl;
-
-    const storedKey = localStorage.getItem("kokoro-web-api-key");
-    if (storedKey) apiKey = storedKey;
-
-    hasMounted = true;
-  });
-
-  $effect(() => {
-    if (!hasMounted) return;
-    localStorage.setItem("kokoro-web-api-key", apiKey);
-    localStorage.setItem("kokoro-web-base-url", baseUrl);
-  });
-
   function toggleShowApiKey() {
     showApiKey = !showApiKey;
   }
 
+  let isApi = $derived(profile.executionPlace === "api");
+  let isDefaultBaseUrl = $derived(profile.apiBaseUrl === defaultBaseUrl);
+
   function reset() {
     if (!confirm("Are you sure you want to reset the API settings?")) return;
-    baseUrl = defaultBaseUrl;
-    apiKey = "";
+    profile.apiBaseUrl = defaultBaseUrl;
+    profile.apiKey = "";
   }
 </script>
 
@@ -55,7 +23,7 @@
   <legend class="fieldset-legend">Execution place</legend>
 
   <div class="flex items-center space-x-2">
-    <select class="select w-full" bind:value>
+    <select class="select w-full" bind:value={profile.executionPlace}>
       <option value="browser">Browser</option>
       <option value="api">API</option>
     </select>
@@ -113,7 +81,7 @@
       <input
         type="text"
         class="input w-full"
-        bind:value={baseUrl}
+        bind:value={profile.apiBaseUrl}
         placeholder="Enter an OpenAI compatible API Base URL"
       />
       {#if isDefaultBaseUrl}
@@ -138,7 +106,7 @@
         <input
           type={showApiKey ? "text" : "password"}
           class="input w-full"
-          bind:value={apiKey}
+          bind:value={profile.apiKey}
           placeholder="Enter your API key"
         />
 

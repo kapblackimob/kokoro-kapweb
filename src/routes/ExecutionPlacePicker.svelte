@@ -29,10 +29,7 @@
     </select>
 
     {#if isApi}
-      <div
-        class="tooltip tooltip-left inline-block"
-        data-tip="API Auth settings"
-      >
+      <div class="tooltip tooltip-left inline-block" data-tip="API settings">
         <button
           class="btn btn-soft btn-square"
           onclick={() => (window as any).api_settings.showModal()}

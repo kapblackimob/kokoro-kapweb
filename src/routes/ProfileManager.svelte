@@ -9,31 +9,40 @@
   } from "./store.svelte";
   import { toaster } from "$lib/client/toaster";
 
-  const localStorageKey = "kokoro-web-profiles";
-  let profiles = $state<ProfileData[]>([]);
-  let selectedProfileIndex = $state(-1);
-  let isNoProfile = $derived(selectedProfileIndex === -1);
+  const localStorageProfilesKey = "kokoro-web-profiles";
+  const newProfileIndex = -1;
 
-  onMount(() => loadProfiles());
+  let profiles = $state<ProfileData[]>([]);
+  let selectedProfileIndex = $state(newProfileIndex);
+  let isNewProfile = $derived(selectedProfileIndex === newProfileIndex);
+
+  $effect(() => {
+    updateSelection(selectedProfileIndex);
+  });
+
+  onMount(() => {
+    loadProfiles();
+  });
+
   function loadProfiles() {
-    const stored = localStorage.getItem(localStorageKey);
+    const stored = localStorage.getItem(localStorageProfilesKey);
     profiles = stored ? JSON.parse(stored) : [];
   }
 
   function saveProfiles() {
-    localStorage.setItem(localStorageKey, JSON.stringify(profiles));
+    localStorage.setItem(localStorageProfilesKey, JSON.stringify(profiles));
   }
 
-  function updateSelection() {
-    if (selectedProfileIndex >= 0 && selectedProfileIndex < profiles.length) {
-      loadProfile(profiles[selectedProfileIndex]);
+  function updateSelection(index: number) {
+    if (index >= 0 && index < profiles.length) {
+      loadProfile(profiles[index]);
     } else {
       loadProfile(defaultProfile);
     }
   }
 
   function saveProfile() {
-    if (isNoProfile) {
+    if (isNewProfile) {
       const newName = window.prompt("Enter a new profile name:");
 
       if (!newName) return;
@@ -43,10 +52,9 @@
       }
 
       profiles.push({ ...profile, name: newName });
-      selectedProfileIndex = profiles.length - 1;
-
       saveProfiles();
-      updateSelection();
+
+      selectedProfileIndex = profiles.length - 1;
     } else {
       profiles[selectedProfileIndex] = { ...profile };
       saveProfiles();
@@ -56,7 +64,7 @@
   }
 
   function duplicateProfile() {
-    if (isNoProfile) return;
+    if (isNewProfile) return;
 
     const currentProfile = profiles[selectedProfileIndex];
     const suggestedName = currentProfile.name + " copy";
@@ -73,24 +81,23 @@
 
     const duplicatedProfile = { ...currentProfile, name: newName };
     profiles.push(duplicatedProfile);
-    selectedProfileIndex = profiles.length - 1;
     saveProfiles();
-    updateSelection();
 
+    selectedProfileIndex = profiles.length - 1;
     toaster.success("Profile duplicated");
   }
 
   function deleteProfile() {
-    if (isNoProfile) return;
+    if (isNewProfile) return;
 
     if (!window.confirm("Are you sure you want to delete this profile?")) {
       return;
     }
 
     profiles.splice(selectedProfileIndex, 1);
-    selectedProfileIndex = -1;
     saveProfiles();
 
+    selectedProfileIndex = newProfileIndex;
     toaster.success("Profile deleted");
   }
 </script>
@@ -99,12 +106,8 @@
   <legend class="fieldset-legend">Profile</legend>
 
   <div class="flex items-center space-x-2">
-    <select
-      class="select w-full"
-      bind:value={selectedProfileIndex}
-      onchange={updateSelection}
-    >
-      <option value={-1}>&lt;new profile&gt;</option>
+    <select class="select w-full" bind:value={selectedProfileIndex}>
+      <option value={newProfileIndex}>&lt;new profile&gt;</option>
       {#each profiles as prof, index}
         <option value={index}>{prof.name}</option>
       {/each}
@@ -112,12 +115,12 @@
 
     <div
       class="tooltip tooltip-left inline-block"
-      data-tip={isNoProfile
+      data-tip={isNewProfile
         ? "Save changes to a new profile"
         : "Save profile changes"}
     >
       <button onclick={saveProfile} class="btn btn-soft btn-square">
-        {#if isNoProfile}
+        {#if isNewProfile}
           <FilePlus class="size-5" />
         {:else}
           <Save class="size-5" />
@@ -125,7 +128,7 @@
       </button>
     </div>
 
-    {#if !isNoProfile}
+    {#if !isNewProfile}
       <div
         class="tooltip tooltip-left inline-block"
         data-tip="Duplicate this profile"

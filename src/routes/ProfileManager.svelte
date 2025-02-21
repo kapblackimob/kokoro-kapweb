@@ -79,7 +79,7 @@
       bind:value={selectedProfileIndex}
       onchange={updateSelection}
     >
-      <option value={-1}>&lt;no profile&gt;</option>
+      <option value={-1}>&lt;new profile&gt;</option>
       {#each profiles as prof, index}
         <option value={index}>{prof.name}</option>
       {/each}
@@ -87,7 +87,9 @@
 
     <div
       class="tooltip tooltip-left inline-block"
-      data-tip={isNoProfile ? "Create a new profile" : "Save profile changes"}
+      data-tip={isNoProfile
+        ? "Save changes to a new profile"
+        : "Save profile changes"}
     >
       <button onclick={saveProfile} class="btn btn-soft btn-square">
         {#if isNoProfile}

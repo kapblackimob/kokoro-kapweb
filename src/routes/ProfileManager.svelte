@@ -116,7 +116,7 @@
     <div
       class="tooltip tooltip-left inline-block"
       data-tip={isNewProfile
-        ? "Save changes to a new profile"
+        ? "Save current changes to a new profile"
         : "Save profile changes"}
     >
       <button onclick={saveProfile} class="btn btn-soft btn-square">

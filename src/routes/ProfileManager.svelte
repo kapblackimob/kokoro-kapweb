@@ -149,7 +149,7 @@
     {/if}
   </div>
 
-  <span class="fieldset-help">
+  <span class="fieldset-label">
     Profiles are saved settings that can be loaded later, they are stored in
     your browser.
   </span>

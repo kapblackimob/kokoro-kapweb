@@ -32,6 +32,6 @@
     {/if}
   </select>
   {#if helpText}
-    <span class="fieldset-help {helpTextClass}">{helpText}</span>
+    <span class="fieldset-label {helpTextClass}">{helpText}</span>
   {/if}
 </fieldset>

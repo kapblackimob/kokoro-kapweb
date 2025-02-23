@@ -40,7 +40,7 @@
     {/if}
   </div>
 
-  <span class="fieldset-help">
+  <span class="fieldset-label">
     Select where the generation will occur. API is only available for
     self-hosted instances.
   </span>

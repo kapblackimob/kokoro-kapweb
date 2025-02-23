@@ -102,6 +102,7 @@
   <TextareaControl
     bind:value={profile.text}
     title="Text to process"
+    helpText="You can add synthetic pauses by adding a silence tags measured in seconds. E.g. Hello[1s]Kokoro[0.2s]Web"
     textareaClass="w-full"
   />
 

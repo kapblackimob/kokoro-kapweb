@@ -107,7 +107,7 @@
       </nav>
     {/if}
 
-    <main class="mb-[100px] w-full pt-4">
+    <main class="mb-[100px] w-full px-4 pt-4">
       {@render children()}
     </main>
   </div>

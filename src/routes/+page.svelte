@@ -122,7 +122,7 @@
   {#if voiceUrl !== ""}
     <div class="space-y-4 pt-2">
       <h2 class="text-xl font-bold">Output</h2>
-      <AudioPlayer audioUrl={voiceUrl} />
+      <AudioPlayer audioUrl={voiceUrl} showSpectrogram={true} />
     </div>
   {/if}
 </div>

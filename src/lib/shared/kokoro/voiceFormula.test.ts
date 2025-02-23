@@ -70,12 +70,12 @@ describe("parseVoiceFormula", () => {
   });
 
   it("should round weights to the nearest 0.1", () => {
-    const formula = "voice1*0.333 + voice2*0.667";
+    const formula = "voice2*0.667 + voice1*0.333";
     // 0.333 rounds to 0.3 and 0.667 rounds to 0.7 (total 1.0)
     const result = parseVoiceFormula(formula);
     expect(result).toEqual([
-      { voiceId: "voice1", weight: 0.3 },
       { voiceId: "voice2", weight: 0.7 },
+      { voiceId: "voice1", weight: 0.3 },
     ]);
   });
 });
@@ -93,7 +93,7 @@ describe("serializeVoiceFormula", () => {
       { voiceId: "voice2", weight: 0.7 },
     ];
     const formula = serializeVoiceFormula(voiceWeights);
-    expect(formula).toBe("voice1*0.3 + voice2*0.7");
+    expect(formula).toBe("voice2*0.7 + voice1*0.3");
   });
 
   it("should produce a formula that round-trips with parseVoiceFormula", () => {
@@ -112,7 +112,7 @@ describe("serializeVoiceFormula", () => {
       { voiceId: "voice2", weight: 0.667 },
     ];
     const formula = serializeVoiceFormula(voiceWeights);
-    expect(formula).toBe("voice1*0.3 + voice2*0.7");
+    expect(formula).toBe("voice2*0.7 + voice1*0.3");
   });
 
   it("should remove voices with weight 0 or less", () => {

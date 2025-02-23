@@ -16,13 +16,13 @@ vi.mock("$lib/shared/phonemizer", () => ({
 describe("sanitizeText", () => {
   it("should replace punctuation and newlines with silence markers", () => {
     const input = "Hello, world! How are you?\nI'm fine.";
-    const expected = "Hello[0.2s]world![0.2s]How are you?[0.2s]I'm fine.";
+    const expected = "Hello[0.2s]world![0.1s]How are you?[0.1s]I'm fine.";
     expect(sanitizeText(input)).toBe(expected);
   });
 
   it("should trim extra whitespace", () => {
     const input = "  Hello, world!  ";
-    const expected = "Hello[0.2s]world![0.2s]";
+    const expected = "Hello[0.2s]world![0.1s]";
     expect(sanitizeText(input)).toBe(expected);
   });
 });

@@ -95,6 +95,8 @@ export function parseVoiceFormula(formula: string): VoiceWeight[] {
  * @returns {string} The serialized voice formula.
  */
 export function serializeVoiceFormula(voiceWeights: VoiceWeight[]): string {
+  voiceWeights.sort((a, b) => b.weight - a.weight);
+
   voiceWeights = voiceWeights.filter((vw) => vw.weight > 0);
   return voiceWeights
     .map((vw) => `${vw.voiceId}*${roundToNearest(vw.weight)}`)

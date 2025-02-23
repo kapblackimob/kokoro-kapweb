@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { detectWebGPU } from "$lib/client/utils";
 import {
   modelsMap,
@@ -21,6 +22,11 @@ export interface ProfileData {
   apiKey: string;
 }
 
+function getCurrentHost() {
+  if (!browser) return "";
+  return `${window.location.protocol}//${window.location.host}`;
+}
+
 export const defaultProfile: ProfileData = {
   name: "default",
   text: "Sometimes you win, sometimes you learn.",
@@ -32,7 +38,7 @@ export const defaultProfile: ProfileData = {
   format: "mp3",
   acceleration: (await detectWebGPU()) ? "webgpu" : "cpu",
   executionPlace: "browser",
-  apiBaseUrl: "/api/v1/audio/speech",
+  apiBaseUrl: `${getCurrentHost()}/api/v1`,
   apiKey: "",
 };
 

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { generateVoice } from "$lib/shared/kokoro";
   import { detectWebGPU } from "$lib/client/utils";
   import { langs, models } from "$lib/shared/resources";
   import SelectControl from "$lib/client/components/SelectControl.svelte";
@@ -13,6 +12,7 @@
   import ProfileManager from "./ProfileManager.svelte";
   import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
   import { profile } from "./store.svelte";
+  import { generate } from "./generate";
 
   let webgpuSupported = $state(false);
   onMount(async () => {
@@ -27,20 +27,7 @@
 
     loading = true;
     try {
-      const result = await generateVoice({
-        text: profile.text,
-        lang: profile.lang,
-        voiceFormula: profile.voiceFormula,
-        model: profile.model,
-        speed: profile.speed,
-        format: profile.format,
-        acceleration: profile.acceleration,
-      });
-
-      const wavBlob = new Blob([result.buffer], { type: result.mimeType });
-      const url = URL.createObjectURL(wavBlob);
-      voiceUrl = url;
-
+      voiceUrl = await generate(profile);
       toaster.success("Audio generated successfully");
     } catch (error) {
       console.error(error);

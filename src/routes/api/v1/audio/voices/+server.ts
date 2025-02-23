@@ -1,6 +1,7 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { voices } from "$lib/shared/resources";
+import { authenticate } from "$lib/server/authenticate";
 
 /**
  * @openapi
@@ -54,6 +55,12 @@ import { voices } from "$lib/shared/resources";
  *                   name: "English (US)"
  */
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ request }) => {
+  try {
+    authenticate(request);
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 401 });
+  }
+
   return json(voices);
 };

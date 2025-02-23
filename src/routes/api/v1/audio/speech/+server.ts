@@ -10,6 +10,7 @@ import {
   type VoiceId,
   type ModelId,
 } from "$lib/shared/resources";
+import { authenticate } from "$lib/server/authenticate";
 
 /**
  * @openapi
@@ -140,6 +141,12 @@ const schema = zod.object({
 });
 
 export const POST: RequestHandler = async ({ request }) => {
+  try {
+    authenticate(request);
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 401 });
+  }
+
   const parsed = schema.safeParse(await request.json());
 
   if (!parsed.success) {

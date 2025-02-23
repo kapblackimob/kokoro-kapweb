@@ -1,6 +1,7 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { langs } from "$lib/shared/resources";
+import { authenticate } from "$lib/server/authenticate";
 
 /**
  * @openapi
@@ -30,6 +31,12 @@ import { langs } from "$lib/shared/resources";
  *                 name: "English"
  */
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ request }) => {
+  try {
+    authenticate(request);
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 401 });
+  }
+
   return json(langs);
 };

@@ -4,6 +4,7 @@ import { fromError } from "zod-validation-error";
 import type { RequestHandler } from "./$types";
 import { phonemize } from "$lib/shared/phonemizer";
 import { langsIds, type LangId } from "$lib/shared/resources";
+import { authenticate } from "$lib/server/authenticate";
 
 /**
  * @openapi
@@ -60,6 +61,12 @@ const schema = zod.object({
 });
 
 export const POST: RequestHandler = async ({ request }) => {
+  try {
+    authenticate(request);
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 401 });
+  }
+
   const parsed = schema.safeParse(await request.json());
   if (!parsed.success) {
     return error(400, fromError(parsed.error).toString());

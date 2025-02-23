@@ -1,6 +1,7 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { models } from "$lib/shared/resources";
+import { authenticate } from "$lib/server/authenticate";
 
 /**
  * @openapi
@@ -34,6 +35,12 @@ import { models } from "$lib/shared/resources";
  *                 size: "326 MB"
  */
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ request }) => {
+  try {
+    authenticate(request);
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 401 });
+  }
+
   return json(models);
 };

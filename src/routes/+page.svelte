@@ -6,6 +6,7 @@
   import SelectControl from "$lib/client/components/SelectControl.svelte";
   import TextareaControl from "$lib/client/components/TextareaControl.svelte";
   import RangeControl from "$lib/client/components/RangeControl.svelte";
+  import AudioPlayer from "$lib/client/components/AudioPlayer.svelte";
   import { toaster } from "$lib/client/toaster";
   import VoicePicker from "./VoicePicker.svelte";
   import GenerateButton from "./GenerateButton.svelte";
@@ -118,9 +119,10 @@
     <GenerateButton {loading} onclick={() => process()} />
   </div>
 
-  <div class="space-y-4 pt-2">
-    <h2 class="text-xl font-bold">Output</h2>
-
-    <audio class="w-full" src={voiceUrl} controls></audio>
-  </div>
+  {#if voiceUrl !== ""}
+    <div class="space-y-4 pt-2">
+      <h2 class="text-xl font-bold">Output</h2>
+      <AudioPlayer audioUrl={voiceUrl} />
+    </div>
+  {/if}
 </div>

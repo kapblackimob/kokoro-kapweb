@@ -19,7 +19,12 @@
           alt="Kokoro Web Logo"
           class="size-[40px] rounded-full shadow-sm md:size-[50px]"
         />
-        <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
+        <div class="text-nowrap">
+          <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
+          <h2 class="text-sm font-semibold md:text-base">
+            Free online voice generator
+          </h2>
+        </div>
       </div>
       <nav class="hidden md:flex md:items-center md:justify-end">
         <a

@@ -8,7 +8,10 @@
  * @param eventData The event data
  */
 export const track = (event: string, eventData?: any) => {
-  if ((window as any).disableTracking) return;
+  if ((window as any).disableTracking) {
+    console.log("Tracking is disabled");
+    return;
+  }
 
   if (typeof (window as any).umami !== "undefined") {
     (window as any).umami.track(event, eventData);
@@ -29,7 +32,10 @@ export const track = (event: string, eventData?: any) => {
  * @param sessionData The session data
  */
 export const identify = (sessionData: any) => {
-  if ((window as any).disableTracking) return;
+  if ((window as any).disableTracking) {
+    console.log("Tracking is disabled");
+    return;
+  }
 
   if (typeof (window as any).umami !== "undefined") {
     (window as any).umami.identify(sessionData);

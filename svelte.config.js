@@ -10,6 +10,12 @@ const config = {
   kit: {
     // See https://svelte.dev/docs/kit/adapters for more information about adapters.
     adapter: adapter(),
+
+    // See https://svelte.dev/docs/kit/configuration#env
+    env: {
+      privatePrefix: "KW_SECRET_",
+      publicPrefix: "KW_PUBLIC_",
+    },
   },
 };
 

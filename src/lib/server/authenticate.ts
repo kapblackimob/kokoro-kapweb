@@ -7,7 +7,7 @@ import { env } from "$env/dynamic/private";
  * @param request - Incoming request
  */
 export function authenticate(request: Request) {
-  if (!env.KW_API_KEY) return;
+  if (!env.KW_SECRET_API_KEY) return;
 
   let authToken = request.headers.get("Authorization");
   if (!authToken) {
@@ -17,7 +17,7 @@ export function authenticate(request: Request) {
   authToken = authToken.replace("Bearer ", "");
   authToken = authToken.replace("bearer ", "");
 
-  if (authToken !== env.KW_API_KEY) {
+  if (authToken !== env.KW_SECRET_API_KEY) {
     throw new Error("Unauthorized");
   }
 }

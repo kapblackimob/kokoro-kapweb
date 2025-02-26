@@ -13,7 +13,6 @@
 
   onMount(() => {
     umami.loadScript();
-    umami.track("visit", { hostname: window.location.hostname });
     umami.identify({ hostname: window.location.hostname });
   });
 </script>
@@ -41,11 +40,17 @@
           href="https://huggingface.co/hexgrad/Kokoro-82M"
           target="_blank"
           class="btn btn-ghost"
+          data-umami-event="click-model"
         >
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
         </a>
-        <a href="/api/v1/index.html" target="_blank" class="btn btn-ghost">
+        <a
+          href="/api/v1/index.html"
+          target="_blank"
+          class="btn btn-ghost"
+          data-umami-event="click-api-docs"
+        >
           <ExternalLink class="size-[16px]" />
           <span>API Docs</span>
         </a>
@@ -53,6 +58,7 @@
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
           class="btn btn-ghost"
+          data-umami-event="click-star-on-github"
         >
           <Github class="size-[16px]" />
           <span>Star on GitHub</span>
@@ -94,6 +100,7 @@
           href="https://huggingface.co/hexgrad/Kokoro-82M"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
+          data-umami-event="click-model"
         >
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
@@ -102,6 +109,7 @@
           href="/api/v1/index.html"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
+          data-umami-event="click-api-docs"
         >
           <ExternalLink class="size-[16px]" />
           <span>API Docs</span>
@@ -110,6 +118,7 @@
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
+          data-umami-event="click-star-on-github"
         >
           <Github class="size-[16px]" />
           <span>Star on GitHub</span>

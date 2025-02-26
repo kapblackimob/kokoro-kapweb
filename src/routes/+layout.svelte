@@ -5,32 +5,18 @@
   import { ExternalLink, Menu, X, Github } from "lucide-svelte";
   import type { LayoutProps } from "./$types";
   import { onMount } from "svelte";
-  import { identify, track } from "$lib/client/umami";
-  import { browser } from "$app/environment";
+  import umami from "$lib/client/umami";
 
-  let { data, children }: LayoutProps = $props();
+  let { children }: LayoutProps = $props();
 
   let isOpen = $state(false);
 
   onMount(() => {
-    if (!data.enableTracking) return;
-    if (!browser) return;
-    track("visit", { hostname: window.location.hostname });
-    identify({ hostname: window.location.hostname });
+    umami.loadScript();
+    umami.track("visit", { hostname: window.location.hostname });
+    umami.identify({ hostname: window.location.hostname });
   });
 </script>
-
-{#if data.enableTracking}
-  <script
-    defer
-    src="https://anl.worldscode.com/script.js"
-    data-website-id="e39763f4-3409-437e-ab78-25239fcd6d6e"
-  ></script>
-{:else}
-  <script>
-    window.disableTracking = true;
-  </script>
-{/if}
 
 <div class="bg-base-100 h-screen w-screen overflow-x-hidden overflow-y-auto">
   <div class="mx-auto w-full overflow-hidden md:max-w-7xl">

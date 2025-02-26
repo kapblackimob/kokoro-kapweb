@@ -1,14 +1,14 @@
 import OpenAI from "openai";
 import { generateVoice } from "$lib/shared/kokoro";
 import type { ProfileData } from "./store.svelte";
-import { track } from "$lib/client/umami";
+import umami from "$lib/client/umami";
 
 /**
  * Generate runs the text to speech generation process both in the browser
  * and in the API.
  */
 export async function generate(profile: ProfileData): Promise<string> {
-  track("generate", {
+  umami.track("generate", {
     lang: profile.lang,
     voiceMode: profile.voiceMode,
     voiceFormula: profile.voiceFormula,

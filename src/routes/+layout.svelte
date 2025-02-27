@@ -31,7 +31,7 @@
         <div class="text-nowrap">
           <h1 class="text-xl font-bold md:text-3xl">Kokoro Web</h1>
           <h2 class="text-sm font-semibold md:text-base">
-            Free online voice generator
+            Free AI Voice Generator
           </h2>
         </div>
       </div>

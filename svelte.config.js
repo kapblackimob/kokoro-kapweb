@@ -1,5 +1,18 @@
-import adapter from "@sveltejs/adapter-node";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+
+import adapterNode from "@sveltejs/adapter-node";
+import adapterStatic from "@sveltejs/adapter-static";
+
+// https://svelte.dev/docs/kit/adapter-node
+let adapter = adapterNode();
+
+// https://svelte.dev/docs/kit/adapter-static
+if (process.env.ADAPTER === "static") {
+  adapter = adapterStatic({
+    strict: false,
+    fallback: "index.html",
+  });
+}
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,7 +22,7 @@ const config = {
 
   kit: {
     // See https://svelte.dev/docs/kit/adapters for more information about adapters.
-    adapter: adapter(),
+    adapter: adapter,
 
     // See https://svelte.dev/docs/kit/configuration#env
     env: {

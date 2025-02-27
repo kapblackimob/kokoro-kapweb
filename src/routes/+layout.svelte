@@ -87,7 +87,7 @@
         "
         transition:fade={{ duration: 100 }}
       >
-        <div class="flex justify-end">
+        <div class="mb-4 flex justify-end">
           <button
             class="btn btn-ghost btn-square md:hidden"
             onclick={() => (isOpen = !isOpen)}

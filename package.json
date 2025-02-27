@@ -1,7 +1,6 @@
 {
   "name": "kokoro-web",
   "private": true,
-  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "npm run openapigen && vite dev --host 0.0.0.0",

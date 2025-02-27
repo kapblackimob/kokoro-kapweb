@@ -11,6 +11,7 @@
   import GenerateButton from "./GenerateButton.svelte";
   import ProfileManager from "./ProfileManager.svelte";
   import ExecutionPlacePicker from "./ExecutionPlacePicker.svelte";
+  import VersionChecker from "./VersionChecker.svelte";
   import { profile } from "./store.svelte";
   import { generate } from "./generate";
 
@@ -39,6 +40,8 @@
 </script>
 
 <div class="space-y-4">
+  <VersionChecker />
+
   <h2 class="text-xl font-bold">Input</h2>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2">

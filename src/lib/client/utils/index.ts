@@ -1,1 +1,1 @@
-export * from "./detectWebgpu";
+export * from "./detectWebGPU";

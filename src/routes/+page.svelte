@@ -15,8 +15,8 @@
   import { generate } from "./generate";
 
   let webgpuSupported = $state(false);
-  onMount(async () => {
-    webgpuSupported = await detectWebGPU();
+  onMount(() => {
+    webgpuSupported = detectWebGPU();
   });
 
   let loading = $state(false);

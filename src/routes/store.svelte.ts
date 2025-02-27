@@ -36,7 +36,7 @@ export const defaultProfile: ProfileData = {
   model: modelsMap.model.id,
   speed: 1,
   format: "mp3",
-  acceleration: (await detectWebGPU()) ? "webgpu" : "cpu",
+  acceleration: detectWebGPU() ? "webgpu" : "cpu",
   executionPlace: "browser",
   apiBaseUrl: `${getCurrentHost()}/api/v1`,
   apiKey: "",

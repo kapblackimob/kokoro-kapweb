@@ -40,7 +40,7 @@
           href="https://huggingface.co/hexgrad/Kokoro-82M"
           target="_blank"
           class="btn btn-ghost"
-          data-umami-event="click-model"
+          data-umami-event="click-model-header"
         >
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
@@ -49,7 +49,7 @@
           href="/api/v1/index.html"
           target="_blank"
           class="btn btn-ghost"
-          data-umami-event="click-api-docs"
+          data-umami-event="click-api-docs-header"
         >
           <ExternalLink class="size-[16px]" />
           <span>API Docs</span>
@@ -58,7 +58,7 @@
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
           class="btn btn-ghost"
-          data-umami-event="click-star-on-github"
+          data-umami-event="click-star-on-github-header"
         >
           <Github class="size-[16px]" />
           <span>Star on GitHub</span>
@@ -100,7 +100,7 @@
           href="https://huggingface.co/hexgrad/Kokoro-82M"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
-          data-umami-event="click-model"
+          data-umami-event="click-model-header"
         >
           <ExternalLink class="size-[16px]" />
           <span>Model 🤗</span>
@@ -109,7 +109,7 @@
           href="/api/v1/index.html"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
-          data-umami-event="click-api-docs"
+          data-umami-event="click-api-docs-header"
         >
           <ExternalLink class="size-[16px]" />
           <span>API Docs</span>
@@ -118,7 +118,7 @@
           href="https://github.com/eduardolat/kokoro-web"
           target="_blank"
           class="btn btn-soft flex w-full items-center justify-start space-x-1"
-          data-umami-event="click-star-on-github"
+          data-umami-event="click-star-on-github-header"
         >
           <Github class="size-[16px]" />
           <span>Star on GitHub</span>
@@ -131,8 +131,66 @@
       </nav>
     {/if}
 
-    <main class="mb-[100px] w-full px-4 pt-4">
+    <main class="mb-[30px] w-full p-4">
       {@render children()}
     </main>
+
+    <footer class="border-base-content/10 border-t px-4 pt-[50px] pb-[100px]">
+      <div class="container mx-auto text-center">
+        <div class="mb-4">
+          <p class="text-lg font-bold">Kokoro Web</p>
+          <p class="text-sm opacity-80">
+            100% Free & Open Source AI Voice Generator
+          </p>
+        </div>
+
+        <div class="mb-4 flex flex-wrap justify-center gap-4">
+          <a
+            href="https://huggingface.co/hexgrad/Kokoro-82M"
+            target="_blank"
+            class="flex items-center gap-1 text-sm hover:underline"
+            data-umami-event="click-model-footer"
+          >
+            <ExternalLink class="size-[14px]" />
+            <span>Powered by Kokoro 82M</span>
+          </a>
+
+          <a
+            href="https://github.com/eduardolat/kokoro-web"
+            target="_blank"
+            class="flex items-center gap-1 text-sm hover:underline"
+            data-umami-event="click-github-footer"
+          >
+            <Github class="size-[14px]" />
+            <span>Self-hostable</span>
+          </a>
+
+          <a
+            href="/api/v1/index.html"
+            target="_blank"
+            class="flex items-center gap-1 text-sm hover:underline"
+            data-umami-event="click-api-docs-footer"
+          >
+            <ExternalLink class="size-[14px]" />
+            <span>OpenAI Compatible API</span>
+          </a>
+        </div>
+
+        <p class="text-xs opacity-70">
+          © {new Date().getFullYear()} Kokoro Web
+          <span class="mx-1">•</span>
+          Free for personal and commercial use
+          <span class="mx-1">•</span>
+          <a
+            href="https://eduardo.lat?utm_source=kokoro&utm_medium=web&utm_campaign=footer_link"
+            target="_blank"
+            class="link"
+            data-umami-event="click-author-website"
+          >
+            Created by Eduardo Lat
+          </a>
+        </p>
+      </div>
+    </footer>
   </div>
 </div>

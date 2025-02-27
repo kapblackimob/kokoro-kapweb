@@ -97,7 +97,7 @@
       {/if}
     </label>
 
-    <label class="mt-2 block flex-grow">
+    <label class="mt-4 block flex-grow">
       <span class="text-xs font-semibold">API Key</span>
       <div class="mt-1 flex items-center space-x-2">
         <input
@@ -122,7 +122,7 @@
       </div>
     </label>
 
-    <div class="mt-6 flex w-full justify-between space-x-2">
+    <div class="mt-8 flex w-full justify-between space-x-2">
       <button class="btn btn-ghost" onclick={reset}>Reset</button>
       <form method="dialog">
         <button class="btn btn-primary">OK</button>

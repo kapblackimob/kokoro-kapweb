@@ -6,6 +6,7 @@
   import type { LayoutProps } from "./$types";
   import { onMount } from "svelte";
   import umami from "$lib/client/umami";
+  import { VERSION } from "$lib/shared/version";
 
   let { children }: LayoutProps = $props();
 
@@ -138,7 +139,7 @@
     <footer class="border-base-content/10 border-t px-4 pt-[50px] pb-[100px]">
       <div class="container mx-auto text-center">
         <div class="mb-4">
-          <p class="text-lg font-bold">Kokoro Web</p>
+          <p class="text-lg font-bold">Kokoro Web {VERSION}</p>
           <p class="text-sm opacity-80">
             100% Free & Open Source AI Voice Generator
           </p>
@@ -177,7 +178,7 @@
         </div>
 
         <p class="text-xs opacity-70">
-          © {new Date().getFullYear()} Kokoro Web
+          Kokoro Web
           <span class="mx-1">•</span>
           Free for personal and commercial use
           <span class="mx-1">•</span>

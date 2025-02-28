@@ -136,7 +136,7 @@
       {@render children()}
     </main>
 
-    <footer class="border-base-content/10 border-t px-4 pt-[50px] pb-[100px]">
+    <footer class="border-base-content/10 border-t px-4 py-[50px]">
       <div class="container mx-auto text-center">
         <div class="mb-4">
           <p class="text-lg font-bold">Kokoro Web {VERSION}</p>

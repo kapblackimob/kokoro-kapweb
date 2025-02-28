@@ -37,6 +37,8 @@ Kokoro Web is powered by [hexgrad/Kokoro-82M](https://huggingface.co/hexgrad/Kok
 
 > Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost-efficient. With Apache-licensed weights, Kokoro can be deployed anywhere from production environments to personal projects.
 
+This is one of the top-ranked models in [TTS Arena](https://huggingface.co/spaces/TTS-AGI/TTS-Arena), just behind ElevenLabs.
+
 Special thanks to the model creators for making this technology accessible.
 
 ## 🚀 Usage

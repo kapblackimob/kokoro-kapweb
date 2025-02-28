@@ -1,6 +1,7 @@
 import { browser } from "$app/environment";
 import { detectWebGPU } from "$lib/client/utils";
 import {
+  getRandomQuote,
   modelsMap,
   voicesMap,
   type LangId,
@@ -29,7 +30,7 @@ function getCurrentHost() {
 
 export const defaultProfile: ProfileData = {
   name: "default",
-  text: "Sometimes you win, sometimes you learn.",
+  text: getRandomQuote(),
   lang: voicesMap["af_alloy"].lang.id,
   voiceMode: "simple",
   voiceFormula: voicesMap["af_alloy"].id,

@@ -79,7 +79,8 @@ export async function generateVoice(params: {
     }
 
     if (chunk.type === "text") {
-      if (chunk.tokens?.length ?? 0 < 1) {
+      const tokensLength = chunk.tokens?.length ?? 0;
+      if (tokensLength < 1) {
         console.log("Skipping chunk with no tokens");
         continue;
       }

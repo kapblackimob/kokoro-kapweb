@@ -164,19 +164,23 @@ export const POST: RequestHandler = async ({ request }) => {
   const voiceFound = voicesMap[firstVoiceId] ?? voicesMap["af_alloy"];
   const lang = voiceFound.lang;
 
-  const result = await generateVoice({
-    text: input,
-    lang: lang.id,
-    voiceFormula: voice,
-    model: model,
-    speed: speed ?? 1,
-    format: response_format ?? "mp3",
-    acceleration: "cpu",
-  });
+  try {
+    const result = await generateVoice({
+      text: input,
+      lang: lang.id,
+      voiceFormula: voice,
+      model: model,
+      speed: speed ?? 1,
+      format: response_format ?? "mp3",
+      acceleration: "cpu",
+    });
 
-  return new Response(result.buffer, {
-    headers: {
-      "Content-Type": result.mimeType,
-    },
-  });
+    return new Response(result.buffer, {
+      headers: {
+        "Content-Type": result.mimeType,
+      },
+    });
+  } catch (e: any) {
+    return json({ message: e.message }, { status: 500 });
+  }
 };

@@ -79,6 +79,11 @@ export async function generateVoice(params: {
     }
 
     if (chunk.type === "text") {
+      if (chunk.tokens?.length ?? 0 < 1) {
+        console.log("Skipping chunk with no tokens");
+        continue;
+      }
+
       console.log({ type: chunk.type, content: chunk.content });
 
       const tokens = chunk.tokens;
@@ -101,6 +106,10 @@ export async function generateVoice(params: {
       waveforms.push(waveform);
       waveformsLen += waveform.length;
     }
+  }
+
+  if (waveforms.length === 0) {
+    throw new Error("No waveforms generated");
   }
 
   const finalWaveform = new Float32Array(waveformsLen);

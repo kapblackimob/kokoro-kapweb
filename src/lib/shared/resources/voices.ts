@@ -14,7 +14,6 @@ const italian = langsMap["it"];
 const portuguese = langsMap["pt-br"];
 const forro = langsMap["fo-st"];
 
-
 // New language references (ready for future voices)
 const spanishSpain = langsMap["es"];
 const french = langsMap["fr"];
@@ -25,7 +24,6 @@ const arabic = langsMap["ar"];
 const dutch = langsMap["nl"];
 const polish = langsMap["pl"];
 const turkish = langsMap["tr"];
-const forro = langsMap["fo-st"];
 
 const genderMale = "Male";
 const genderFemale = "Female";
@@ -398,38 +396,29 @@ export const voices = [
   },
 
   // French (France)
-  
   {
-    id: "ef_dora",
-    name: "Dora",
-    lang: French,
+    id: "ff_dira",
+    name: "Dira",
+    lang: french,
     gender: genderFemale,
     targetQuality: "C",
     overallGrade: "D",
   },
- {
-    id: "zm_yunyang",
-    name: "Yunyang",
-    lang: French,
+  {
+    id: "fm_zang",
+    name: "Zang",
+    lang: french,
     gender: genderMale,
     targetQuality: "C",
     overallGrade: "D",
   },
   {
-    id: "jf_alpha",
-    name: "Alpha",
-    lang: French,
+    id: "ff_beta",
+    name: "Beta",
+    lang: french,
     gender: genderFemale,
     targetQuality: "B",
     overallGrade: "C+",
-  },    
-  {
-    id: "em_santa",
-    name: "Santa",
-    lang: spanish,
-    gender: genderMale,
-    targetQuality: "C",
-    overallGrade: "D",
   },
   
   // Hindi
@@ -509,17 +498,18 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
-   // Forro-Santomense (São Tomé e Príncipe)
+  
+  // Forro-Santomense (São Tomé e Príncipe)
   {
-    id: "pf_dora",
+    id: "ff_dora",
     name: "Dora",
     lang: forro,
     gender: genderFemale,
     targetQuality: "C",
     overallGrade: "D",
   },
-   {
-    id: "bf_isabella",
+  {
+    id: "ff_isabella",
     name: "Isabella",
     lang: forro,
     gender: genderFemale,
@@ -527,7 +517,7 @@ export const voices = [
     overallGrade: "C",
   },
   {
-    id: "pm_alex",
+    id: "fm_alex",
     name: "Alex",
     lang: forro,
     gender: genderMale,
@@ -535,7 +525,7 @@ export const voices = [
     overallGrade: "D",
   },
   {
-    id: "pm_santa",
+    id: "fm_santa",
     name: "Santa",
     lang: forro,
     gender: genderMale,
@@ -545,7 +535,6 @@ export const voices = [
   
   // NOTE: Add voices for these languages when available:
   // - Spanish (Spain) - spanishSpain
-  // - French - french
   // - German - german
   // - Korean - korean
   // - Russian - russian
@@ -553,7 +542,6 @@ export const voices = [
   // - Dutch - dutch
   // - Polish - polish
   // - Turkish - turkish
-  // - Forro - santomense
 
 ] as const;
 

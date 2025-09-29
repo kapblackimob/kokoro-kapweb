@@ -20,6 +20,11 @@ export const langs = [
     nativeName: "Português (Brasil)",
   },
   {
+    id: "fo-st",
+    name: "Forro (Sao Tome and Principe)",
+    nativeName: "Fô d'Ambô (STP)",
+  },
+  {
     id: "es-419",
     name: "Spanish (Latin America)",
     nativeName: "Español (Latinoamérica)",

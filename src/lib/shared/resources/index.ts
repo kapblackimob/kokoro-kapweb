@@ -2,10 +2,18 @@ import { modelsMap, type ModelId } from "./models";
 import { voicesMap, type VoiceId } from "./voices";
 import { getFileFromUrl } from "./getFileFromUrl";
 
+// Re-export everything from individual modules
 export * from "./models";
 export * from "./voices";
 export * from "./langs";
 export * from "./quotes";
+
+// Additional helper exports
+export { getFileFromUrl } from "./getFileFromUrl";
+
+// Version info
+export const KOKORO_VERSION = "1.0.0";
+export const SUPPORTED_LANGUAGES_COUNT = 17;
 
 const downloadUrl =
   "https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX/resolve/1939ad2a8e416c0acfeecc08a694d14ef25f2231";
@@ -23,7 +31,6 @@ export async function getModel(id: ModelId | string): Promise<ArrayBuffer> {
       break;
     }
   }
-
   const url = `${downloadUrl}/onnx/${modelId}.onnx`;
   return await getFileFromUrl(url);
 }
@@ -41,7 +48,6 @@ export async function getVoiceFile(id: VoiceId | string): Promise<ArrayBuffer> {
       break;
     }
   }
-
   const url = `${downloadUrl}/voices/${voiceId}.bin`;
   return await getFileFromUrl(url);
 }
@@ -60,13 +66,11 @@ export async function getShapedVoiceFile(
   const voice = await getVoiceFile(id);
   const voiceArray = new Float32Array(voice);
   const voiceArrayLen = voiceArray.length;
-
   const reshaped: number[][][] = [];
   for (let from = 0; from < voiceArray.length; from += 256) {
     const to = Math.min(from + 256, voiceArrayLen);
     const chunk = Array.from(voiceArray.slice(from, to));
     reshaped.push([chunk]);
   }
-
   return reshaped;
 }

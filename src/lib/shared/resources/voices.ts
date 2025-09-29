@@ -12,6 +12,8 @@ const spanish = langsMap["es-419"];
 const hindi = langsMap["hi"];
 const italian = langsMap["it"];
 const portuguese = langsMap["pt-br"];
+const forro = langsMap["fo-st"];
+
 
 // New language references (ready for future voices)
 const spanishSpain = langsMap["es"];
@@ -23,6 +25,7 @@ const arabic = langsMap["ar"];
 const dutch = langsMap["nl"];
 const polish = langsMap["pl"];
 const turkish = langsMap["tr"];
+const forro = langsMap["fo-st"];
 
 const genderMale = "Male";
 const genderFemale = "Female";
@@ -393,6 +396,41 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
+
+  // French (France)
+  
+  {
+    id: "ef_dora",
+    name: "Dora",
+    lang: spanish,
+    gender: genderFemale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
+ {
+    id: "zm_yunyang",
+    name: "Yunyang",
+    lang: chinese,
+    gender: genderMale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
+  {
+    id: "jf_alpha",
+    name: "Alpha",
+    lang: japanese,
+    gender: genderFemale,
+    targetQuality: "B",
+    overallGrade: "C+",
+  },    
+  {
+    id: "em_santa",
+    name: "Santa",
+    lang: spanish,
+    gender: genderMale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
   
   // Hindi
   {
@@ -471,6 +509,39 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
+   // Forro-Santomense (São Tomé e Príncipe)
+  {
+    id: "pf_dora",
+    name: "Dora",
+    lang: portuguese,
+    gender: genderFemale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
+   {
+    id: "bf_isabella",
+    name: "Isabella",
+    lang: englishGb,
+    gender: genderFemale,
+    targetQuality: "B",
+    overallGrade: "C",
+  },
+  {
+    id: "pm_alex",
+    name: "Alex",
+    lang: portuguese,
+    gender: genderMale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
+  {
+    id: "pm_santa",
+    name: "Santa",
+    lang: portuguese,
+    gender: genderMale,
+    targetQuality: "C",
+    overallGrade: "D",
+  },
   
   // NOTE: Add voices for these languages when available:
   // - Spanish (Spain) - spanishSpain
@@ -482,6 +553,8 @@ export const voices = [
   // - Dutch - dutch
   // - Polish - polish
   // - Turkish - turkish
+  // - Forro - santomense
+
 ] as const;
 
 export const voicesMap = (() => {

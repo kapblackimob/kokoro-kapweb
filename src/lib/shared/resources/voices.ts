@@ -3,6 +3,7 @@ import { langsMap, type LangId } from "./langs";
 export type Voice = (typeof voices)[number];
 export type VoiceId = Voice["id"];
 
+// Language references
 const englishUs = langsMap["en-us"];
 const englishGb = langsMap["en-gb"];
 const japanese = langsMap["ja"];
@@ -12,10 +13,22 @@ const hindi = langsMap["hi"];
 const italian = langsMap["it"];
 const portuguese = langsMap["pt-br"];
 
+// New language references (ready for future voices)
+const spanishSpain = langsMap["es"];
+const french = langsMap["fr"];
+const german = langsMap["de"];
+const korean = langsMap["ko"];
+const russian = langsMap["ru"];
+const arabic = langsMap["ar"];
+const dutch = langsMap["nl"];
+const polish = langsMap["pl"];
+const turkish = langsMap["tr"];
+
 const genderMale = "Male";
 const genderFemale = "Female";
 
 export const voices = [
+  // English (US) - Female voices
   {
     id: "af_heart",
     name: "Heart",
@@ -104,6 +117,8 @@ export const voices = [
     targetQuality: "B",
     overallGrade: "C-",
   },
+  
+  // English (US) - Male voices
   {
     id: "am_adam",
     name: "Adam",
@@ -176,6 +191,8 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D-",
   },
+  
+  // English (UK) - Female voices
   {
     id: "bf_emma",
     name: "Emma",
@@ -193,22 +210,6 @@ export const voices = [
     overallGrade: "C",
   },
   {
-    id: "bm_george",
-    name: "George",
-    lang: englishGb,
-    gender: genderMale,
-    targetQuality: "B",
-    overallGrade: "C",
-  },
-  {
-    id: "bm_lewis",
-    name: "Lewis",
-    lang: englishGb,
-    gender: genderMale,
-    targetQuality: "C",
-    overallGrade: "D+",
-  },
-  {
     id: "bf_alice",
     name: "Alice",
     lang: englishGb,
@@ -223,6 +224,24 @@ export const voices = [
     gender: genderFemale,
     targetQuality: "C",
     overallGrade: "D",
+  },
+  
+  // English (UK) - Male voices
+  {
+    id: "bm_george",
+    name: "George",
+    lang: englishGb,
+    gender: genderMale,
+    targetQuality: "B",
+    overallGrade: "C",
+  },
+  {
+    id: "bm_lewis",
+    name: "Lewis",
+    lang: englishGb,
+    gender: genderMale,
+    targetQuality: "C",
+    overallGrade: "D+",
   },
   {
     id: "bm_daniel",
@@ -240,6 +259,8 @@ export const voices = [
     targetQuality: "B",
     overallGrade: "C",
   },
+  
+  // Spanish (Latin America)
   {
     id: "ef_dora",
     name: "Dora",
@@ -264,6 +285,8 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
+  
+  // Japanese
   {
     id: "jf_alpha",
     name: "Alpha",
@@ -304,6 +327,8 @@ export const voices = [
     targetQuality: "B",
     overallGrade: "C-",
   },
+  
+  // Chinese (Mandarin)
   {
     id: "zf_xiaobei",
     name: "Xiaobei",
@@ -368,6 +393,8 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
+  
+  // Hindi
   {
     id: "hf_alpha",
     name: "Alpha",
@@ -400,6 +427,8 @@ export const voices = [
     targetQuality: "B",
     overallGrade: "C",
   },
+  
+  // Italian
   {
     id: "if_sara",
     name: "Sara",
@@ -416,6 +445,8 @@ export const voices = [
     targetQuality: "B",
     overallGrade: "C",
   },
+  
+  // Portuguese (Brazil)
   {
     id: "pf_dora",
     name: "Dora",
@@ -440,6 +471,17 @@ export const voices = [
     targetQuality: "C",
     overallGrade: "D",
   },
+  
+  // NOTE: Add voices for these languages when available:
+  // - Spanish (Spain) - spanishSpain
+  // - French - french
+  // - German - german
+  // - Korean - korean
+  // - Russian - russian
+  // - Arabic - arabic
+  // - Dutch - dutch
+  // - Polish - polish
+  // - Turkish - turkish
 ] as const;
 
 export const voicesMap = (() => {
@@ -463,3 +505,13 @@ export const voicesByLang: Record<LangId, Voice[]> = (() => {
 
   return map;
 })();
+
+// Helper function to get available languages (with voices)
+export const getAvailableLanguages = (): LangId[] => {
+  return Object.keys(voicesByLang) as LangId[];
+};
+
+// Helper function to check if a language has voices
+export const hasVoices = (langId: LangId): boolean => {
+  return voicesByLang[langId]?.length > 0;
+};

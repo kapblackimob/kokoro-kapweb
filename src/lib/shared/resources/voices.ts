@@ -402,7 +402,7 @@ export const voices = [
   {
     id: "ef_dora",
     name: "Dora",
-    lang: spanish,
+    lang: French,
     gender: genderFemale,
     targetQuality: "C",
     overallGrade: "D",
@@ -410,7 +410,7 @@ export const voices = [
  {
     id: "zm_yunyang",
     name: "Yunyang",
-    lang: chinese,
+    lang: French,
     gender: genderMale,
     targetQuality: "C",
     overallGrade: "D",
@@ -418,7 +418,7 @@ export const voices = [
   {
     id: "jf_alpha",
     name: "Alpha",
-    lang: japanese,
+    lang: French,
     gender: genderFemale,
     targetQuality: "B",
     overallGrade: "C+",
@@ -513,7 +513,7 @@ export const voices = [
   {
     id: "pf_dora",
     name: "Dora",
-    lang: portuguese,
+    lang: forro,
     gender: genderFemale,
     targetQuality: "C",
     overallGrade: "D",
@@ -521,7 +521,7 @@ export const voices = [
    {
     id: "bf_isabella",
     name: "Isabella",
-    lang: englishGb,
+    lang: forro,
     gender: genderFemale,
     targetQuality: "B",
     overallGrade: "C",
@@ -529,7 +529,7 @@ export const voices = [
   {
     id: "pm_alex",
     name: "Alex",
-    lang: portuguese,
+    lang: forro,
     gender: genderMale,
     targetQuality: "C",
     overallGrade: "D",
@@ -537,7 +537,7 @@ export const voices = [
   {
     id: "pm_santa",
     name: "Santa",
-    lang: portuguese,
+    lang: forro,
     gender: genderMale,
     targetQuality: "C",
     overallGrade: "D",
